@@ -41,10 +41,12 @@ body{
     min-height:100vh;
 }
 
-/* 顶部 */
+/* =========================
+   顶部
+========================= */
 
 .header{
-    height:64px;
+    height:78px;
     background:#fff;
     border-bottom:1px solid var(--line);
     display:flex;
@@ -56,9 +58,29 @@ body{
     z-index:10;
 }
 
+.title-area{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:3px;
+}
+
 .title{
     font-size:21px;
     font-weight:500;
+}
+
+.telegram-contact{
+    display:inline-block;
+    width:max-content;
+    color:var(--blue);
+    text-decoration:none;
+    font-size:13px;
+    font-weight:500;
+}
+
+.telegram-contact:active{
+    opacity:.6;
 }
 
 .add-top{
@@ -77,13 +99,17 @@ body{
     background:#eeeeee;
 }
 
-/* 内容 */
+/* =========================
+   内容
+========================= */
 
 .content{
     padding:16px;
 }
 
-/* 账号卡片 */
+/* =========================
+   账号卡片
+========================= */
 
 .account{
     background:var(--card);
@@ -105,9 +131,6 @@ body{
     color:var(--secondary);
     font-size:13px;
     margin-bottom:18px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
 }
 
 .code-row{
@@ -149,6 +172,7 @@ body{
 .time-text{
     font-size:13px;
     color:var(--secondary);
+    white-space:nowrap;
 }
 
 .progress{
@@ -177,7 +201,9 @@ body{
     margin-left:10px;
 }
 
-/* 没有账号 */
+/* =========================
+   没有账号
+========================= */
 
 .empty{
     background:#fff;
@@ -204,7 +230,9 @@ body{
     line-height:1.6;
 }
 
-/* 底部添加 */
+/* =========================
+   底部添加按钮
+========================= */
 
 .add-button{
     width:100%;
@@ -223,7 +251,9 @@ body{
     opacity:.85;
 }
 
-/* 弹窗 */
+/* =========================
+   添加账号弹窗
+========================= */
 
 .modal{
     display:none;
@@ -315,6 +345,7 @@ input:focus{
     padding:14px;
     border-radius:10px;
     font-size:15px;
+    cursor:pointer;
 }
 
 .cancel{
@@ -334,7 +365,9 @@ input:focus{
     margin-top:14px;
 }
 
-/* Toast */
+/* =========================
+   Toast
+========================= */
 
 .toast{
     position:fixed;
@@ -379,8 +412,22 @@ input:focus{
     <!-- 顶部 -->
     <div class="header">
 
-        <div class="title">
-            验证器
+        <div class="title-area">
+
+            <div class="title">
+                验证器
+            </div>
+
+            <!-- 你的 Telegram 联系方式 -->
+            <a
+                class="telegram-contact"
+                href="https://t.me/oooky"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                @oooky
+            </a>
+
         </div>
 
         <button
@@ -742,12 +789,13 @@ function escapeHtml(text){
 
 
 /* =========================
-   渲染
+   渲染账号
 ========================= */
 
 function render(){
 
     accountsEl.innerHTML = "";
+
 
     if(accounts.length === 0){
 
@@ -1077,7 +1125,7 @@ async function addAccount(){
 
 
 /* =========================
-   删除
+   删除账号
 ========================= */
 
 function deleteAccount(index){
@@ -1105,7 +1153,7 @@ function deleteAccount(index){
 
 
 /* =========================
-   复制
+   复制验证码
 ========================= */
 
 async function copyCode(index){
