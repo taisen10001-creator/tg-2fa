@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>2FA 验证器</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+body{
+    margin:0;
+    background:#0e1621;
+    color:#fff;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+    "Helvetica Neue",Arial,sans-serif;
+}
+
+.container{
+    max-width:520px;
+    margin:auto;
+    min-height:100vh;
+    padding:18px 16px 30px;
+}
+
+.header{
+    text-align:center;
+    padding:20px 0 22px;
+}
+
+.logo{
+    width:64px;
+    height:64px;
+    margin:auto;
+    border-radius:18px;
+    background:#229ed9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:31px;
+    box-shadow:0 8px 25px rgba(34,158,217,.25);
+}
+
+.header h1{
+    margin:14px 0 5px;
+    font-size:23px;
+}
+
+.header p{
+    margin:0;
+    color:#8d99a5;
+    font-size:14px;
+}
+
+.accounts{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.empty{
+    text-align:center;
+    padding:50px 20px;
+    background:#17212b;
+    border-radius:16px;
+    color:#8d99a5;
+}
+
+.card{
+    background:#17212b;
+    border-radius:16px;
+    padding:17px;
+    position:relative;
+    border:1px solid rgba(255,255,255,.04);
+}
+
+.card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+}
+
+.account-name{
+    font-size:16px;
+    font-weight:600;
+}
+
+.account-secret{
+    margin-top:4px;
+    font-size:12px;
+    color:#71808d;
+}
+
+.code{
+    font-size:35px;
+    font-weight:700;
+    letter-spacing:5px;
+    margin:14px 0 4px;
+    font-variant-numeric:tabular-nums;
+}
+
+.timer-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#8d99a5;
+    font-size:13px;
+}
+
+.progress{
+    height:4px;
+    background:#253341;
+    border-radius:4px;
+    overflow:hidden;
+    margin-top:12px;
+}
+
+.progress-bar{
+    height:100%;
+    background:#229ed9;
+    width:100%;
+    transition:width 1s linear;
+}
+
+.delete{
+    border:0;
+    background:transparent;
+    color:#71808d;
+    font-size:18px;
+    padding:4px 6px;
+}
+
+.add-btn{
+    width:100%;
+    border:0;
+    border-radius:14px;
+    background:#229ed9;
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+    padding:15px;
+    margin-top:18px;
+}
+
+.help{
+    text-align:center;
+    margin-top:18px;
+    color:#71808d;
+    font-size:12px;
+    line-height:1.7;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:100;
+    padding:20px;
+    align-items:flex-end;
+    justify-content:center;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:520px;
+    background:#17212b;
+    border-radius:20px 20px 12px 12px;
+    padding:22px;
+    margin-bottom:10px;
+}
+
+.modal-title{
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    color:#8d99a5;
+    font-size:13px;
+    margin:12px 0 7px;
+}
+
+input{
+    width:100%;
+    border:1px solid #2b3a47;
+    background:#0e1621;
+    color:#fff;
+    border-radius:11px;
+    padding:13px;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#229ed9;
+}
+
+.modal-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.modal-actions button{
+    flex:1;
+    border:0;
+    border-radius:11px;
+    padding:13px;
+    font-size:15px;
+}
+
+.cancel{
+    background:#253341;
+    color:#fff;
+}
+
+.save{
+    background:#229ed9;
+    color:#fff;
+}
+
+.error{
+    display:none;
+    color:#ff6b6b;
+    font-size:13px;
+    margin-top:10px;
+}
+
+.note{
+    background:#101c27;
+    border-radius:10px;
+    padding:10px;
+    color:#8d99a5;
+    font-size:12px;
+    line-height:1.6;
+    margin-top:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <div class="logo">🔐</div>
+        <h1>2FA 验证器</h1>
+        <p>安全生成一次性验证码</p>
+    </div>
+
+    <div id="accounts" class="accounts"></div>
+
+    <button class="add-btn" onclick="openModal()">
+        ＋ 添加验证账户
+    </button>
+
+    <div class="help">
+        TOTP 动态验证码 · 30 秒自动更新<br>
+        验证器数据仅保存在当前设备浏览器中
+    </div>
+
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-box">
+
+        <div class="modal-title">
+            添加验证账户
+        </div>
+
+        <label>账户名称</label>
+        <input
+            id="name"
+            type="text"
+            placeholder="例如：Google"
+            maxlength="50"
+        >
+
+        <label>Secret Key</label>
+        <input
+            id="secret"
+            type="text"
+            placeholder="例如：JBSWY3DPEHPK3PXP"
+            autocomplete="off"
+            autocapitalize="characters"
+        >
+
+        <div class="note">
+            请输入你自己的 TOTP Secret Key。
+            不要把密码、短信验证码或恢复码输入这里。
+        </div>
+
+        <div id="error" class="error"></div>
+
+        <div class="modal-actions">
+            <button class="cancel" onclick="closeModal()">
+                取消
+            </button>
+
+            <button class="save" onclick="addAccount()">
+                添加
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const STORAGE_KEY = "tg_2fa_accounts";
+
+let accounts = loadAccounts();
+
+function loadAccounts(){
+    try{
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    }catch(e){
+        return [];
+    }
+}
+
+function saveAccounts(){
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(accounts)
+    );
+}
+
+function escapeHtml(str){
+    return String(str)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+/* Base32 解码 */
+function base32ToBytes(base32){
+
+    base32 = base32
+        .toUpperCase()
+        .replace(/[\s=-]/g,"");
+
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+    let bits = 0;
+    let value = 0;
+    const output = [];
+
+    for(let i=0;i<base32.length;i++){
+
+        const index = alphabet.indexOf(base32[i]);
+
+        if(index === -1){
+            throw new Error("Secret Key 格式错误");
+        }
+
+        value = (value << 5) | index;
+        bits += 5;
+
+        if(bits >= 8){
+            bits -= 8;
+            output.push(
+                (value >> bits) & 255
+            );
+        }
+    }
+
+    return new Uint8Array(output);
+}
+
+/* HMAC-SHA1 */
+async function hmacSha1(key,message){
+
+    const cryptoKey = await crypto.subtle.importKey(
+        "raw",
+        key,
+        {
+            name:"HMAC",
+            hash:"SHA-1"
+        },
+        false,
+        ["sign"]
+    );
+
+    return new Uint8Array(
+        await crypto.subtle.sign(
+            "HMAC",
+            cryptoKey,
+            message
+        )
+    );
+}
+
+/* 生成 TOTP */
+async function generateTOTP(secret){
+
+    const key = base32ToBytes(secret);
+
+    const counter = Math.floor(
+        Date.now() / 1000 / 30
+    );
+
+    const buffer = new ArrayBuffer(8);
+    const view = new DataView(buffer);
+
+    view.setUint32(
+        0,
+        Math.floor(counter / 0x100000000)
+    );
+
+    view.setUint32(
+        4,
+        counter >>> 0
+    );
+
+    const hash = await hmacSha1(
+        key,
+        new Uint8Array(buffer)
+    );
+
+    const offset = hash[hash.length - 1] & 15;
+
+    const binary =
+        ((hash[offset] & 127) << 24) |
+        ((hash[offset + 1] & 255) << 16) |
+        ((hash[offset + 2] & 255) << 8) |
+        (hash[offset + 3] & 255);
+
+    return String(
+        binary % 1000000
+    ).padStart(6,"0");
+}
+
+function openModal(){
+
+    document.getElementById("modal")
+        .classList.add("show");
+
+    document.getElementById("name").value = "";
+    document.getElementById("secret").value = "";
+
+    document.getElementById("error")
+        .style.display = "none";
+
+    setTimeout(()=>{
+        document.getElementById("name").focus();
+    },100);
+}
+
+function closeModal(){
+
+    document.getElementById("modal")
+        .classList.remove("show");
+}
+
+function addAccount(){
+
+    const name =
+        document.getElementById("name")
+        .value.trim();
+
+    const secret =
+        document.getElementById("secret")
+        .value.trim()
+        .toUpperCase()
+        .replace(/\s/g,"");
+
+    const error =
+        document.getElementById("error");
+
+    if(!name){
+        error.textContent = "请输入账户名称";
+        error.style.display = "block";
+        return;
+    }
+
+    if(!secret){
+        error.textContent = "请输入 Secret Key";
+        error.style.display = "block";
+        return;
+    }
+
+    try{
+        base32ToBytes(secret);
+    }catch(e){
+        error.textContent =
+            "Secret Key 格式不正确，请检查后重试";
+        error.style.display = "block";
+        return;
+    }
+
+    accounts.push({
+        id:Date.now().toString(),
+        name:name,
+        secret:secret
+    });
+
+    saveAccounts();
+    closeModal();
+    render();
+}
+
+function deleteAccount(id){
+
+    如果(!confirm("确定删除这个验证账户吗？")){
+        return;
+    }
+
+    accounts =
+        accounts.filter(
+            account => account.id !== id
+        );
+
+    saveAccounts();
+    render();
+}
+
+async function render(){
+
+    const box =
+        document.getElementById("accounts");
+
+    if(accounts.length === 0){
+
+        box.innerHTML = `
+            <div class="empty">
+                <div style="font-size:42px;margin-bottom:12px">
+                    🔐
+                </div>
+                暂无验证账户<br>
+                <span style="font-size:12px">
+                    点击下面的按钮添加你的第一个账户
+                </span>
+            </div>
+        `;
+
+        return;
+    }
+
+    box.innerHTML = accounts.map(account => `
+        <div class="card">
+
+            <div class="card-top">
+
+                <div>
+                    <div class="account-name">
+                        ${escapeHtml(account.name)}
+                    </div>
+
+                    <div class="account-secret">
+                        TOTP 验证器
+                    </div>
+                </div>
+
+                <button
+                    class="delete"
+                    onclick="deleteAccount('${account.id}')"
+                    aria-label="删除"
+                >
+                    🗑
+                </button>
+
+            </div>
+
+            <div
+                class="code"
+                id="code-${account.id}"
+            >
+                ------ 
+            </div>
+
+            <div class="timer-row">
+                <span>⏱</span>
+                <span id="timer-${account.id}">
+                    30 秒
+                </span>
+            </div>
+
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    id="progress-${account.id}"
+                ></div>
+            </div>
+
+        </div>
+    `).join("");
+
+    updateCodes();
+}
+
+async function updateCodes(){
+
+    const remaining =
+        30 - (Math.floor(Date.now()/1000) % 30);
+
+    const progress =
+        (remaining / 30) * 100;
+
+    for(const account of accounts){
+
+        const codeElement =
+            document.getElementById(
+                "code-" + account.id
+            );
+
+        const timerElement =
+            document.getElementById(
+                "timer-" + account.id
+            );
+
+        const progressElement =
+            document.getElementById(
+                "progress-" + account.id
+            );
+
+        if(!codeElement) continue;
+
+        try{
+
+            const code =
+                await generateTOTP(
+                    account.secret
+                );
+
+            codeElement.textContent =
+                code.slice(0,3) +
+                " " +
+                code.slice(3);
+
+        }catch(e){
+
+            codeElement.textContent =
+                "错误";
+        }
+
+        if(timerElement){
+            timerElement.textContent =
+                remaining + " 秒";
+        }
+
+        if(progressElement){
+            progressElement.style.width =
+                progress + "%";
+        }
+    }
+}
+
+setInterval(updateCodes,1000);
+
+render();
+
+document.getElementById("modal")
+    .addEventListener("click",function(e){
+
+        if(e.target === this){
+            closeModal();
+        }
+
+    });
+</script>
+
+</body>
+</html>
