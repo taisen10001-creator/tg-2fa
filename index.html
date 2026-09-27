@@ -2,19 +2,11 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
->
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
 <title>验证器</title>
 
 <style>
-
-/* =========================
-   基础
-========================= */
 
 *{
     box-sizing:border-box;
@@ -37,7 +29,6 @@ body{
     padding:0;
     width:100%;
     min-height:100%;
-
     background:var(--bg);
 
     font-family:
@@ -64,95 +55,85 @@ body{
 ========================= */
 
 .header{
-
-    height:70px;
-
-    background:#ffffff;
-
+    height:88px;
+    background:#fff;
     border-bottom:1px solid var(--line);
 
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 
-    padding:0 14px;
+    padding:0 18px;
 
     position:sticky;
-
     top:0;
-
-    z-index:20;
+    z-index:10;
 }
 
 
 /* 左侧占位 */
 
 .header-side{
-
     width:44px;
-
-    height:44px;
 }
 
 
 /* =========================
-   顶部中间
-   开云体育官方招商 @oooky
+   顶部中间招商文字
 ========================= */
 
-.招商链接{
-
+.profile{
     position:absolute;
-
     left:50%;
-
     top:50%;
 
     transform:translate(-50%,-50%);
 
-    display:block;
-
-    color:#202124;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 
     text-decoration:none;
 
-    font-size:15px;
-
-    font-weight:600;
+    color:var(--text);
 
     white-space:nowrap;
-
-    padding:8px 12px;
-
-    border-radius:8px;
-
-    transition:.15s;
 }
 
-.招商链接:active{
 
+/*
+   这里不再显示头像
+   只显示：
+   开云体育官方招商 @oooky
+*/
+
+.profile-name{
+    font-size:15px;
+    font-weight:600;
+    line-height:20px;
+    color:#202124;
+}
+
+
+/* 点击效果 */
+
+.profile:active{
     opacity:.65;
-
-    background:#f1f3f4;
 }
 
 
 /* =========================
-   右上角添加
+   右上角添加按钮
 ========================= */
 
 .add-top{
-
     margin-left:auto;
 
     width:44px;
-
     height:44px;
 
     border:0;
-
     border-radius:50%;
 
     background:transparent;
@@ -160,7 +141,6 @@ body{
     color:#333;
 
     font-size:30px;
-
     font-weight:300;
 
     line-height:44px;
@@ -171,7 +151,6 @@ body{
 }
 
 .add-top:active{
-
     background:#f0f0f0;
 }
 
@@ -181,9 +160,7 @@ body{
 ========================= */
 
 .container{
-
     width:100%;
-
     max-width:620px;
 
     margin:0 auto;
@@ -197,34 +174,24 @@ body{
 ========================= */
 
 .empty{
-
     text-align:center;
-
     padding:80px 20px;
-
     color:var(--sub);
 }
 
 .empty-icon{
-
     font-size:48px;
-
     margin-bottom:15px;
 }
 
 .empty-title{
-
     font-size:18px;
-
     color:#333;
-
     margin-bottom:8px;
 }
 
 .empty-text{
-
     font-size:14px;
-
     line-height:22px;
 }
 
@@ -234,7 +201,6 @@ body{
 ========================= */
 
 .account-card{
-
     background:var(--card);
 
     border:1px solid var(--line);
@@ -253,7 +219,6 @@ body{
 /* 账号顶部 */
 
 .account-top{
-
     display:flex;
 
     align-items:center;
@@ -267,7 +232,6 @@ body{
 /* 账号名称 */
 
 .account-name{
-
     font-size:15px;
 
     font-weight:500;
@@ -284,10 +248,9 @@ body{
 }
 
 
-/* 删除 */
+/* 删除按钮 */
 
 .delete-btn{
-
     border:0;
 
     background:transparent;
@@ -302,7 +265,6 @@ body{
 }
 
 .delete-btn:active{
-
     color:var(--danger);
 }
 
@@ -312,7 +274,6 @@ body{
 ========================= */
 
 .code{
-
     font-size:38px;
 
     letter-spacing:5px;
@@ -331,10 +292,9 @@ body{
 }
 
 
-/* 提示 */
+/* 验证码提示 */
 
 .code-hint{
-
     font-size:12px;
 
     color:#999;
@@ -348,7 +308,6 @@ body{
 ========================= */
 
 .copy-btn{
-
     margin-top:12px;
 
     width:100%;
@@ -369,7 +328,6 @@ body{
 }
 
 .copy-btn:active{
-
     background:#e5e7e9;
 }
 
@@ -379,7 +337,6 @@ body{
 ========================= */
 
 .timer-row{
-
     display:flex;
 
     align-items:center;
@@ -390,7 +347,6 @@ body{
 }
 
 .timer-text{
-
     width:28px;
 
     text-align:right;
@@ -403,7 +359,6 @@ body{
 }
 
 .progress{
-
     flex:1;
 
     height:4px;
@@ -416,7 +371,6 @@ body{
 }
 
 .progress-bar{
-
     height:100%;
 
     width:100%;
@@ -434,7 +388,6 @@ body{
 ========================= */
 
 .modal-mask{
-
     display:none;
 
     position:fixed;
@@ -451,7 +404,6 @@ body{
 }
 
 .modal-mask.show{
-
     display:flex;
 }
 
@@ -459,7 +411,6 @@ body{
 /* 弹窗 */
 
 .modal{
-
     width:100%;
 
     max-width:620px;
@@ -474,17 +425,15 @@ body{
 }
 
 
-/* 弹出动画 */
+/* 弹窗动画 */
 
 @keyframes slideUp{
 
     from{
-
         transform:translateY(100%);
     }
 
     to{
-
         transform:translateY(0);
     }
 }
@@ -493,7 +442,6 @@ body{
 /* 弹窗标题 */
 
 .modal-title{
-
     font-size:19px;
 
     font-weight:600;
@@ -502,15 +450,13 @@ body{
 }
 
 
-/* 输入框 */
+/* 输入区域 */
 
 .input-group{
-
     margin-bottom:14px;
 }
 
 .input-label{
-
     display:block;
 
     font-size:13px;
@@ -521,7 +467,6 @@ body{
 }
 
 .input{
-
     width:100%;
 
     height:46px;
@@ -542,7 +487,6 @@ body{
 }
 
 .input:focus{
-
     border-color:var(--blue);
 
     box-shadow:
@@ -555,7 +499,6 @@ body{
 ========================= */
 
 .modal-actions{
-
     display:flex;
 
     gap:10px;
@@ -565,7 +508,6 @@ body{
 
 .cancel-btn,
 .save-btn{
-
     flex:1;
 
     height:46px;
@@ -578,7 +520,6 @@ body{
 }
 
 .cancel-btn{
-
     border:1px solid #ddd;
 
     background:#fff;
@@ -587,7 +528,6 @@ body{
 }
 
 .save-btn{
-
     border:0;
 
     background:var(--blue);
@@ -596,17 +536,15 @@ body{
 }
 
 .save-btn:active{
-
     opacity:.85;
 }
 
 
 /* =========================
-   Toast提示
+   Toast
 ========================= */
 
 .toast{
-
     position:fixed;
 
     left:50%;
@@ -639,7 +577,6 @@ body{
 }
 
 .toast.show{
-
     opacity:1;
 
     transform:
@@ -655,22 +592,17 @@ body{
 @media(max-width:420px){
 
     .code{
-
         font-size:34px;
 
         letter-spacing:4px;
     }
 
-    .招商链接{
-
+    .profile-name{
         font-size:14px;
-
-        padding:8px 6px;
     }
 
     .header{
-
-        height:68px;
+        height:88px;
     }
 }
 
@@ -688,25 +620,29 @@ body{
 <header class="header">
 
 
-    <!-- 左边占位 -->
+    <!-- 左侧占位 -->
 
     <div class="header-side"></div>
 
 
     <!--
-        顶部中间招商文字
+        顶部中间
 
-        点击后跳转：
-        https://t.me/oooky
+        点击后跳转 Telegram
     -->
 
     <a
-        class="招商链接"
+        class="profile"
         href="https://t.me/oooky"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="开云体育官方招商"
     >
-        开云体育官方招商 @oooky
+
+        <div class="profile-name">
+            开云体育官方招商 @oooky
+        </div>
+
     </a>
 
 
@@ -732,12 +668,12 @@ body{
 <main class="container">
 
 
-    <!-- 账号列表 -->
+    <!-- 验证账号列表 -->
 
     <div id="accountList"></div>
 
 
-    <!-- 没有账号时 -->
+    <!-- 没有账号 -->
 
     <div
         class="empty"
@@ -812,7 +748,7 @@ body{
                 class="input"
                 id="secretKey"
                 type="text"
-                placeholder="输入验证器密钥"
+                placeholder="输入16/32位或更长的密钥"
                 autocomplete="off"
                 autocapitalize="characters"
             >
@@ -820,7 +756,7 @@ body{
         </div>
 
 
-        <!-- 按钮 -->
+        <!-- 操作按钮 -->
 
         <div class="modal-actions">
 
@@ -864,7 +800,7 @@ body{
 <script>
 
 /* ==========================================
-   本地存储
+   本地账号数据
 ========================================== */
 
 const STORAGE_KEY =
@@ -881,6 +817,7 @@ try{
                 STORAGE_KEY
             ) || "[]"
         );
+
 
     if(!Array.isArray(accounts)){
 
@@ -904,10 +841,12 @@ function base32ToBytes(base32){
     const alphabet =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
+
     const clean =
         String(base32)
-        .toUpperCase()
-        .replace(/[\s=-]/g,"");
+            .toUpperCase()
+            .replace(/[\s=-]/g,"");
+
 
     let bits = "";
 
@@ -929,8 +868,8 @@ function base32ToBytes(base32){
 
         bits +=
             value
-            .toString(2)
-            .padStart(5,"0");
+                .toString(2)
+                .padStart(5,"0");
 
     }
 
@@ -1004,7 +943,7 @@ async function hmacSha1(
 
 
 /* ==========================================
-   生成 TOTP
+   TOTP验证码
 ========================================== */
 
 async function generateTOTP(secret){
@@ -1087,7 +1026,10 @@ async function generateTOTP(secret){
 
             binary % 1000000
 
-        ).padStart(6,"0");
+        ).padStart(
+            6,
+            "0"
+        );
 
 
     }catch(e){
@@ -1119,7 +1061,7 @@ function saveAccounts(){
 
 
 /* ==========================================
-   Toast
+   Toast提示
 ========================================== */
 
 let toastTimer = null;
@@ -1380,8 +1322,7 @@ function bindAccountButtons(){
         });
 
 
-
-    /* 复制按钮 */
+    /* 复制 */
 
     document
         .querySelectorAll(
@@ -1412,8 +1353,7 @@ function bindAccountButtons(){
         });
 
 
-
-    /* 点击验证码复制 */
+    /* 点击验证码 */
 
     document
         .querySelectorAll(
@@ -1452,7 +1392,6 @@ function bindAccountButtons(){
 
 async function updateCodes(){
 
-
     const now =
         Math.floor(
             Date.now() / 1000
@@ -1475,9 +1414,7 @@ async function updateCodes(){
 
         const code =
             await generateTOTP(
-
                 accounts[i].secret
-
             );
 
 
@@ -1536,7 +1473,6 @@ async function updateCodes(){
 
 function deleteAccount(index){
 
-
     if(!accounts[index]){
 
         return;
@@ -1582,7 +1518,6 @@ function deleteAccount(index){
 
 async function copyCode(index){
 
-
     if(!accounts[index]){
 
         return;
@@ -1592,9 +1527,7 @@ async function copyCode(index){
 
     const code =
         await generateTOTP(
-
             accounts[index].secret
-
         );
 
 
@@ -1625,7 +1558,6 @@ async function copyCode(index){
 
 
     }catch(e){
-
 
         const textarea =
             document.createElement(
@@ -1692,7 +1624,7 @@ const secretKey =
     );
 
 
-/* 打开 */
+/* 打开弹窗 */
 
 function openModal(){
 
@@ -1716,7 +1648,7 @@ function openModal(){
 }
 
 
-/* 关闭 */
+/* 关闭弹窗 */
 
 function closeModal(){
 
@@ -1736,7 +1668,7 @@ function closeModal(){
 
 
 /* ==========================================
-   添加按钮
+   添加账号按钮
 ========================================== */
 
 document
@@ -1753,7 +1685,7 @@ document
 
 
 /* ==========================================
-   取消
+   取消按钮
 ========================================== */
 
 document
@@ -1819,7 +1751,7 @@ document
                     .toUpperCase();
 
 
-            /* 名称 */
+            /* 检查名称 */
 
             if(!name){
 
@@ -1836,7 +1768,7 @@ document
             }
 
 
-            /* Secret Key */
+            /* 检查密钥 */
 
             if(!secret){
 
@@ -1853,7 +1785,7 @@ document
             }
 
 
-            /* 检查密钥 */
+            /* Base32检查 */
 
             const bytes =
                 base32ToBytes(
@@ -1896,7 +1828,7 @@ document
             }
 
 
-            /* 添加 */
+            /* 添加账号 */
 
             accounts.push({
 
@@ -1917,12 +1849,12 @@ document
             saveAccounts();
 
 
-            /* 关闭 */
+            /* 关闭弹窗 */
 
             closeModal();
 
 
-            /* 刷新 */
+            /* 刷新账号 */
 
             await renderAccounts();
 
@@ -1937,7 +1869,7 @@ document
 
 
 /* ==========================================
-   每秒更新验证码
+   每秒刷新
 ========================================== */
 
 setInterval(
