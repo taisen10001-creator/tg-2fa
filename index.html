@@ -3,9 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>2FA 验证器</title>
+
+<title>验证器</title>
 
 <style>
+:root{
+    --bg:#f5f5f5;
+    --card:#ffffff;
+    --text:#202124;
+    --secondary:#5f6368;
+    --line:#e5e5e5;
+    --blue:#1a73e8;
+    --danger:#d93025;
+}
+
 *{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
@@ -13,116 +24,215 @@
 
 body{
     margin:0;
-    background:#0e1621;
-    color:#fff;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
 }
 
-.container{
+.app{
     max-width:600px;
     margin:auto;
-    padding:20px 15px 40px;
+    min-height:100vh;
 }
+
+/* 顶部 */
 
 .header{
-    text-align:center;
-    padding:20px 0;
-}
-
-.logo{
-    width:64px;
     height:64px;
-    margin:auto;
-    border-radius:18px;
-    background:#2481cc;
+    background:#fff;
+    border-bottom:1px solid var(--line);
     display:flex;
     align-items:center;
-    justify-content:center;
-    font-size:32px;
+    justify-content:space-between;
+    padding:0 18px;
+    position:sticky;
+    top:0;
+    z-index:10;
 }
 
-h1{
-    font-size:24px;
-    margin:14px 0 5px;
+.title{
+    font-size:21px;
+    font-weight:500;
 }
 
-.subtitle{
-    color:#8c9aa8;
-    font-size:14px;
-}
-
-.add-btn{
-    width:100%;
+.add-top{
+    width:44px;
+    height:44px;
     border:0;
-    border-radius:12px;
-    padding:15px;
-    background:#2481cc;
-    color:#fff;
-    font-size:16px;
-    font-weight:600;
+    background:transparent;
+    border-radius:50%;
+    font-size:30px;
+    line-height:44px;
+    color:var(--blue);
     cursor:pointer;
-    margin:10px 0 18px;
 }
 
-.add-btn:active{
-    transform:scale(.98);
-    opacity:.85;
+.add-top:active{
+    background:#eeeeee;
 }
+
+/* 内容 */
+
+.content{
+    padding:16px;
+}
+
+/* 账号卡片 */
 
 .account{
-    background:#17212b;
+    background:var(--card);
+    border:1px solid var(--line);
     border-radius:14px;
-    padding:17px;
-    margin-bottom:12px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:0 1px 2px rgba(0,0,0,.04);
 }
 
-.account-top{
+.account-name{
+    font-size:16px;
+    font-weight:500;
+    margin-bottom:4px;
+    word-break:break-word;
+}
+
+.account-secret{
+    color:var(--secondary);
+    font-size:13px;
+    margin-bottom:18px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.code-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.code{
+    font-size:34px;
+    font-weight:500;
+    letter-spacing:4px;
+    color:#202124;
+    font-variant-numeric:tabular-nums;
+}
+
+.copy{
+    border:0;
+    background:#f1f3f4;
+    color:var(--blue);
+    padding:9px 12px;
+    border-radius:8px;
+    font-size:13px;
+    cursor:pointer;
+}
+
+.copy:active{
+    background:#e8eaed;
+}
+
+.bottom-row{
+    margin-top:14px;
     display:flex;
     justify-content:space-between;
     align-items:center;
 }
 
-.account-name{
-    font-size:16px;
-    font-weight:600;
+.time-text{
+    font-size:13px;
+    color:var(--secondary);
+}
+
+.progress{
+    flex:1;
+    height:4px;
+    background:#e5e5e5;
+    border-radius:10px;
+    margin-left:12px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    width:100%;
+    background:var(--blue);
+    border-radius:10px;
+    transition:width .3s linear;
 }
 
 .delete{
     border:0;
     background:transparent;
-    color:#ff5b5b;
+    color:var(--danger);
     font-size:13px;
+    padding:4px;
+    margin-left:10px;
+}
+
+/* 没有账号 */
+
+.empty{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    text-align:center;
+    padding:55px 20px;
+    color:var(--secondary);
+}
+
+.empty-icon{
+    font-size:42px;
+    margin-bottom:14px;
+}
+
+.empty-title{
+    color:var(--text);
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.empty-text{
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* 底部添加 */
+
+.add-button{
+    width:100%;
+    margin-top:4px;
+    padding:15px;
+    border:0;
+    border-radius:12px;
+    background:var(--blue);
+    color:#fff;
+    font-size:16px;
+    font-weight:500;
     cursor:pointer;
 }
 
-.code{
-    font-size:36px;
-    letter-spacing:6px;
-    font-weight:700;
-    text-align:center;
-    margin:18px 0 8px;
+.add-button:active{
+    opacity:.85;
 }
 
-.time{
-    text-align:center;
-    color:#8c9aa8;
-    font-size:13px;
-}
-
-.empty{
-    text-align:center;
-    color:#8c9aa8;
-    padding:35px 10px;
-}
+/* 弹窗 */
 
 .modal{
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.65);
+    background:rgba(0,0,0,.45);
+    z-index:100;
     align-items:flex-end;
     justify-content:center;
-    z-index:999;
 }
 
 .modal.show{
@@ -132,43 +242,70 @@ h1{
 .modal-box{
     width:100%;
     max-width:600px;
-    background:#17212b;
-    border-radius:18px 18px 0 0;
-    padding:22px 18px 30px;
+    background:#fff;
+    border-radius:20px 20px 0 0;
+    padding:22px 20px 30px;
+    animation:up .2s ease;
+}
+
+@keyframes up{
+    from{
+        transform:translateY(100%);
+    }
+    to{
+        transform:translateY(0);
+    }
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
 }
 
 .modal-title{
     font-size:20px;
-    font-weight:700;
-    margin-bottom:20px;
+    font-weight:500;
+}
+
+.close{
+    width:38px;
+    height:38px;
+    border:0;
+    background:#f1f3f4;
+    border-radius:50%;
+    font-size:22px;
+    color:#5f6368;
 }
 
 label{
     display:block;
-    color:#aeb9c4;
     font-size:13px;
-    margin:12px 0 6px;
+    color:var(--secondary);
+    margin:14px 0 7px;
 }
 
 input{
     width:100%;
     padding:14px;
-    border:1px solid #2d3b48;
+    border:1px solid #dadce0;
     border-radius:10px;
-    background:#0e1621;
-    color:#fff;
     outline:none;
     font-size:15px;
+    background:#fff;
+    color:#202124;
 }
 
 input:focus{
-    border-color:#2481cc;
+    border:2px solid var(--blue);
+    padding:13px;
 }
 
 .actions{
     display:flex;
     gap:10px;
-    margin-top:20px;
+    margin-top:22px;
 }
 
 .cancel,
@@ -178,58 +315,128 @@ input:focus{
     padding:14px;
     border-radius:10px;
     font-size:15px;
-    cursor:pointer;
 }
 
 .cancel{
-    background:#263442;
-    color:#fff;
+    background:#f1f3f4;
+    color:#3c4043;
 }
 
 .save{
-    background:#2481cc;
+    background:var(--blue);
     color:#fff;
-    font-weight:600;
 }
 
 .tip{
-    margin-top:12px;
-    color:#7f8c98;
+    color:#80868b;
     font-size:12px;
     line-height:1.6;
+    margin-top:14px;
+}
+
+/* Toast */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:30px;
+    transform:translateX(-50%) translateY(20px);
+    background:#323232;
+    color:#fff;
+    padding:11px 18px;
+    border-radius:8px;
+    font-size:14px;
+    opacity:0;
+    pointer-events:none;
+    transition:.25s;
+    z-index:200;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+@media(max-width:380px){
+
+    .code{
+        font-size:29px;
+        letter-spacing:3px;
+    }
+
+    .account{
+        padding:15px;
+    }
+
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
+    <!-- 顶部 -->
     <div class="header">
-        <div class="logo">🔐</div>
-        <h1>2FA 验证器</h1>
-        <div class="subtitle">安全生成一次性验证码</div>
+
+        <div class="title">
+            验证器
+        </div>
+
+        <button
+            class="add-top"
+            id="addTop"
+            aria-label="添加账号"
+        >
+            ＋
+        </button>
+
     </div>
 
-    <button class="add-btn" id="addBtn">
-        ＋ 添加账号
-    </button>
 
-    <div id="accounts"></div>
+    <!-- 内容 -->
+    <div class="content">
+
+        <div id="accounts"></div>
+
+        <button
+            class="add-button"
+            id="addButton"
+        >
+            ＋ 添加账号
+        </button>
+
+    </div>
 
 </div>
 
 
 <!-- 添加账号弹窗 -->
+
 <div class="modal" id="modal">
 
     <div class="modal-box">
 
-        <div class="modal-title">
-            添加验证器账号
+        <div class="modal-header">
+
+            <div class="modal-title">
+                添加账号
+            </div>
+
+            <button
+                class="close"
+                id="closeBtn"
+            >
+                ×
+            </button>
+
         </div>
 
-        <label>账号名称</label>
+
+        <label>
+            账号名称
+        </label>
+
         <input
             id="nameInput"
             type="text"
@@ -237,27 +444,41 @@ input:focus{
             autocomplete="off"
         >
 
-        <label>Secret Key</label>
+
+        <label>
+            Secret Key
+        </label>
+
         <input
             id="secretInput"
             type="text"
-            placeholder="输入 TOTP Secret Key"
+            placeholder="输入设置密钥"
             autocomplete="off"
             autocapitalize="characters"
         >
 
+
         <div class="actions">
-            <button class="cancel" id="cancelBtn">
+
+            <button
+                class="cancel"
+                id="cancelBtn"
+            >
                 取消
             </button>
 
-            <button class="save" id="saveBtn">
-                保存
+            <button
+                class="save"
+                id="saveBtn"
+            >
+                添加
             </button>
+
         </div>
 
+
         <div class="tip">
-            Secret Key 只保存在当前设备的浏览器本地，不上传到服务器。
+            设置密钥仅保存在当前设备本地，不上传到服务器。
         </div>
 
     </div>
@@ -265,48 +486,85 @@ input:focus{
 </div>
 
 
+<div
+    class="toast"
+    id="toast"
+>
+    已复制
+</div>
+
+
 <script>
 
-const STORAGE_KEY = "tg_2fa_accounts_v2";
+/* =========================
+   基础设置
+========================= */
+
+const STORAGE_KEY = "tg_authenticator_accounts";
 
 let accounts = [];
 
 
-// =========================
-// 读取本地账号
-// =========================
+/* =========================
+   元素
+========================= */
+
+const accountsEl =
+    document.getElementById("accounts");
+
+const modal =
+    document.getElementById("modal");
+
+const nameInput =
+    document.getElementById("nameInput");
+
+const secretInput =
+    document.getElementById("secretInput");
+
+const toast =
+    document.getElementById("toast");
+
+
+/* =========================
+   读取账号
+========================= */
 
 function loadAccounts(){
 
     try{
 
-        const data = localStorage.getItem(STORAGE_KEY);
+        const data =
+            localStorage.getItem(STORAGE_KEY);
 
         if(data){
 
-            accounts = JSON.parse(data);
+            const parsed =
+                JSON.parse(data);
 
-            if(!Array.isArray(accounts)){
-                accounts = [];
+            if(Array.isArray(parsed)){
+
+                accounts = parsed;
+
             }
 
         }
 
-    }catch(error){
+    }catch(e){
 
-        console.error(error);
+        console.error(e);
 
         accounts = [];
 
     }
 
-    renderAccounts();
+    render();
+
 }
 
 
-// =========================
-// 保存本地账号
-// =========================
+/* =========================
+   保存账号
+========================= */
 
 function saveAccounts(){
 
@@ -318,39 +576,51 @@ function saveAccounts(){
 }
 
 
-// =========================
-// Base32 解码
-// =========================
+/* =========================
+   Base32
+========================= */
 
-function base32ToBytes(input){
+function base32ToBytes(secret){
 
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    const alphabet =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
-    let clean = input
+    const clean =
+        secret
         .toUpperCase()
         .replace(/[\s=-]/g,"");
 
     let bits = "";
-    let bytes = [];
+
+    const bytes = [];
 
     for(let i=0;i<clean.length;i++){
 
-        const value = alphabet.indexOf(clean[i]);
+        const value =
+            alphabet.indexOf(clean[i]);
 
-        if(value === -1){
+        if(value < 0){
             continue;
         }
 
-        bits += value
+        bits +=
+            value
             .toString(2)
             .padStart(5,"0");
 
     }
 
-    for(let i=0;i+8<=bits.length;i+=8){
+    for(
+        let i=0;
+        i+8<=bits.length;
+        i+=8
+    ){
 
         bytes.push(
-            parseInt(bits.slice(i,i+8),2)
+            parseInt(
+                bits.slice(i,i+8),
+                2
+            )
         );
 
     }
@@ -360,31 +630,39 @@ function base32ToBytes(input){
 }
 
 
-// =========================
-// 生成 TOTP
-// =========================
+/* =========================
+   TOTP
+========================= */
 
 async function generateTOTP(secret){
 
     try{
 
-        const keyBytes = base32ToBytes(secret);
+        const key =
+            base32ToBytes(secret);
 
-        if(keyBytes.length === 0){
-            return "------";
+        if(!key.length){
+
+            return null;
+
         }
 
-        const epoch = Math.floor(Date.now()/1000);
+        const counter =
+            Math.floor(
+                Date.now()/1000/30
+            );
 
-        const counter = Math.floor(epoch/30);
+        const buffer =
+            new ArrayBuffer(8);
 
-        const buffer = new ArrayBuffer(8);
-
-        const view = new DataView(buffer);
+        const view =
+            new DataView(buffer);
 
         view.setUint32(
             0,
-            Math.floor(counter / 0x100000000)
+            Math.floor(
+                counter / 4294967296
+            )
         );
 
         view.setUint32(
@@ -392,10 +670,11 @@ async function generateTOTP(secret){
             counter >>> 0
         );
 
+
         const cryptoKey =
             await crypto.subtle.importKey(
                 "raw",
-                keyBytes,
+                key,
                 {
                     name:"HMAC",
                     hash:"SHA-1"
@@ -403,6 +682,7 @@ async function generateTOTP(secret){
                 false,
                 ["sign"]
             );
+
 
         const signature =
             new Uint8Array(
@@ -413,134 +693,41 @@ async function generateTOTP(secret){
                 )
             );
 
+
         const offset =
-            signature[signature.length-1] & 15;
+            signature[
+                signature.length - 1
+            ] & 15;
+
 
         const binary =
-            ((signature[offset] & 127) << 24) |
-            ((signature[offset+1] & 255) << 16) |
-            ((signature[offset+2] & 255) << 8) |
-            (signature[offset+3] & 255);
+            (
+                ((signature[offset] & 127) << 24) |
+                ((signature[offset+1] & 255) << 16) |
+                ((signature[offset+2] & 255) << 8) |
+                (signature[offset+3] & 255)
+            ) >>> 0;
 
-        const code =
-            String(binary % 1000000)
-            .padStart(6,"0");
 
-        return code;
+        return String(
+            binary % 1000000
+        ).padStart(6,"0");
 
-    }catch(error){
 
-        console.error(error);
+    }catch(e){
 
-        return "------";
+        console.error(e);
+
+        return null;
 
     }
 
 }
 
 
-// =========================
-// 显示账号
-// =========================
-
-function renderAccounts(){
-
-    const container =
-        document.getElementById("accounts");
-
-    container.innerHTML = "";
-
-    if(accounts.length === 0){
-
-        container.innerHTML = `
-            <div class="empty">
-                暂无验证器账号<br>
-                点击上方「添加账号」开始使用
-            </div>
-        `;
-
-        return;
-    }
-
-    accounts.forEach((account,index)=>{
-
-        const div =
-            document.createElement("div");
-
-        div.className = "account";
-
-        div.innerHTML = `
-
-            <div class="account-top">
-
-                <div class="account-name">
-                    ${escapeHtml(account.name)}
-                </div>
-
-                <button
-                    class="delete"
-                    data-index="${index}"
-                >
-                    删除
-                </button>
-
-            </div>
-
-            <div
-                class="code"
-                id="code-${index}"
-            >
-                ------
-            </div>
-
-            <div
-                class="time"
-                id="time-${index}"
-            >
-                正在生成验证码
-            </div>
-
-        `;
-
-        container.appendChild(div);
-
-    });
-
-
-    document
-        .querySelectorAll(".delete")
-        .forEach(button=>{
-
-            button.addEventListener(
-                "click",
-                function(){
-
-                    const index =
-                        Number(this.dataset.index);
-
-                    if(confirm("确定删除这个账号吗？")){
-
-                        accounts.splice(index,1);
-
-                        saveAccounts();
-
-                        renderAccounts();
-
-                        updateCodes();
-
-                    }
-
-                }
-            );
-
-        });
-
-}
-
-
-// =========================
-// HTML 转义
-// =========================
+/* =========================
+   HTML 安全处理
+========================= */
 
 function escapeHtml(text){
 
@@ -554,34 +741,224 @@ function escapeHtml(text){
 }
 
 
-// =========================
-// 更新验证码
-// =========================
+/* =========================
+   渲染
+========================= */
+
+function render(){
+
+    accountsEl.innerHTML = "";
+
+    if(accounts.length === 0){
+
+        accountsEl.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🔐
+                </div>
+
+                <div class="empty-title">
+                    暂无账号
+                </div>
+
+                <div class="empty-text">
+                    添加账号后，验证码会显示在这里
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    accounts.forEach(
+        (account,index)=>{
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "account";
+
+
+            card.innerHTML = `
+
+                <div class="account-name">
+                    ${escapeHtml(account.name)}
+                </div>
+
+                <div class="account-secret">
+                    TOTP 验证码
+                </div>
+
+                <div class="code-row">
+
+                    <div
+                        class="code"
+                        id="code-${index}"
+                    >
+                        ------
+                    </div>
+
+                    <button
+                        class="copy"
+                        data-copy="${index}"
+                    >
+                        复制
+                    </button>
+
+                </div>
+
+
+                <div class="bottom-row">
+
+                    <div
+                        class="time-text"
+                        id="time-${index}"
+                    >
+                        --
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            id="progress-${index}"
+                        ></div>
+
+                    </div>
+
+                    <button
+                        class="delete"
+                        data-delete="${index}"
+                    >
+                        删除
+                    </button>
+
+                </div>
+
+            `;
+
+
+            accountsEl.appendChild(card);
+
+        }
+    );
+
+
+    document
+        .querySelectorAll("[data-copy]")
+        .forEach(button=>{
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    const index =
+                        Number(
+                            this.dataset.copy
+                        );
+
+                    copyCode(index);
+
+                }
+            );
+
+        });
+
+
+    document
+        .querySelectorAll("[data-delete]")
+        .forEach(button=>{
+
+            button.addEventListener(
+                "click",
+                function(){
+
+                    const index =
+                        Number(
+                            this.dataset.delete
+                        );
+
+                    deleteAccount(index);
+
+                }
+            );
+
+        });
+
+}
+
+
+/* =========================
+   更新验证码
+========================= */
 
 async function updateCodes(){
 
-    const remaining =
-        30 - (Math.floor(Date.now()/1000) % 30);
+    const seconds =
+        Math.floor(Date.now()/1000);
 
-    for(let i=0;i<accounts.length;i++){
+    const remaining =
+        30 - (seconds % 30);
+
+    const percent =
+        (remaining / 30) * 100;
+
+
+    for(
+        let i=0;
+        i<accounts.length;
+        i++
+    ){
 
         const code =
-            await generateTOTP(accounts[i].secret);
+            await generateTOTP(
+                accounts[i].secret
+            );
 
-        const codeElement =
-            document.getElementById(`code-${i}`);
 
-        const timeElement =
-            document.getElementById(`time-${i}`);
+        const codeEl =
+            document.getElementById(
+                `code-${i}`
+            );
 
-        if(codeElement){
-            codeElement.textContent = code;
+        const timeEl =
+            document.getElementById(
+                `time-${i}`
+            );
+
+        const progressEl =
+            document.getElementById(
+                `progress-${i}`
+            );
+
+
+        if(codeEl){
+
+            codeEl.textContent =
+                code || "------";
+
         }
 
-        if(timeElement){
 
-            timeElement.textContent =
-                `验证码将在 ${remaining} 秒后更新`;
+        if(timeEl){
+
+            timeEl.textContent =
+                `${remaining} 秒后更新`;
+
+        }
+
+
+        if(progressEl){
+
+            progressEl.style.width =
+                `${percent}%`;
 
         }
 
@@ -590,196 +967,270 @@ async function updateCodes(){
 }
 
 
-// =========================
-// 打开弹窗
-// =========================
+/* =========================
+   打开弹窗
+========================= */
 
 function openModal(){
 
-    document
-        .getElementById("modal")
-        .classList.add("show");
+    modal.classList.add("show");
 
-    document
-        .getElementById("nameInput")
-        .value = "";
+    nameInput.value = "";
 
-    document
-        .getElementById("secretInput")
-        .value = "";
+    secretInput.value = "";
 
-    setTimeout(()=>{
-
-        document
-            .getElementById("nameInput")
-            .focus();
-
-    },100);
+    setTimeout(
+        ()=>{
+            nameInput.focus();
+        },
+        150
+    );
 
 }
 
 
-// =========================
-// 关闭弹窗
-// =========================
+/* =========================
+   关闭弹窗
+========================= */
 
 function closeModal(){
 
-    document
-        .getElementById("modal")
-        .classList.remove("show");
+    modal.classList.remove("show");
 
 }
 
 
-// =========================
-// 添加按钮
-// =========================
+/* =========================
+   添加账号
+========================= */
+
+async function addAccount(){
+
+    const name =
+        nameInput.value.trim();
+
+    const secret =
+        secretInput.value
+        .trim()
+        .replace(/\s/g,"")
+        .toUpperCase();
+
+
+    if(!name){
+
+        alert("请输入账号名称");
+
+        nameInput.focus();
+
+        return;
+
+    }
+
+
+    if(!secret){
+
+        alert("请输入 Secret Key");
+
+        secretInput.focus();
+
+        return;
+
+    }
+
+
+    const test =
+        await generateTOTP(secret);
+
+
+    if(!test){
+
+        alert(
+            "Secret Key 无效，请检查设置密钥。"
+        );
+
+        return;
+
+    }
+
+
+    accounts.push({
+
+        id:
+            Date.now().toString(),
+
+        name:name,
+
+        secret:secret
+
+    });
+
+
+    saveAccounts();
+
+    closeModal();
+
+    render();
+
+    updateCodes();
+
+}
+
+
+/* =========================
+   删除
+========================= */
+
+function deleteAccount(index){
+
+    if(
+        !confirm(
+            "确定要删除这个账号吗？"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    accounts.splice(index,1);
+
+    saveAccounts();
+
+    render();
+
+    updateCodes();
+
+}
+
+
+/* =========================
+   复制
+========================= */
+
+async function copyCode(index){
+
+    const code =
+        await generateTOTP(
+            accounts[index].secret
+        );
+
+
+    if(!code){
+
+        return;
+
+    }
+
+
+    try{
+
+        await navigator.clipboard.writeText(
+            code
+        );
+
+        showToast("验证码已复制");
+
+    }catch(e){
+
+        showToast("复制失败");
+
+    }
+
+}
+
+
+/* =========================
+   Toast
+========================= */
+
+function showToast(message){
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    setTimeout(
+        ()=>{
+            toast.classList.remove("show");
+        },
+        1500
+    );
+
+}
+
+
+/* =========================
+   按钮事件
+========================= */
 
 document
-    .getElementById("addBtn")
+    .getElementById("addTop")
     .addEventListener(
         "click",
-        function(){
-
-            openModal();
-
-        }
+        openModal
     );
 
 
-// =========================
-// 取消按钮
-// =========================
+document
+    .getElementById("addButton")
+    .addEventListener(
+        "click",
+        openModal
+    );
+
+
+document
+    .getElementById("closeBtn")
+    .addEventListener(
+        "click",
+        closeModal
+    );
+
 
 document
     .getElementById("cancelBtn")
     .addEventListener(
         "click",
-        function(){
-
-            closeModal();
-
-        }
+        closeModal
     );
 
-
-// =========================
-// 保存按钮
-// =========================
 
 document
     .getElementById("saveBtn")
     .addEventListener(
         "click",
-        async function(){
+        addAccount
+    );
 
-            const name =
-                document
-                .getElementById("nameInput")
-                .value
-                .trim();
 
-            const secret =
-                document
-                .getElementById("secretInput")
-                .value
-                .trim()
-                .replace(/\s/g,"")
-                .toUpperCase();
+modal.addEventListener(
+    "click",
+    function(e){
 
-            if(!name){
-
-                alert("请输入账号名称");
-
-                return;
-
-            }
-
-            if(!secret){
-
-                alert("请输入 Secret Key");
-
-                return;
-
-            }
-
-            const testCode =
-                await generateTOTP(secret);
-
-            if(testCode === "------"){
-
-                alert("Secret Key 无效，请检查后重新输入");
-
-                return;
-
-            }
-
-            accounts.push({
-
-                id:Date.now().toString(),
-
-                name:name,
-
-                secret:secret
-
-            });
-
-            saveAccounts();
+        if(e.target === modal){
 
             closeModal();
 
-            renderAccounts();
-
-            updateCodes();
-
         }
-    );
+
+    }
+);
 
 
-// =========================
-// 点击背景关闭
-// =========================
-
-document
-    .getElementById("modal")
-    .addEventListener(
-        "click",
-        function(event){
-
-            if(event.target === this){
-
-                closeModal();
-
-            }
-
-        }
-    );
-
-
-// =========================
-// 启动
-// =========================
+/* =========================
+   启动
+========================= */
 
 loadAccounts();
 
 updateCodes();
 
 
-// =========================
-// 每秒刷新
-// =========================
-
 setInterval(
-
-    function(){
-
-        updateCodes();
-
-    },
-
+    updateCodes,
     1000
-
 );
 
 </script>
