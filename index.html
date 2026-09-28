@@ -2,7 +2,11 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
 
     <title>验证器</title>
 
@@ -10,6 +14,11 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
+
+        /* ================================
+           基础
+        ================================= */
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -21,6 +30,7 @@
             padding: 0;
             width: 100%;
             min-height: 100%;
+
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -28,6 +38,7 @@
                 "PingFang SC",
                 "Microsoft YaHei",
                 sans-serif;
+
             background: #f5f5f5;
             color: #202124;
         }
@@ -41,112 +52,205 @@
             font-family: inherit;
         }
 
+        button {
+            -webkit-appearance: none;
+        }
+
+
+        /* ================================
+           主容器
+        ================================= */
+
         .app {
             width: 100%;
             max-width: 600px;
-            margin: 0 auto;
             min-height: 100vh;
+
+            margin: 0 auto;
+
             background: #f5f5f5;
         }
 
-        /* 顶部 */
+
+        /* ================================
+           顶部
+        ================================= */
+
         .header {
             height: 62px;
+
             background: #ffffff;
+
             border-bottom: 1px solid #e5e5e5;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             position: sticky;
             top: 0;
+
             z-index: 20;
         }
 
         .header-title {
             font-size: 21px;
             font-weight: 500;
+
             color: #202124;
         }
 
         .header-plus {
             position: absolute;
+
             right: 16px;
             top: 50%;
+
             transform: translateY(-50%);
+
             width: 40px;
             height: 40px;
+
             border: 0;
+
             background: transparent;
+
             color: #1a73e8;
+
             font-size: 30px;
             line-height: 40px;
+
             padding: 0;
+
             cursor: pointer;
         }
 
-        /* 官方链接 */
+        .header-plus:active {
+            opacity: 0.6;
+        }
+
+
+        /* ================================
+           官方招商按钮
+        ================================= */
+
         .official-link {
             display: block;
-            text-align: center;
-            padding: 13px 15px 12px;
+
+            width: calc(100% - 32px);
+
+            margin: 12px auto 0;
+
+            padding: 10px 14px;
+
             background: #ffffff;
+
             color: #1a73e8;
+
             text-decoration: none;
+
+            text-align: center;
+
             font-size: 15px;
-            border-bottom: 1px solid #eeeeee;
+
+            border: 1px solid #1a73e8;
+
+            border-radius: 9px;
+
+            transition:
+                background 0.15s ease,
+                transform 0.15s ease;
         }
 
-        /* 内容 */
+        .official-link:active {
+            background: #f0f6ff;
+
+            transform: scale(0.99);
+        }
+
+
+        /* ================================
+           内容区域
+        ================================= */
+
         .content {
-            padding: 16px;
-            padding-bottom: 35px;
+            padding: 12px 16px 35px;
         }
 
-        /* 账号卡片 */
+
+        /* ================================
+           账号卡片
+        ================================= */
+
         .account-card {
             background: #ffffff;
+
             border-radius: 14px;
-            margin-bottom: 14px;
-            padding: 18px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+            margin-bottom: 12px;
+
+            padding: 17px;
+
+            box-shadow:
+                0 1px 4px rgba(0, 0, 0, 0.06);
         }
 
         .account-name {
             font-size: 16px;
+
             color: #5f6368;
-            margin-bottom: 12px;
+
+            margin-bottom: 11px;
+
             word-break: break-word;
         }
 
         .code-title {
             font-size: 13px;
+
             color: #80868b;
+
             margin-bottom: 4px;
         }
 
         .code {
             font-size: 34px;
+
             font-weight: 600;
+
             letter-spacing: 4px;
+
             color: #202124;
+
             line-height: 1.25;
-            font-variant-numeric: tabular-nums;
+
+            font-variant-numeric:
+                tabular-nums;
         }
 
         .card-bottom {
-            margin-top: 14px;
+            margin-top: 13px;
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
         }
 
         .copy-button {
             border: 0;
+
             background: #f1f3f4;
+
             color: #1a73e8;
+
             border-radius: 8px;
+
             padding: 8px 13px;
+
             font-size: 14px;
+
             cursor: pointer;
         }
 
@@ -156,195 +260,343 @@
 
         .progress-wrap {
             flex: 1;
+
             height: 5px;
+
             background: #e5e7eb;
+
             border-radius: 10px;
+
             overflow: hidden;
         }
 
         .progress-bar {
             height: 100%;
+
             width: 100%;
+
             background: #1a73e8;
-            transform-origin: left center;
+
+            transform-origin:
+                left center;
         }
 
         .seconds {
             min-width: 27px;
+
             text-align: right;
+
             font-size: 13px;
+
             color: #80868b;
         }
 
         .delete-button {
-            margin-top: 13px;
+            margin-top: 12px;
+
             border: 0;
+
             background: transparent;
+
             color: #d93025;
+
             font-size: 13px;
+
             padding: 0;
+
             cursor: pointer;
         }
 
-        /* 空状态 */
+
+        /* ================================
+           暂无账号
+        ================================= */
+
         .empty {
             text-align: center;
-            padding: 38px 20px;
+
+            padding: 18px 20px 20px;
+
             color: #80868b;
         }
 
         .empty-icon {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
+            font-size: 34px;
 
-        .empty-title {
-            font-size: 17px;
-            color: #5f6368;
             margin-bottom: 6px;
         }
 
-        .empty-text {
-            font-size: 14px;
-            line-height: 1.6;
+        .empty-title {
+            font-size: 16px;
+
+            color: #5f6368;
+
+            margin-bottom: 4px;
         }
 
-        /* 添加区域 */
+        .empty-text {
+            font-size: 13px;
+
+            line-height: 1.45;
+        }
+
+
+        /* ================================
+           添加账号区域
+        ================================= */
+
         .add-form {
             background: #ffffff;
+
             border-radius: 14px;
+
             padding: 18px;
-            margin-top: 16px;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+            margin-top: 8px;
+
+            box-shadow:
+                0 1px 4px rgba(0, 0, 0, 0.06);
+
             scroll-margin-top: 80px;
         }
 
         .add-form-title {
             font-size: 19px;
+
             font-weight: 500;
+
             color: #202124;
+
             margin-bottom: 5px;
         }
 
         .add-form-tip {
             color: #80868b;
+
             font-size: 13px;
+
             line-height: 1.5;
+
             margin-bottom: 18px;
         }
 
+
+        /* ================================
+           输入框
+        ================================= */
+
         .form-label {
             display: block;
+
             font-size: 14px;
+
             color: #5f6368;
+
             margin-bottom: 7px;
         }
 
         .form-input {
             width: 100%;
+
             height: 48px;
+
             border: 1px solid #dadce0;
+
             border-radius: 9px;
+
             background: #ffffff;
+
             outline: none;
+
             padding: 0 13px;
+
             font-size: 16px;
+
             color: #202124;
+
             margin-bottom: 16px;
         }
 
         .form-input:focus {
             border-color: #1a73e8;
-            box-shadow: 0 0 0 1px #1a73e8;
+
+            box-shadow:
+                0 0 0 1px #1a73e8;
         }
 
         .form-input::placeholder {
             color: #a0a4a8;
         }
 
-        /* 确认添加按钮 */
+
+        /* ================================
+           确认添加
+        ================================= */
+
         .confirm-button {
             width: 100%;
+
             height: 48px;
+
             border: 0;
+
             border-radius: 9px;
+
             background: #1a73e8;
+
             color: #ffffff;
+
             font-size: 16px;
+
             cursor: pointer;
+
             margin-bottom: 10px;
+
+            transition:
+                background 0.15s ease,
+                transform 0.1s ease;
         }
 
         .confirm-button:active {
             background: #1557b0;
+
+            transform: scale(0.99);
         }
 
-        /* 扫码按钮 */
+
+        /* ================================
+           扫码按钮
+        ================================= */
+
         .scan-button {
             width: 100%;
+
             height: 48px;
+
             border-radius: 9px;
+
             border: 1px solid #1a73e8;
+
             background: #ffffff;
+
             color: #1a73e8;
+
             font-size: 16px;
+
             cursor: pointer;
+
+            transition:
+                background 0.15s ease,
+                transform 0.1s ease;
         }
 
         .scan-button:active {
             background: #f0f6ff;
+
+            transform: scale(0.99);
         }
 
-        /* Toast */
+
+        /* ================================
+           Toast
+        ================================= */
+
         .toast {
             position: fixed;
+
             left: 50%;
+
             bottom: 30px;
-            transform: translateX(-50%) translateY(20px);
-            background: rgba(32, 33, 36, 0.92);
+
+            transform:
+                translateX(-50%)
+                translateY(20px);
+
+            background:
+                rgba(32, 33, 36, 0.92);
+
             color: #ffffff;
+
             padding: 10px 17px;
+
             border-radius: 8px;
+
             font-size: 14px;
+
             opacity: 0;
+
             pointer-events: none;
-            transition: all 0.2s ease;
+
+            transition:
+                all 0.2s ease;
+
             z-index: 100;
+
             white-space: nowrap;
         }
 
         .toast.show {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
+
+            transform:
+                translateX(-50%)
+                translateY(0);
         }
 
+
+        /* ================================
+           手机屏幕优化
+        ================================= */
+
         @media (max-width: 420px) {
+
             .content {
-                padding: 12px;
+                padding:
+                    10px 12px 30px;
             }
 
             .code {
                 font-size: 31px;
+
                 letter-spacing: 3px;
             }
 
             .header-title {
                 font-size: 20px;
             }
+
+            .official-link {
+                width:
+                    calc(100% - 24px);
+
+                margin-top: 10px;
+            }
+
+            .add-form {
+                padding: 16px;
+            }
+
         }
+
     </style>
 </head>
+
 
 <body>
 
 <div class="app">
 
-    <!-- 顶部 -->
+
+    <!-- =========================================
+         顶部
+    ========================================== -->
+
     <div class="header">
 
         <div class="header-title">
             验证器
         </div>
+
 
         <button
             class="header-plus"
@@ -358,7 +610,11 @@
     </div>
 
 
-    <!-- 官方链接 -->
+
+    <!-- =========================================
+         官方招商按钮
+    ========================================== -->
+
     <a
         class="official-link"
         href="https://t.me/oooky"
@@ -369,13 +625,24 @@
     </a>
 
 
+
+    <!-- =========================================
+         主内容
+    ========================================== -->
+
     <div class="content">
 
+
         <!-- 账号列表 -->
+
         <div id="accounts"></div>
 
 
-        <!-- 空状态 -->
+
+        <!-- =====================================
+             暂无账号
+        ====================================== -->
+
         <div
             class="empty"
             id="emptyState"
@@ -385,9 +652,11 @@
                 🔐
             </div>
 
+
             <div class="empty-title">
                 暂无账号
             </div>
+
 
             <div class="empty-text">
                 在下面输入账号信息，<br>
@@ -397,28 +666,37 @@
         </div>
 
 
-        <!-- 添加账号 -->
+
+        <!-- =====================================
+             添加账号
+        ====================================== -->
+
         <div
             class="add-form"
             id="addForm"
         >
 
+
             <div class="add-form-title">
                 添加账号
             </div>
+
 
             <div class="add-form-tip">
                 设置密钥仅保存在当前设备本地，不上传到服务器。
             </div>
 
 
+
             <!-- 账号名称 -->
+
             <label
                 class="form-label"
                 for="nameInput"
             >
                 账号名称
             </label>
+
 
             <input
                 class="form-input"
@@ -429,13 +707,16 @@
             >
 
 
+
             <!-- Secret Key -->
+
             <label
                 class="form-label"
                 for="secretInput"
             >
                 Secret Key
             </label>
+
 
             <input
                 class="form-input"
@@ -448,7 +729,9 @@
             >
 
 
+
             <!-- 确认添加 -->
+
             <button
                 class="confirm-button"
                 id="confirmButton"
@@ -458,7 +741,9 @@
             </button>
 
 
-            <!-- 扫码 -->
+
+            <!-- 扫码添加 -->
+
             <button
                 class="scan-button"
                 id="scanButton"
@@ -467,25 +752,32 @@
                 📷 扫码添加
             </button>
 
+
         </div>
 
+
     </div>
+
 
 </div>
 
 
+
 <!-- Toast -->
+
 <div
     class="toast"
     id="toast"
 ></div>
 
 
+
 <script>
 
-/* =========================================================
+
+/* =====================================================
    Telegram Mini App
-========================================================= */
+===================================================== */
 
 const tg =
     window.Telegram &&
@@ -503,9 +795,10 @@ if (tg) {
 }
 
 
-/* =========================================================
+
+/* =====================================================
    本地存储
-========================================================= */
+===================================================== */
 
 const STORAGE_KEY =
     "tg_authenticator_accounts";
@@ -530,9 +823,10 @@ try {
 }
 
 
-/* =========================================================
+
+/* =====================================================
    DOM
-========================================================= */
+===================================================== */
 
 const accountsEl =
     document.getElementById(
@@ -588,9 +882,10 @@ const toast =
     );
 
 
-/* =========================================================
+
+/* =====================================================
    Toast
-========================================================= */
+===================================================== */
 
 let toastTimer = null;
 
@@ -600,13 +895,16 @@ function showToast(message) {
     toast.textContent =
         message;
 
+
     toast.classList.add(
         "show"
     );
 
+
     clearTimeout(
         toastTimer
     );
+
 
     toastTimer =
         setTimeout(
@@ -619,20 +917,28 @@ function showToast(message) {
             },
             1800
         );
+
 }
 
 
-/* =========================================================
+
+/* =====================================================
    Base32
-========================================================= */
+===================================================== */
 
 function base32ToBytes(base32) {
 
     const clean =
         base32
             .toUpperCase()
-            .replace(/[\s-]/g, "")
-            .replace(/=+$/, "");
+            .replace(
+                /[\s-]/g,
+                ""
+            )
+            .replace(
+                /=+$/,
+                ""
+            );
 
 
     if (!clean) {
@@ -644,7 +950,11 @@ function base32ToBytes(base32) {
     }
 
 
-    if (!/^[A-Z2-7]+$/.test(clean)) {
+    if (
+        !/^[A-Z2-7]+$/.test(
+            clean
+        )
+    ) {
 
         throw new Error(
             "Secret Key 格式不正确"
@@ -657,11 +967,14 @@ function base32ToBytes(base32) {
 
     const output = [];
 
+
     const alphabet =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
 
-    for (const char of clean) {
+    for (
+        const char of clean
+    ) {
 
         const value =
             alphabet.indexOf(
@@ -669,7 +982,9 @@ function base32ToBytes(base32) {
             );
 
 
-        if (value === -1) {
+        if (
+            value === -1
+        ) {
 
             throw new Error(
                 "Secret Key 格式不正确"
@@ -715,11 +1030,14 @@ function base32ToBytes(base32) {
 }
 
 
-/* =========================================================
-   TOTP
-========================================================= */
 
-async function generateTOTP(secret) {
+/* =====================================================
+   TOTP
+===================================================== */
+
+async function generateTOTP(
+    secret
+) {
 
     const keyBytes =
         base32ToBytes(
@@ -821,9 +1139,10 @@ async function generateTOTP(secret) {
 }
 
 
-/* =========================================================
-   保存账号
-========================================================= */
+
+/* =====================================================
+   保存
+===================================================== */
 
 function saveAccounts() {
 
@@ -837,11 +1156,14 @@ function saveAccounts() {
 }
 
 
-/* =========================================================
-   HTML 转义
-========================================================= */
 
-function escapeHtml(value) {
+/* =====================================================
+   HTML 转义
+===================================================== */
+
+function escapeHtml(
+    value
+) {
 
     return String(value)
         .replace(
@@ -868,13 +1190,15 @@ function escapeHtml(value) {
 }
 
 
-/* =========================================================
-   渲染账号
-========================================================= */
+
+/* =====================================================
+   显示账号
+===================================================== */
 
 function renderAccounts() {
 
-    accountsEl.innerHTML = "";
+    accountsEl.innerHTML =
+        "";
 
 
     if (
@@ -894,7 +1218,10 @@ function renderAccounts() {
 
 
     accounts.forEach(
-        (account, index) => {
+        (
+            account,
+            index
+        ) => {
 
             const card =
                 document.createElement(
@@ -914,9 +1241,11 @@ function renderAccounts() {
                     )}
                 </div>
 
+
                 <div class="code-title">
                     TOTP 验证码
                 </div>
+
 
                 <div
                     class="code"
@@ -925,7 +1254,9 @@ function renderAccounts() {
                     ------
                 </div>
 
+
                 <div class="card-bottom">
+
 
                     <button
                         class="copy-button"
@@ -934,6 +1265,7 @@ function renderAccounts() {
                     >
                         复制
                     </button>
+
 
                     <div class="progress-wrap">
 
@@ -944,6 +1276,7 @@ function renderAccounts() {
 
                     </div>
 
+
                     <div
                         class="seconds"
                         id="seconds-${index}"
@@ -951,7 +1284,9 @@ function renderAccounts() {
                         30
                     </div>
 
+
                 </div>
+
 
                 <button
                     class="delete-button"
@@ -972,7 +1307,8 @@ function renderAccounts() {
     );
 
 
-    /* 复制按钮 */
+
+    /* 复制 */
 
     document
         .querySelectorAll(
@@ -991,6 +1327,7 @@ function renderAccounts() {
                                     .copyIndex
                             );
 
+
                         copyCode(
                             index
                         );
@@ -1002,7 +1339,8 @@ function renderAccounts() {
         );
 
 
-    /* 删除按钮 */
+
+    /* 删除 */
 
     document
         .querySelectorAll(
@@ -1021,6 +1359,7 @@ function renderAccounts() {
                                     .deleteIndex
                             );
 
+
                         deleteAccount(
                             index
                         );
@@ -1034,9 +1373,10 @@ function renderAccounts() {
 }
 
 
-/* =========================================================
+
+/* =====================================================
    更新验证码
-========================================================= */
+===================================================== */
 
 async function updateCodes() {
 
@@ -1114,7 +1454,9 @@ async function updateCodes() {
                 );
 
 
-            if (progressEl) {
+            if (
+                progressEl
+            ) {
 
                 progressEl.style.width =
                     `${progress}%`;
@@ -1122,7 +1464,9 @@ async function updateCodes() {
             }
 
 
-            if (secondsEl) {
+            if (
+                secondsEl
+            ) {
 
                 secondsEl.textContent =
                     seconds;
@@ -1135,11 +1479,14 @@ async function updateCodes() {
 }
 
 
-/* =========================================================
-   复制验证码
-========================================================= */
 
-async function copyCode(index) {
+/* =====================================================
+   复制验证码
+===================================================== */
+
+async function copyCode(
+    index
+) {
 
     const codeEl =
         document.getElementById(
@@ -1159,7 +1506,9 @@ async function copyCode(index) {
 
 
     if (
-        !/^\d{6}$/.test(code)
+        !/^\d{6}$/.test(
+            code
+        )
     ) {
 
         showToast(
@@ -1173,7 +1522,8 @@ async function copyCode(index) {
 
     try {
 
-        await navigator.clipboard
+        await navigator
+            .clipboard
             .writeText(
                 code
             );
@@ -1194,11 +1544,14 @@ async function copyCode(index) {
 }
 
 
-/* =========================================================
-   删除账号
-========================================================= */
 
-function deleteAccount(index) {
+/* =====================================================
+   删除账号
+===================================================== */
+
+function deleteAccount(
+    index
+) {
 
     if (
         !confirm(
@@ -1219,9 +1572,12 @@ function deleteAccount(index) {
 
     saveAccounts();
 
+
     renderAccounts();
 
+
     updateCodes();
+
 
     showToast(
         "账号已删除"
@@ -1230,9 +1586,10 @@ function deleteAccount(index) {
 }
 
 
-/* =========================================================
+
+/* =====================================================
    确认添加账号
-========================================================= */
+===================================================== */
 
 async function addAccount() {
 
@@ -1250,7 +1607,8 @@ async function addAccount() {
             .toUpperCase();
 
 
-    /* 检查名称 */
+
+    /* 名称 */
 
     if (!name) {
 
@@ -1265,7 +1623,8 @@ async function addAccount() {
     }
 
 
-    /* 检查密钥 */
+
+    /* Secret */
 
     if (!secret) {
 
@@ -1278,6 +1637,7 @@ async function addAccount() {
         return;
 
     }
+
 
 
     /* 验证 Secret */
@@ -1302,6 +1662,7 @@ async function addAccount() {
     }
 
 
+
     /* 检查重复 */
 
     const exists =
@@ -1323,6 +1684,7 @@ async function addAccount() {
     }
 
 
+
     /* 添加 */
 
     accounts.push({
@@ -1339,23 +1701,29 @@ async function addAccount() {
     });
 
 
-    /* 保存本地 */
+
+    /* 保存 */
 
     saveAccounts();
 
 
+
     /* 清空输入框 */
 
-    nameInput.value = "";
+    nameInput.value =
+        "";
 
-    secretInput.value = "";
+    secretInput.value =
+        "";
 
 
-    /* 更新页面 */
+
+    /* 刷新 */
 
     renderAccounts();
 
     updateCodes();
+
 
 
     /* 提示 */
@@ -1365,14 +1733,18 @@ async function addAccount() {
     );
 
 
-    /* 滚动到验证码 */
+
+    /* 滚动 */
 
     setTimeout(
         () => {
 
             accountsEl.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
+                behavior:
+                    "smooth",
+
+                block:
+                    "start"
             });
 
         },
@@ -1382,11 +1754,14 @@ async function addAccount() {
 }
 
 
-/* =========================================================
-   解析 TOTP 二维码
-========================================================= */
 
-function parseOtpAuthUri(uri) {
+/* =====================================================
+   解析 TOTP 二维码
+===================================================== */
+
+function parseOtpAuthUri(
+    uri
+) {
 
     try {
 
@@ -1503,7 +1878,7 @@ function parseOtpAuthUri(uri) {
         }
 
 
-        /* 处理 Issuer:Account */
+        /* Issuer:Account */
 
         if (
             label.includes(":")
@@ -1520,7 +1895,9 @@ function parseOtpAuthUri(uri) {
                     .trim();
 
 
-            if (accountName) {
+            if (
+                accountName
+            ) {
 
                 label =
                     accountName;
@@ -1549,9 +1926,10 @@ function parseOtpAuthUri(uri) {
 }
 
 
-/* =========================================================
+
+/* =====================================================
    扫码添加
-========================================================= */
+===================================================== */
 
 function startScan() {
 
@@ -1640,7 +2018,9 @@ function startScan() {
 
             saveAccounts();
 
+
             renderAccounts();
+
 
             updateCodes();
 
@@ -1658,9 +2038,10 @@ function startScan() {
 }
 
 
-/* =========================================================
+
+/* =====================================================
    顶部 + 按钮
-========================================================= */
+===================================================== */
 
 function focusAddForm() {
 
@@ -1687,9 +2068,11 @@ function focusAddForm() {
 }
 
 
-/* =========================================================
+
+/* =====================================================
    事件
-========================================================= */
+===================================================== */
+
 
 /* 顶部 + */
 
@@ -1697,6 +2080,7 @@ addTop.addEventListener(
     "click",
     focusAddForm
 );
+
 
 
 /* 确认添加 */
@@ -1707,12 +2091,14 @@ confirmButton.addEventListener(
 );
 
 
+
 /* 扫码 */
 
 scanButton.addEventListener(
     "click",
     startScan
 );
+
 
 
 /* Secret Key 自动大写 */
@@ -1727,6 +2113,7 @@ secretInput.addEventListener(
 
     }
 );
+
 
 
 /* Enter 快速确认 */
@@ -1748,16 +2135,18 @@ secretInput.addEventListener(
 );
 
 
-/* =========================================================
+
+/* =====================================================
    初始化
-========================================================= */
+===================================================== */
 
 renderAccounts();
 
 updateCodes();
 
 
-/* 每秒更新验证码 */
+
+/* 每秒更新 */
 
 setInterval(
     updateCodes,
