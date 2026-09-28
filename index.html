@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
 <title>验证器</title>
 
+<!-- Telegram Mini App -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 <style>
+
 :root{
     --bg:#f5f5f5;
     --card:#ffffff;
@@ -14,8 +23,6 @@
     --secondary:#5f6368;
     --line:#e5e5e5;
     --blue:#1a73e8;
-    --button-blue:#4285f4;
-    --button-blue-dark:#3367d6;
     --danger:#d93025;
 }
 
@@ -42,6 +49,7 @@ body{
     margin:auto;
     min-height:100vh;
 }
+
 
 /* =========================
    顶部
@@ -239,7 +247,7 @@ body{
 
 
 /* =========================
-   底部添加按钮
+   底部添加账号
 ========================= */
 
 .add-button{
@@ -248,19 +256,37 @@ body{
     padding:15px;
     border:0;
     border-radius:12px;
-    background:var(--button-blue);
+    background:var(--blue);
     color:#fff;
     font-size:16px;
     font-weight:500;
     cursor:pointer;
-    transition:
-        background .15s ease,
-        transform .1s ease;
 }
 
 .add-button:active{
-    background:var(--button-blue-dark);
-    transform:scale(.99);
+    opacity:.85;
+}
+
+
+/* =========================
+   底部扫码按钮
+========================= */
+
+.scan-button{
+    width:100%;
+    margin-top:10px;
+    padding:15px;
+    border:1px solid #dadce0;
+    border-radius:12px;
+    background:#fff;
+    color:var(--blue);
+    font-size:16px;
+    font-weight:500;
+    cursor:pointer;
+}
+
+.scan-button:active{
+    background:#f1f3f4;
 }
 
 
@@ -292,12 +318,15 @@ body{
 }
 
 @keyframes up{
+
     from{
         transform:translateY(100%);
     }
+
     to{
         transform:translateY(0);
     }
+
 }
 
 .modal-header{
@@ -449,19 +478,25 @@ input:focus{
     }
 
 }
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="app">
 
+
     <!-- 顶部 -->
+
     <div class="header">
 
         <div class="title">
             验证器
         </div>
+
 
         <a
             href="https://t.me/oooky"
@@ -471,6 +506,7 @@ input:focus{
         >
             开云体育官方招商 @oooky
         </a>
+
 
         <button
             class="add-top"
@@ -484,16 +520,29 @@ input:focus{
 
 
     <!-- 内容 -->
+
     <div class="content">
 
         <div id="accounts"></div>
 
-        <!-- 修改后的按钮 -->
+
+        <!-- 原来的添加账号按钮 -->
+
         <button
             class="add-button"
             id="addButton"
         >
-            Google身份验证器
+            ＋ 添加账号
+        </button>
+
+
+        <!-- 新增扫码按钮 -->
+
+        <button
+            class="scan-button"
+            id="scanButton"
+        >
+            📷 扫码添加
         </button>
 
     </div>
@@ -501,17 +550,25 @@ input:focus{
 </div>
 
 
-<!-- 添加账号弹窗 -->
 
-<div class="modal" id="modal">
+<!-- =========================
+     添加账号弹窗
+========================= -->
+
+<div
+    class="modal"
+    id="modal"
+>
 
     <div class="modal-box">
+
 
         <div class="modal-header">
 
             <div class="modal-title">
                 添加账号
             </div>
+
 
             <button
                 class="close"
@@ -527,6 +584,7 @@ input:focus{
             账号名称
         </label>
 
+
         <input
             id="nameInput"
             type="text"
@@ -539,6 +597,7 @@ input:focus{
             Secret Key
         </label>
 
+
         <input
             id="secretInput"
             type="text"
@@ -550,12 +609,14 @@ input:focus{
 
         <div class="actions">
 
+
             <button
                 class="cancel"
                 id="cancelBtn"
             >
                 取消
             </button>
+
 
             <button
                 class="save"
@@ -564,6 +625,7 @@ input:focus{
                 添加
             </button>
 
+
         </div>
 
 
@@ -571,10 +633,14 @@ input:focus{
             设置密钥仅保存在当前设备本地，不上传到服务器。
         </div>
 
+
     </div>
 
 </div>
 
+
+
+<!-- Toast -->
 
 <div
     class="toast"
@@ -584,13 +650,36 @@ input:focus{
 </div>
 
 
+
 <script>
+
+/* =========================
+   Telegram Mini App
+========================= */
+
+const tg =
+    window.Telegram &&
+    window.Telegram.WebApp
+        ? window.Telegram.WebApp
+        : null;
+
+
+if(tg){
+
+    tg.ready();
+
+    tg.expand();
+
+}
+
 
 /* =========================
    基础设置
 ========================= */
 
-const STORAGE_KEY = "tg_authenticator_accounts";
+const STORAGE_KEY =
+    "tg_authenticator_accounts";
+
 
 let accounts = [];
 
@@ -600,19 +689,33 @@ let accounts = [];
 ========================= */
 
 const accountsEl =
-    document.getElementById("accounts");
+    document.getElementById(
+        "accounts"
+    );
+
 
 const modal =
-    document.getElementById("modal");
+    document.getElementById(
+        "modal"
+    );
+
 
 const nameInput =
-    document.getElementById("nameInput");
+    document.getElementById(
+        "nameInput"
+    );
+
 
 const secretInput =
-    document.getElementById("secretInput");
+    document.getElementById(
+        "secretInput"
+    );
+
 
 const toast =
-    document.getElementById("toast");
+    document.getElementById(
+        "toast"
+    );
 
 
 /* =========================
@@ -624,16 +727,21 @@ function loadAccounts(){
     try{
 
         const data =
-            localStorage.getItem(STORAGE_KEY);
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
 
         if(data){
 
             const parsed =
                 JSON.parse(data);
 
+
             if(Array.isArray(parsed)){
 
-                accounts = parsed;
+                accounts =
+                    parsed;
 
             }
 
@@ -646,6 +754,7 @@ function loadAccounts(){
         accounts = [];
 
     }
+
 
     render();
 
@@ -675,30 +784,47 @@ function base32ToBytes(secret){
     const alphabet =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
+
     const clean =
         secret
         .toUpperCase()
         .replace(/[\s=-]/g,"");
 
+
     let bits = "";
 
     const bytes = [];
 
-    for(let i=0;i<clean.length;i++){
+
+    for(
+        let i=0;
+        i<clean.length;
+        i++
+    ){
 
         const value =
-            alphabet.indexOf(clean[i]);
+            alphabet.indexOf(
+                clean[i]
+            );
+
 
         if(value < 0){
+
             continue;
+
         }
+
 
         bits +=
             value
             .toString(2)
-            .padStart(5,"0");
+            .padStart(
+                5,
+                "0"
+            );
 
     }
+
 
     for(
         let i=0;
@@ -708,14 +834,20 @@ function base32ToBytes(secret){
 
         bytes.push(
             parseInt(
-                bits.slice(i,i+8),
+                bits.slice(
+                    i,
+                    i+8
+                ),
                 2
             )
         );
 
     }
 
-    return new Uint8Array(bytes);
+
+    return new Uint8Array(
+        bytes
+    );
 
 }
 
@@ -729,7 +861,10 @@ async function generateTOTP(secret){
     try{
 
         const key =
-            base32ToBytes(secret);
+            base32ToBytes(
+                secret
+            );
+
 
         if(!key.length){
 
@@ -737,23 +872,33 @@ async function generateTOTP(secret){
 
         }
 
+
         const counter =
             Math.floor(
-                Date.now()/1000/30
+                Date.now() /
+                1000 /
+                30
             );
+
 
         const buffer =
             new ArrayBuffer(8);
 
+
         const view =
-            new DataView(buffer);
+            new DataView(
+                buffer
+            );
+
 
         view.setUint32(
             0,
             Math.floor(
-                counter / 4294967296
+                counter /
+                4294967296
             )
         );
+
 
         view.setUint32(
             4,
@@ -763,24 +908,36 @@ async function generateTOTP(secret){
 
         const cryptoKey =
             await crypto.subtle.importKey(
+
                 "raw",
+
                 key,
+
                 {
                     name:"HMAC",
                     hash:"SHA-1"
                 },
+
                 false,
+
                 ["sign"]
+
             );
 
 
         const signature =
             new Uint8Array(
+
                 await crypto.subtle.sign(
+
                     "HMAC",
+
                     cryptoKey,
+
                     buffer
+
                 )
+
             );
 
 
@@ -792,16 +949,24 @@ async function generateTOTP(secret){
 
         const binary =
             (
+
                 ((signature[offset] & 127) << 24) |
+
                 ((signature[offset+1] & 255) << 16) |
+
                 ((signature[offset+2] & 255) << 8) |
+
                 (signature[offset+3] & 255)
+
             ) >>> 0;
 
 
         return String(
             binary % 1000000
-        ).padStart(6,"0");
+        ).padStart(
+            6,
+            "0"
+        );
 
 
     }catch(e){
@@ -822,11 +987,328 @@ async function generateTOTP(secret){
 function escapeHtml(text){
 
     return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================
+   解析 otpauth 二维码
+========================= */
+
+function parseOtpAuthUri(uri){
+
+    try{
+
+        if(
+            typeof uri !== "string"
+        ){
+
+            return null;
+
+        }
+
+
+        if(
+            !uri.toLowerCase()
+                .startsWith(
+                    "otpauth://"
+                )
+        ){
+
+            return null;
+
+        }
+
+
+        const url =
+            new URL(uri);
+
+
+        if(
+            url.hostname.toLowerCase()
+            !== "totp"
+        ){
+
+            return null;
+
+        }
+
+
+        const secret =
+            url.searchParams
+                .get("secret");
+
+
+        if(!secret){
+
+            return null;
+
+        }
+
+
+        const decodedLabel =
+            decodeURIComponent(
+                url.pathname
+                    .replace(
+                        /^\/+/,
+                        ""
+                    )
+            );
+
+
+        const issuer =
+            url.searchParams
+                .get("issuer");
+
+
+        let name =
+            decodedLabel ||
+            "验证器账号";
+
+
+        if(
+            decodedLabel.includes(":")
+        ){
+
+            const parts =
+                decodedLabel.split(":");
+
+
+            const labelIssuer =
+                parts[0].trim();
+
+
+            const labelAccount =
+                parts
+                    .slice(1)
+                    .join(":")
+                    .trim();
+
+
+            if(labelAccount){
+
+                name =
+                    labelAccount;
+
+            }
+
+
+            if(
+                !issuer &&
+                labelIssuer
+            ){
+
+                name =
+                    labelAccount
+                    ? labelAccount
+                    : labelIssuer;
+
+            }
+
+        }
+
+
+        return {
+
+            name:name,
+
+            secret:
+                secret
+                .replace(
+                    /\s/g,
+                    ""
+                )
+                .toUpperCase(),
+
+            issuer:
+                issuer || ""
+
+        };
+
+
+    }catch(e){
+
+        console.error(
+            "二维码解析失败",
+            e
+        );
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================
+   添加扫描到的账号
+========================= */
+
+async function addScannedAccount(uri){
+
+    const data =
+        parseOtpAuthUri(
+            uri
+        );
+
+
+    if(!data){
+
+        showToast(
+            "二维码不是有效的 TOTP 验证器二维码"
+        );
+
+        return false;
+
+    }
+
+
+    const test =
+        await generateTOTP(
+            data.secret
+        );
+
+
+    if(!test){
+
+        showToast(
+            "二维码中的密钥无效"
+        );
+
+        return false;
+
+    }
+
+
+    const exists =
+        accounts.some(
+            account =>
+                account.secret ===
+                data.secret
+        );
+
+
+    if(exists){
+
+        showToast(
+            "这个账号已经添加过了"
+        );
+
+        return true;
+
+    }
+
+
+    accounts.push({
+
+        id:
+            Date.now().toString(),
+
+        name:
+            data.name,
+
+        secret:
+            data.secret
+
+    });
+
+
+    saveAccounts();
+
+    render();
+
+    updateCodes();
+
+    showToast(
+        "扫码添加成功"
+    );
+
+
+    return true;
+
+}
+
+
+/* =========================
+   Telegram 扫码
+========================= */
+
+function startScan(){
+
+    if(!tg){
+
+        alert(
+            "请在 Telegram Mini App 中使用扫码功能。"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        typeof tg.showScanQrPopup !==
+        "function"
+    ){
+
+        alert(
+            "当前 Telegram 版本不支持扫码功能，请更新 Telegram。"
+        );
+
+        return;
+
+    }
+
+
+    tg.showScanQrPopup(
+
+        {
+            text:
+                "请扫描验证器二维码"
+        },
+
+        function(text){
+
+            addScannedAccount(
+                text
+            );
+
+
+            /*
+             * 返回 true：
+             * Telegram 会自动关闭扫码窗口
+             */
+
+            return true;
+
+        }
+
+    );
 
 }
 
@@ -838,6 +1320,7 @@ function escapeHtml(text){
 function render(){
 
     accountsEl.innerHTML = "";
+
 
     if(accounts.length === 0){
 
@@ -861,6 +1344,7 @@ function render(){
 
         `;
 
+
         return;
 
     }
@@ -870,7 +1354,10 @@ function render(){
         (account,index)=>{
 
             const card =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             card.className =
                 "account";
@@ -935,52 +1422,68 @@ function render(){
             `;
 
 
-            accountsEl.appendChild(card);
+            accountsEl.appendChild(
+                card
+            );
 
         }
     );
 
 
     document
-        .querySelectorAll("[data-copy]")
-        .forEach(button=>{
+        .querySelectorAll(
+            "[data-copy]"
+        )
+        .forEach(
+            button=>{
 
-            button.addEventListener(
-                "click",
-                function(){
+                button.addEventListener(
+                    "click",
+                    function(){
 
-                    const index =
-                        Number(
-                            this.dataset.copy
+                        const index =
+                            Number(
+                                this.dataset.copy
+                            );
+
+
+                        copyCode(
+                            index
                         );
 
-                    copyCode(index);
+                    }
+                );
 
-                }
-            );
-
-        });
+            }
+        );
 
 
     document
-        .querySelectorAll("[data-delete]")
-        .forEach(button=>{
+        .querySelectorAll(
+            "[data-delete]"
+        )
+        .forEach(
+            button=>{
 
-            button.addEventListener(
-                "click",
-                function(){
+                button.addEventListener(
+                    "click",
+                    function(){
 
-                    const index =
-                        Number(
-                            this.dataset.delete
+                        const index =
+                            Number(
+                                this.dataset.delete
+                            );
+
+
+                        deleteAccount(
+                            index
                         );
 
-                    deleteAccount(index);
+                    }
+                );
 
-                }
-            );
-
-        });
+            }
+        );
 
 }
 
@@ -992,10 +1495,15 @@ function render(){
 async function updateCodes(){
 
     const seconds =
-        Math.floor(Date.now()/1000);
+        Math.floor(
+            Date.now()/1000
+        );
+
 
     const remaining =
-        30 - (seconds % 30);
+        30 -
+        (seconds % 30);
+
 
     const percent =
         (remaining / 30) * 100;
@@ -1018,10 +1526,12 @@ async function updateCodes(){
                 `code-${i}`
             );
 
+
         const timeEl =
             document.getElementById(
                 `time-${i}`
             );
+
 
         const progressEl =
             document.getElementById(
@@ -1063,15 +1573,21 @@ async function updateCodes(){
 
 function openModal(){
 
-    modal.classList.add("show");
+    modal.classList.add(
+        "show"
+    );
+
 
     nameInput.value = "";
 
     secretInput.value = "";
 
+
     setTimeout(
         ()=>{
+
             nameInput.focus();
+
         },
         150
     );
@@ -1085,13 +1601,15 @@ function openModal(){
 
 function closeModal(){
 
-    modal.classList.remove("show");
+    modal.classList.remove(
+        "show"
+    );
 
 }
 
 
 /* =========================
-   添加账号
+   手动添加账号
 ========================= */
 
 async function addAccount(){
@@ -1099,16 +1617,22 @@ async function addAccount(){
     const name =
         nameInput.value.trim();
 
+
     const secret =
         secretInput.value
         .trim()
-        .replace(/\s/g,"")
+        .replace(
+            /\s/g,
+            ""
+        )
         .toUpperCase();
 
 
     if(!name){
 
-        alert("请输入账号名称");
+        alert(
+            "请输入账号名称"
+        );
 
         nameInput.focus();
 
@@ -1119,7 +1643,9 @@ async function addAccount(){
 
     if(!secret){
 
-        alert("请输入 Secret Key");
+        alert(
+            "请输入 Secret Key"
+        );
 
         secretInput.focus();
 
@@ -1129,7 +1655,9 @@ async function addAccount(){
 
 
     const test =
-        await generateTOTP(secret);
+        await generateTOTP(
+            secret
+        );
 
 
     if(!test){
@@ -1183,7 +1711,11 @@ function deleteAccount(index){
     }
 
 
-    accounts.splice(index,1);
+    accounts.splice(
+        index,
+        1
+    );
+
 
     saveAccounts();
 
@@ -1219,11 +1751,17 @@ async function copyCode(index){
             code
         );
 
-        showToast("验证码已复制");
+
+        showToast(
+            "验证码已复制"
+        );
+
 
     }catch(e){
 
-        showToast("复制失败");
+        showToast(
+            "复制失败"
+        );
 
     }
 
@@ -1239,11 +1777,19 @@ function showToast(message){
     toast.textContent =
         message;
 
-    toast.classList.add("show");
+
+    toast.classList.add(
+        "show"
+    );
+
 
     setTimeout(
         ()=>{
-            toast.classList.remove("show");
+
+            toast.classList.remove(
+                "show"
+            );
+
         },
         1500
     );
@@ -1256,7 +1802,9 @@ function showToast(message){
 ========================= */
 
 document
-    .getElementById("addTop")
+    .getElementById(
+        "addTop"
+    )
     .addEventListener(
         "click",
         openModal
@@ -1264,7 +1812,9 @@ document
 
 
 document
-    .getElementById("addButton")
+    .getElementById(
+        "addButton"
+    )
     .addEventListener(
         "click",
         openModal
@@ -1272,7 +1822,19 @@ document
 
 
 document
-    .getElementById("closeBtn")
+    .getElementById(
+        "scanButton"
+    )
+    .addEventListener(
+        "click",
+        startScan
+    );
+
+
+document
+    .getElementById(
+        "closeBtn"
+    )
     .addEventListener(
         "click",
         closeModal
@@ -1280,7 +1842,9 @@ document
 
 
 document
-    .getElementById("cancelBtn")
+    .getElementById(
+        "cancelBtn"
+    )
     .addEventListener(
         "click",
         closeModal
@@ -1288,7 +1852,9 @@ document
 
 
 document
-    .getElementById("saveBtn")
+    .getElementById(
+        "saveBtn"
+    )
     .addEventListener(
         "click",
         addAccount
@@ -1299,7 +1865,9 @@ modal.addEventListener(
     "click",
     function(e){
 
-        if(e.target === modal){
+        if(
+            e.target === modal
+        ){
 
             closeModal();
 
