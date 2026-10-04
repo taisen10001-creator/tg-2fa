@@ -1,10 +1,10 @@
-
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>验证器</title>
+  <title>我的验证码</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -42,7 +42,22 @@
       width: 100%;
       max-width: 560px;
       margin: 0 auto;
-      padding: 10px 12px 18px;
+      padding: 8px 12px 18px;
+    }
+
+    /* 顶部标题 */
+    .header {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+
+    .header-title {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1;
     }
 
     /* 账号区域 */
@@ -347,6 +362,11 @@
 
   <div class="app">
 
+    <!-- 顶部标题 -->
+    <header class="header">
+      <div class="header-title">我的验证码</div>
+    </header>
+
     <!-- 账号列表 -->
     <section class="accounts-section" id="accountsSection"></section>
 
@@ -438,53 +458,77 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const tg = window.Telegram && window.Telegram.WebApp
-      ? window.Telegram.WebApp
-      : null;
+    const tg =
+      window.Telegram &&
+      window.Telegram.WebApp
+        ? window.Telegram.WebApp
+        : null;
 
     if (tg) {
       tg.ready();
       tg.expand();
     }
 
-    const STORAGE_KEY = "tg_authenticator_accounts";
+    const STORAGE_KEY =
+      "tg_authenticator_accounts";
 
     const accountsSection =
-      document.getElementById("accountsSection");
+      document.getElementById(
+        "accountsSection"
+      );
 
     const addSection =
-      document.getElementById("addSection");
+      document.getElementById(
+        "addSection"
+      );
 
     const addInlineButton =
-      document.getElementById("addInlineButton");
+      document.getElementById(
+        "addInlineButton"
+      );
 
     const nameInput =
-      document.getElementById("nameInput");
+      document.getElementById(
+        "nameInput"
+      );
 
     const secretInput =
-      document.getElementById("secretInput");
+      document.getElementById(
+        "secretInput"
+      );
 
     const confirmButton =
-      document.getElementById("confirmButton");
+      document.getElementById(
+        "confirmButton"
+      );
 
     const scanButton =
-      document.getElementById("scanButton");
+      document.getElementById(
+        "scanButton"
+      );
 
     const toast =
-      document.getElementById("toast");
+      document.getElementById(
+        "toast"
+      );
 
-    let accounts = loadAccounts();
+    let accounts =
+      loadAccounts();
 
     function loadAccounts() {
       try {
+
         const saved =
-          localStorage.getItem(STORAGE_KEY);
+          localStorage.getItem(
+            STORAGE_KEY
+          );
 
         if (!saved) {
           return [];
         }
 
-        const data = JSON.parse(saved);
+        const data =
+          JSON.parse(saved);
 
         return Array.isArray(data)
           ? data
@@ -503,19 +547,31 @@
     }
 
     function showToast(message) {
-      toast.textContent = message;
 
-      toast.classList.add("show");
+      toast.textContent =
+        message;
 
-      clearTimeout(showToast.timer);
+      toast.classList.add(
+        "show"
+      );
 
-      showToast.timer = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 1800);
+      clearTimeout(
+        showToast.timer
+      );
+
+      showToast.timer =
+        setTimeout(() => {
+          toast.classList.remove(
+            "show"
+          );
+        }, 1800);
     }
 
     function normalizeBase32(secret) {
-      return String(secret || "")
+
+      return String(
+        secret || ""
+      )
         .toUpperCase()
         .replace(/\s+/g, "")
         .replace(/-/g, "")
@@ -523,6 +579,7 @@
     }
 
     function base32ToBytes(base32) {
+
       const alphabet =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
@@ -539,7 +596,9 @@
         }
 
         bits +=
-          value.toString(2).padStart(5, "0");
+          value
+            .toString(2)
+            .padStart(5, "0");
       }
 
       for (
@@ -547,6 +606,7 @@
         i + 8 <= bits.length;
         i += 8
       ) {
+
         output.push(
           parseInt(
             bits.slice(i, i + 8),
@@ -555,17 +615,26 @@
         );
       }
 
-      return new Uint8Array(output);
+      return new Uint8Array(
+        output
+      );
     }
 
-    async function generateTOTP(secret) {
+    async function generateTOTP(
+      secret
+    ) {
+
       try {
 
         const cleanSecret =
-          normalizeBase32(secret);
+          normalizeBase32(
+            secret
+          );
 
         const keyBytes =
-          base32ToBytes(cleanSecret);
+          base32ToBytes(
+            cleanSecret
+          );
 
         if (!keyBytes.length) {
           return "------";
@@ -573,24 +642,30 @@
 
         const counter =
           Math.floor(
-            Date.now() / 1000 / 30
+            Date.now() /
+            1000 /
+            30
           );
 
         const counterBytes =
           new Uint8Array(8);
 
-        let value = counter;
+        let value =
+          counter;
 
         for (
           let i = 7;
           i >= 0;
           i--
         ) {
+
           counterBytes[i] =
             value & 0xff;
 
           value =
-            Math.floor(value / 256);
+            Math.floor(
+              value / 256
+            );
         }
 
         const cryptoKey =
@@ -626,18 +701,22 @@
           (signature[offset + 3] & 0xff);
 
         const code =
-          String(binary % 1000000)
-            .padStart(6, "0");
+          String(
+            binary % 1000000
+          ).padStart(6, "0");
 
         return code;
 
       } catch (error) {
+
         console.error(error);
+
         return "------";
       }
     }
 
     function formatCode(code) {
+
       if (
         !code ||
         code.length !== 6
@@ -652,25 +731,34 @@
       );
     }
 
-    function updateSeconds(element) {
+    function updateSeconds(
+      element
+    ) {
+
       const now =
-        Math.floor(Date.now() / 1000);
+        Math.floor(
+          Date.now() / 1000
+        );
 
       const remaining =
         30 - (now % 30);
 
       element.textContent =
-        remaining + " 秒后刷新";
+        remaining +
+        " 秒后刷新";
     }
 
     async function renderAccounts() {
 
-      accountsSection.innerHTML = "";
+      accountsSection.innerHTML =
+        "";
 
       if (accounts.length === 0) {
 
         const empty =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         empty.className =
           "empty-state";
@@ -683,21 +771,29 @@
           </div>
         `;
 
-        accountsSection.appendChild(empty);
+        accountsSection.appendChild(
+          empty
+        );
 
         return;
       }
 
-      for (const account of accounts) {
+      for (
+        const account of accounts
+      ) {
 
         const card =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         card.className =
           "account-card";
 
         const accountName =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         accountName.className =
           "account-name";
@@ -706,7 +802,9 @@
           account.name;
 
         const codeLabel =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         codeLabel.className =
           "code-label";
@@ -715,25 +813,37 @@
           "TOTP 验证码";
 
         const codeRow =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         codeRow.className =
           "code-row";
 
         const code =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
-        code.className = "code";
-        code.textContent = "------";
+        code.className =
+          "code";
+
+        code.textContent =
+          "------";
 
         const copyButton =
-          document.createElement("button");
+          document.createElement(
+            "button"
+          );
 
         copyButton.className =
           "copy-button";
 
-        copyButton.type = "button";
-        copyButton.textContent = "复制";
+        copyButton.type =
+          "button";
+
+        copyButton.textContent =
+          "复制";
 
         copyButton.addEventListener(
           "click",
@@ -755,6 +865,7 @@
                 cleanCode
               )
             ) {
+
               showToast(
                 "验证码生成失败"
               );
@@ -764,7 +875,8 @@
 
             try {
 
-              await navigator.clipboard
+              await navigator
+                .clipboard
                 .writeText(
                   cleanCode
                 );
@@ -834,7 +946,8 @@
 
               try {
 
-                await navigator.clipboard
+                await navigator
+                  .clipboard
                   .writeText(
                     currentCode
                   );
@@ -856,13 +969,18 @@
           }
         );
 
-        codeRow.appendChild(code);
+        codeRow.appendChild(
+          code
+        );
+
         codeRow.appendChild(
           copyButton
         );
 
         const bottom =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         bottom.className =
           "account-bottom";
@@ -891,7 +1009,9 @@
         );
 
         const seconds =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
         seconds.className =
           "seconds";
@@ -1013,7 +1133,9 @@
         /^[A-Z2-7]+$/;
 
       if (
-        !validChars.test(secret)
+        !validChars.test(
+          secret
+        )
       ) {
 
         showToast(
@@ -1051,17 +1173,24 @@
             .toString(36)
             .slice(2),
 
-        name: name,
+        name:
+          name,
 
-        secret: secret
+        secret:
+          secret
       };
 
-      accounts.push(account);
+      accounts.push(
+        account
+      );
 
       saveAccounts();
 
-      nameInput.value = "";
-      secretInput.value = "";
+      nameInput.value =
+        "";
+
+      secretInput.value =
+        "";
 
       await renderAccounts();
 
@@ -1280,9 +1409,8 @@
                   accounts[i].secret
                 );
 
-              codeElements[
-                i
-              ].textContent =
+              codeElements[i]
+                .textContent =
                 formatCode(code);
             }
           }
@@ -1299,4 +1427,4 @@
 
 </body>
 </html>
-* 开云体育赞助/我们的招商永久用户名@oooky 
+```
