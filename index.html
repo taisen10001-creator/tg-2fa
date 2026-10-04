@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -232,6 +232,12 @@
             margin-bottom: 7px;
         }
 
+        .form-input-wrap {
+            position: relative;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
         .form-input {
             width: 100%;
             height: 48px;
@@ -242,7 +248,6 @@
             padding: 0 13px;
             font-size: 16px;
             color: #202124;
-            margin-bottom: 16px;
         }
 
         .form-input:focus {
@@ -254,6 +259,31 @@
             color: #a0a4a8;
         }
 
+        /* 密钥输入框右侧扫码按钮 */
+        .scan-inside-button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            height: 38px;
+            padding: 0 12px;
+            border: 0;
+            border-radius: 7px;
+            background: #f1f3f4;
+            color: #1a73e8;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .scan-inside-button:active {
+            background: #e8eaed;
+        }
+
+        /* 给输入文字留出扫码按钮空间 */
+        .secret-input {
+            padding-right: 90px;
+        }
+
         .confirm-button {
             width: 100%;
             height: 48px;
@@ -263,27 +293,10 @@
             color: #ffffff;
             font-size: 16px;
             cursor: pointer;
-            margin-bottom: 10px;
         }
 
         .confirm-button:active {
             background: #1557b0;
-            transform: scale(0.99);
-        }
-
-        .scan-button {
-            width: 100%;
-            height: 48px;
-            border-radius: 9px;
-            border: 1px solid #1a73e8;
-            background: #ffffff;
-            color: #1a73e8;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .scan-button:active {
-            background: #f0f6ff;
             transform: scale(0.99);
         }
 
@@ -381,6 +394,15 @@
             .promo {
                 margin-top: 16px;
             }
+
+            .scan-inside-button {
+                padding: 0 10px;
+                font-size: 13px;
+            }
+
+            .secret-input {
+                padding-right: 82px;
+            }
         }
     </style>
 </head>
@@ -459,18 +481,30 @@
                 class="form-label"
                 for="secretInput"
             >
-                Secret Key
+                密钥
             </label>
 
-            <input
-                class="form-input"
-                id="secretInput"
-                type="text"
-                autocomplete="off"
-                autocapitalize="characters"
-                spellcheck="false"
-                placeholder="输入设置密钥"
-            >
+            <div class="form-input-wrap">
+
+                <input
+                    class="form-input secret-input"
+                    id="secretInput"
+                    type="text"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    placeholder="输入设置密钥"
+                >
+
+                <button
+                    class="scan-inside-button"
+                    id="scanButton"
+                    type="button"
+                >
+                    📷 扫码
+                </button>
+
+            </div>
 
             <button
                 class="confirm-button"
@@ -478,14 +512,6 @@
                 type="button"
             >
                 确认添加
-            </button>
-
-            <button
-                class="scan-button"
-                id="scanButton"
-                type="button"
-            >
-                📷 扫码添加
             </button>
 
         </div>
@@ -629,11 +655,11 @@ function base32ToBytes(base32) {
             .replace(/=+$/, "");
 
     if (!clean) {
-        throw new Error("Secret Key 不能为空");
+        throw new Error("密钥不能为空");
     }
 
     if (!/^[A-Z2-7]+$/.test(clean)) {
-        throw new Error("Secret Key 格式不正确");
+        throw new Error("密钥格式不正确");
     }
 
     let bits = "";
@@ -649,7 +675,7 @@ function base32ToBytes(base32) {
             alphabet.indexOf(char);
 
         if (value === -1) {
-            throw new Error("Secret Key 格式不正确");
+            throw new Error("密钥格式不正确");
         }
 
         bits +=
@@ -1074,7 +1100,7 @@ async function addAccount() {
     if (!secret) {
 
         showToast(
-            "请输入 Secret Key"
+            "请输入密钥"
         );
 
         secretInput.focus();
@@ -1090,7 +1116,7 @@ async function addAccount() {
 
         showToast(
             error.message ||
-            "Secret Key 格式不正确"
+            "密钥格式不正确"
         );
 
         secretInput.focus();
