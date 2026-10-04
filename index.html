@@ -1,1652 +1,984 @@
-
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>验证器</title>
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <title>验证器</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f5f6f7;
+      color: #202124;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "PingFang SC",
+        "Microsoft YaHei",
+        Arial,
+        sans-serif;
+    }
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+    body {
+      min-height: 100vh;
+    }
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            min-height: 100%;
-            background: #f7f8fa;
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                "PingFang SC",
-                "Hiragino Sans GB",
-                "Microsoft YaHei",
-                Arial,
-                sans-serif;
-            color: #202124;
-        }
+    button,
+    input {
+      font-family: inherit;
+    }
 
-        body {
-            padding-bottom: 30px;
-        }
+    .app {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 10px 12px 18px;
+    }
 
-        button,
-        input {
-            font-family: inherit;
-        }
+    /* 顶部 */
+    .header {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-bottom: 7px;
+    }
 
-        .app {
-            width: 100%;
-            max-width: 520px;
-            margin: 0 auto;
-            min-height: 100vh;
-        }
+    .header-title {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1;
+    }
 
-        .content {
-            padding: 22px 16px 30px;
-        }
+    /* 账号区域 */
+    .accounts-section {
+      margin-bottom: 10px;
+    }
 
-        /* 空状态 */
-        .empty-state {
-            text-align: center;
-            padding: 32px 20px 30px;
-        }
+    .empty-state {
+      background: #fff;
+      border-radius: 13px;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, .05);
+    }
 
-        .empty-icon {
-            font-size: 52px;
-            line-height: 1;
-            margin-bottom: 16px;
-        }
+    .empty-icon {
+      font-size: 34px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
 
-        .empty-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+    .empty-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
 
-        .empty-text {
-            color: #777;
-            font-size: 14px;
-            line-height: 1.7;
-        }
+    .empty-text {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+    }
 
-        /* 账号列表 */
-        .accounts {
-            margin-top: 0;
-        }
+    /* 账号卡片 */
+    .account-card {
+      background: #fff;
+      border-radius: 13px;
+      padding: 14px 15px 12px;
+      margin-bottom: 9px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, .05);
+    }
 
-        .account-card {
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 17px 16px 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-        }
+    .account-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 7px;
+      word-break: break-all;
+    }
 
-        .account-name {
-            font-size: 15px;
-            font-weight: 500;
-            color: #555;
-            margin-bottom: 9px;
-            word-break: break-all;
-        }
+    .code-label {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 2px;
+    }
 
-        .code-label {
-            font-size: 13px;
-            color: #888;
-            margin-bottom: 4px;
-        }
+    .code-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 9px;
+    }
 
-        .code-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
+    .code {
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #202124;
+      line-height: 1.15;
+      cursor: pointer;
+      user-select: none;
+    }
 
-        /* 验证码放大 */
-        .code {
-            font-size: 34px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            color: #202124;
-            line-height: 1.2;
-            cursor: pointer;
-            user-select: none;
-        }
+    .copy-button {
+      border: 0;
+      background: #f1f3f4;
+      color: #1a73e8;
+      border-radius: 8px;
+      padding: 9px 13px;
+      font-size: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+      min-width: 58px;
+    }
 
-        /* 复制按钮放大 */
-        .copy-button {
-            border: 0;
-            background: #f1f3f4;
-            color: #1a73e8;
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 15px;
-            cursor: pointer;
-            flex-shrink: 0;
-            min-width: 58px;
-        }
+    .copy-button:active {
+      transform: scale(.97);
+    }
 
-        .copy-button:active {
-            transform: scale(0.96);
-        }
+    .account-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #f0f0f0;
+    }
 
-        /* 底部信息 */
-        .account-bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 11px;
-            padding-top: 10px;
-            border-top: 1px solid #f0f0f0;
-        }
+    .delete-button {
+      order: 1;
+      border: 0;
+      background: transparent;
+      color: #d93025;
+      font-size: 14px;
+      padding: 3px 0;
+      cursor: pointer;
+    }
 
-        /* 删除账号放左边 */
-        .delete-button {
-            order: 1;
-            border: 0;
-            background: transparent;
-            color: #d93025;
-            font-size: 14px;
-            padding: 4px 0;
-            cursor: pointer;
-        }
+    .seconds {
+      order: 2;
+      color: #777;
+      font-size: 16px;
+      font-weight: 500;
+    }
 
-        /* 倒计时放右边并放大 */
-        .seconds {
-            order: 2;
-            color: #777;
-            font-size: 16px;
-            font-weight: 500;
-        }
+    /* 添加账号 */
+    .add-section {
+      background: #fff;
+      border-radius: 13px;
+      padding: 16px 15px 14px;
+      margin-top: 12px;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, .05);
+    }
 
-        /* 添加账号区域 */
-        .add-section {
-            background: #ffffff;
-            border-radius: 14px;
-            padding: 20px 16px 18px;
-            margin-top: 18px;
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-        }
+    .add-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 13px;
+    }
 
-        .add-title-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 18px;
-        }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
 
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0;
-        }
+    .add-inline-button {
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #1a73e8;
+      font-size: 29px;
+      line-height: 36px;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        /* 添加账号旁边的 + */
-        .add-inline-button {
-            width: 38px;
-            height: 38px;
-            border: 0;
-            border-radius: 50%;
-            background: transparent;
-            color: #1a73e8;
-            font-size: 29px;
-            line-height: 38px;
-            padding: 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .form-group {
+      margin-bottom: 10px;
+    }
 
-        .add-inline-button:active {
-            background: #f1f3f4;
-            transform: scale(0.95);
-        }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 5px;
+    }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+    .form-input-wrap {
+      position: relative;
+      width: 100%;
+      margin-bottom: 0;
+    }
 
-        .form-label {
-            display: block;
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 8px;
-        }
+    .form-input {
+      width: 100%;
+      height: 46px;
+      border: 1px solid #dcdfe3;
+      border-radius: 9px;
+      background: #fff;
+      outline: none;
+      padding: 0 12px;
+      font-size: 15px;
+      color: #202124;
+      transition: border-color .2s, box-shadow .2s;
+    }
 
-        .form-input-wrap {
-            position: relative;
-            width: 100%;
-            margin-bottom: 0;
-        }
+    .form-input:focus {
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 2px rgba(26, 115, 232, .10);
+    }
 
-        .form-input {
-            width: 100%;
-            height: 48px;
-            border: 1px solid #dcdfe3;
-            border-radius: 9px;
-            background: #ffffff;
-            outline: none;
-            padding: 0 13px;
-            font-size: 15px;
-            color: #202124;
-            transition:
-                border-color 0.2s,
-                box-shadow 0.2s;
-        }
+    .secret-input {
+      padding-right: 110px;
+    }
 
-        .form-input:focus {
-            border-color: #1a73e8;
-            box-shadow:
-                0 0 0 2px rgba(26, 115, 232, 0.1);
-        }
+    .scan-inside-button {
+      position: absolute;
+      right: 5px;
+      top: 4px;
+      height: 38px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 7px;
+      background: #f1f3f4;
+      color: #1a73e8;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
 
-        .secret-input {
-            padding-right: 110px;
-        }
+    .confirm-button {
+      width: 100%;
+      height: 46px;
+      margin-top: 1px;
+      border: 0;
+      border-radius: 9px;
+      background: #1a73e8;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+    }
 
-        /* 密钥输入框里的扫码添加 */
-        .scan-inside-button {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            height: 38px;
-            padding: 0 10px;
-            border: 0;
-            border-radius: 7px;
-            background: #f1f3f4;
-            color: #1a73e8;
-            font-size: 13px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
+    .confirm-button:active {
+      transform: scale(.99);
+    }
 
-        .scan-inside-button:active {
-            transform: scale(0.97);
-        }
+    /* 宣传图 */
+    .promo {
+      margin-top: 12px;
+      width: 100%;
+    }
 
-        .confirm-button {
-            width: 100%;
-            height: 48px;
-            margin-top: 2px;
-            border: 0;
-            border-radius: 9px;
-            background: #1a73e8;
-            color: #ffffff;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-        }
+    .promo-image-link {
+      display: block;
+      width: 100%;
+      line-height: 0;
+      cursor: pointer;
+    }
 
-        .confirm-button:active {
-            transform: scale(0.99);
-        }
+    .promo-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px 12px 0 0;
+      object-fit: cover;
+    }
 
-        /* 宣传区域 */
-        .promo {
-            margin-top: 22px;
-            width: 100%;
-            overflow: hidden;
-            border-radius: 12px;
-        }
+    .promo-button {
+      display: flex;
+      width: 100%;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+      background: #1a73e8;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 0 0 12px 12px;
+    }
 
-        .promo-image-link {
-            display: block;
-            width: 100%;
-            line-height: 0;
-            cursor: pointer;
-        }
+    /* 提示 */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(15px);
+      background: rgba(32, 33, 36, .92);
+      color: #fff;
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all .25s ease;
+      z-index: 9999;
+      white-space: nowrap;
+    }
 
-        .promo-image {
-            display: block;
-            width: 100%;
-            height: auto;
-            border-radius: 12px 12px 0 0;
-            object-fit: cover;
-        }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
 
-        .promo-button {
-            display: flex;
-            width: 100%;
-            height: 46px;
-            align-items: center;
-            justify-content: center;
-            background: #1a73e8;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 0 0 12px 12px;
-        }
+    @media (max-width: 380px) {
+      .app {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
 
-        .promo-button:active {
-            opacity: 0.9;
-        }
+      .code {
+        font-size: 31px;
+      }
 
-        /* Toast */
-        .toast {
-            position: fixed;
-            left: 50%;
-            bottom: 32px;
-            transform:
-                translateX(-50%)
-                translateY(20px);
-            background: rgba(32, 33, 36, 0.92);
-            color: #ffffff;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.25s ease;
-            z-index: 100;
-            white-space: nowrap;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform:
-                translateX(-50%)
-                translateY(0);
-        }
-
-        @media (max-width: 360px) {
-
-            .code {
-                font-size: 30px;
-            }
-
-            .copy-button {
-                padding: 9px 12px;
-                font-size: 14px;
-                min-width: 54px;
-            }
-
-            .seconds {
-                font-size: 15px;
-            }
-
-            .scan-inside-button {
-                padding: 0 8px;
-                font-size: 12px;
-            }
-
-            .secret-input {
-                padding-right: 102px;
-            }
-        }
-    </style>
+      .copy-button {
+        padding: 8px 11px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="app">
+  <div class="app">
 
-    <main class="content">
+    <!-- 顶部 -->
+    <header class="header">
+      <div class="header-title">验证器</div>
+    </header>
 
-        <!-- 空状态 -->
-        <div
-            class="empty-state"
-            id="emptyState"
+    <!-- 账号列表 -->
+    <section class="accounts-section" id="accountsSection"></section>
+
+    <!-- 添加账号 -->
+    <section class="add-section" id="addSection">
+
+      <div class="add-title-row">
+        <div class="section-title">添加账号</div>
+
+        <button
+          class="add-inline-button"
+          id="addInlineButton"
+          type="button"
+          aria-label="添加账号"
+        >＋</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="nameInput">账号名称</label>
+
+        <input
+          class="form-input"
+          id="nameInput"
+          type="text"
+          autocomplete="off"
+          placeholder="输入账号名称"
         >
-            <div class="empty-icon">
-                🔐
-            </div>
+      </div>
 
-            <div class="empty-title">
-                暂无账号
-            </div>
+      <div class="form-group">
+        <label class="form-label" for="secretInput">密钥</label>
 
-            <div class="empty-text">
-                在下面输入账号信息，或直接扫描验证器二维码
-            </div>
-        </div>
+        <div class="form-input-wrap">
 
+          <input
+            class="form-input secret-input"
+            id="secretInput"
+            type="text"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            placeholder="输入设置密钥"
+          >
 
-        <!-- 已添加账号 -->
-        <section
-            class="accounts"
-            id="accounts"
-        ></section>
-
-
-        <!-- 添加账号 -->
-        <section
-            class="add-section"
-            id="addSection"
-        >
-
-            <div class="add-title-row">
-
-                <div class="section-title">
-                    添加账号
-                </div>
-
-                <button
-                    class="add-inline-button"
-                    id="addInlineButton"
-                    type="button"
-                    aria-label="添加账号"
-                >
-                    ＋
-                </button>
-
-            </div>
-
-
-            <!-- 账号名称 -->
-            <div class="form-group">
-
-                <label
-                    class="form-label"
-                    for="nameInput"
-                >
-                    账号名称
-                </label>
-
-                <input
-                    class="form-input"
-                    id="nameInput"
-                    type="text"
-                    autocomplete="off"
-                    placeholder="输入账号名称"
-                >
-
-            </div>
-
-
-            <!-- 密钥 -->
-            <div class="form-group">
-
-                <label
-                    class="form-label"
-                    for="secretInput"
-                >
-                    密钥
-                </label>
-
-                <div class="form-input-wrap">
-
-                    <input
-                        class="form-input secret-input"
-                        id="secretInput"
-                        type="text"
-                        autocomplete="off"
-                        autocapitalize="characters"
-                        spellcheck="false"
-                        placeholder="输入设置密钥"
-                    >
-
-                    <!-- 扫码添加 -->
-                    <button
-                        class="scan-inside-button"
-                        id="scanButton"
-                        type="button"
-                    >
-                        📷 扫码添加
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- 确认添加 -->
-            <button
-                class="confirm-button"
-                id="confirmButton"
-                type="button"
-            >
-                确认添加
-            </button>
-
-        </section>
-
-
-        <!-- 宣传图 -->
-        <div class="promo">
-
-            <!-- 点击图片跳转 @kytttt -->
-            <a
-                class="promo-image-link"
-                href="https://t.me/kytttt"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-
-                <img
-                    class="promo-image"
-                    src="./998965656565656565.jpg"
-                    alt="宣传图"
-                >
-
-            </a>
-
-
-            <!-- 立即咨询跳转 @oooky -->
-            <a
-                class="promo-button"
-                href="https://t.me/oooky"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                立即咨询
-            </a>
+          <button
+            class="scan-inside-button"
+            id="scanButton"
+            type="button"
+          >📷 扫码添加</button>
 
         </div>
+      </div>
 
-    </main>
+      <button
+        class="confirm-button"
+        id="confirmButton"
+        type="button"
+      >确认添加</button>
 
-</div>
+    </section>
 
+    <!-- 宣传图 -->
+    <div class="promo">
 
-<div
-    class="toast"
-    id="toast"
-></div>
+      <a
+        class="promo-image-link"
+        href="https://t.me/kytttt"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          class="promo-image"
+          src="./998965656565656565.jpg"
+          alt="宣传图"
+        >
+      </a>
 
+      <a
+        class="promo-button"
+        href="https://t.me/oooky"
+        target="_blank"
+        rel="noopener noreferrer"
+      >立即咨询</a>
 
-<script>
+    </div>
 
-    /* Telegram Mini App */
+  </div>
 
-    const tg =
-        window.Telegram &&
-        window.Telegram.WebApp
-            ? window.Telegram.WebApp
-            : null;
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const tg = window.Telegram && window.Telegram.WebApp
+      ? window.Telegram.WebApp
+      : null;
 
     if (tg) {
-        tg.ready();
-        tg.expand();
+      tg.ready();
+      tg.expand();
     }
 
+    const STORAGE_KEY = "tg_authenticator_accounts";
 
-    /* 基础变量 */
+    const accountsSection = document.getElementById("accountsSection");
+    const addSection = document.getElementById("addSection");
+    const addInlineButton = document.getElementById("addInlineButton");
+    const nameInput = document.getElementById("nameInput");
+    const secretInput = document.getElementById("secretInput");
+    const confirmButton = document.getElementById("confirmButton");
+    const scanButton = document.getElementById("scanButton");
+    const toast = document.getElementById("toast");
 
-    const STORAGE_KEY =
-        "tg_authenticator_accounts";
-
-    const emptyState =
-        document.getElementById(
-            "emptyState"
-        );
-
-    const addSection =
-        document.getElementById(
-            "addSection"
-        );
-
-    const accountsContainer =
-        document.getElementById(
-            "accounts"
-        );
-
-    const nameInput =
-        document.getElementById(
-            "nameInput"
-        );
-
-    const secretInput =
-        document.getElementById(
-            "secretInput"
-        );
-
-    const confirmButton =
-        document.getElementById(
-            "confirmButton"
-        );
-
-    const scanButton =
-        document.getElementById(
-            "scanButton"
-        );
-
-    const addInlineButton =
-        document.getElementById(
-            "addInlineButton"
-        );
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-    let toastTimer = null;
-
-
-    /* Toast */
-
-    function showToast(message) {
-
-        clearTimeout(toastTimer);
-
-        toast.textContent =
-            message;
-
-        toast.classList.add(
-            "show"
-        );
-
-        toastTimer =
-            setTimeout(() => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            }, 1800);
-    }
-
-
-    /* LocalStorage */
+    let accounts = loadAccounts();
 
     function loadAccounts() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
 
-        try {
-
-            const data =
-                localStorage.getItem(
-                    STORAGE_KEY
-                );
-
-            if (!data) {
-                return [];
-            }
-
-            const accounts =
-                JSON.parse(data);
-
-            return Array.isArray(accounts)
-                ? accounts
-                : [];
-
-        } catch (error) {
-
-            console.error(error);
-
-            return [];
+        if (!saved) {
+          return [];
         }
+
+        const data = JSON.parse(saved);
+
+        return Array.isArray(data) ? data : [];
+      } catch (error) {
+        return [];
+      }
     }
 
-
-    function saveAccounts(accounts) {
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(accounts)
-        );
+    function saveAccounts() {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(accounts)
+      );
     }
 
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
 
-    /* Base32 */
+      clearTimeout(showToast.timer);
+
+      showToast.timer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
+    }
+
+    function normalizeBase32(secret) {
+      return String(secret || "")
+        .toUpperCase()
+        .replace(/\s+/g, "")
+        .replace(/-/g, "")
+        .replace(/=/g, "");
+    }
 
     function base32ToBytes(base32) {
+      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
-        const clean =
-            String(base32)
-                .toUpperCase()
-                .replace(
-                    /[\s=-]/g,
-                    ""
-                );
+      let bits = "";
+      let output = [];
 
-        const alphabet =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+      for (const char of base32) {
+        const value = alphabet.indexOf(char);
 
-        let bits = "";
-
-        let output = [];
-
-        for (const char of clean) {
-
-            const value =
-                alphabet.indexOf(
-                    char
-                );
-
-            if (value === -1) {
-                continue;
-            }
-
-            bits +=
-                value
-                    .toString(2)
-                    .padStart(5, "0");
+        if (value === -1) {
+          continue;
         }
 
-        for (
-            let i = 0;
-            i + 8 <= bits.length;
-            i += 8
-        ) {
+        bits += value.toString(2).padStart(5, "0");
+      }
 
-            output.push(
-                parseInt(
-                    bits.substring(
-                        i,
-                        i + 8
-                    ),
-                    2
-                )
-            );
-        }
+      for (let i = 0; i + 8 <= bits.length; i += 8) {
+        output.push(parseInt(bits.slice(i, i + 8), 2));
+      }
 
-        return new Uint8Array(
-            output
-        );
+      return new Uint8Array(output);
     }
 
-
-    /* TOTP */
-
-    async function generateTOTP(
-        secret
-    ) {
-
-        const keyBytes =
-            base32ToBytes(
-                secret
-            );
+    async function generateTOTP(secret) {
+      try {
+        const cleanSecret = normalizeBase32(secret);
+        const keyBytes = base32ToBytes(cleanSecret);
 
         if (!keyBytes.length) {
-
-            throw new Error(
-                "密钥无效"
-            );
+          return "------";
         }
 
-        const counter =
-            Math.floor(
-                Date.now() /
-                1000 /
-                30
-            );
+        const counter = Math.floor(Date.now() / 1000 / 30);
 
-        const counterBytes =
-            new ArrayBuffer(8);
+        const counterBytes = new Uint8Array(8);
 
-        const counterView =
-            new DataView(
-                counterBytes
-            );
+        let value = counter;
 
-        const high =
-            Math.floor(
-                counter /
-                0x100000000
-            );
+        for (let i = 7; i >= 0; i--) {
+          counterBytes[i] = value & 0xff;
+          value = Math.floor(value / 256);
+        }
 
-        const low =
-            counter >>> 0;
-
-        counterView.setUint32(
-            0,
-            high
+        const cryptoKey = await crypto.subtle.importKey(
+          "raw",
+          keyBytes,
+          {
+            name: "HMAC",
+            hash: "SHA-1"
+          },
+          false,
+          ["sign"]
         );
 
-        counterView.setUint32(
-            4,
-            low
+        const signature = new Uint8Array(
+          await crypto.subtle.sign(
+            "HMAC",
+            cryptoKey,
+            counterBytes
+          )
         );
 
-        const cryptoKey =
-            await crypto.subtle.importKey(
-                "raw",
-                keyBytes,
-                {
-                    name: "HMAC",
-                    hash: "SHA-1"
-                },
-                false,
-                ["sign"]
-            );
-
-        const signature =
-            await crypto.subtle.sign(
-                "HMAC",
-                cryptoKey,
-                counterBytes
-            );
-
-        const bytes =
-            new Uint8Array(
-                signature
-            );
-
-        const offset =
-            bytes[
-                bytes.length - 1
-            ] & 15;
+        const offset = signature[signature.length - 1] & 0x0f;
 
         const binary =
-            (
-                (bytes[offset] & 127)
-                << 24
-            ) |
-            (
-                (bytes[offset + 1] & 255)
-                << 16
-            ) |
-            (
-                (bytes[offset + 2] & 255)
-                << 8
-            ) |
-            (
-                bytes[offset + 3] & 255
-            );
+          ((signature[offset] & 0x7f) << 24) |
+          ((signature[offset + 1] & 0xff) << 16) |
+          ((signature[offset + 2] & 0xff) << 8) |
+          (signature[offset + 3] & 0xff);
 
-        return String(
-            binary % 1000000
-        ).padStart(
-            6,
-            "0"
-        );
+        const code = String(binary % 1000000).padStart(6, "0");
+
+        return code;
+      } catch (error) {
+        console.error(error);
+        return "------";
+      }
     }
 
+    function formatCode(code) {
+      if (!code || code.length !== 6) {
+        return code;
+      }
 
-    /* QR 解析 */
-
-    function parseOtpAuth(uri) {
-
-        try {
-
-            if (
-                typeof uri !== "string" ||
-                !uri
-                    .toLowerCase()
-                    .startsWith(
-                        "otpauth://"
-                    )
-            ) {
-                return null;
-            }
-
-            const url =
-                new URL(uri);
-
-            const type =
-                url.hostname.toLowerCase();
-
-            if (type !== "totp") {
-                return null;
-            }
-
-            const secret =
-                url.searchParams.get(
-                    "secret"
-                ) || "";
-
-            if (!secret) {
-                return null;
-            }
-
-            const issuer =
-                url.searchParams.get(
-                    "issuer"
-                ) || "";
-
-            let account =
-                decodeURIComponent(
-                    url.pathname.replace(
-                        /^\/+/,
-                        ""
-                    )
-                );
-
-            if (
-                account.includes(":")
-            ) {
-
-                account =
-                    account
-                        .split(":")
-                        .slice(1)
-                        .join(":");
-            }
-
-            account =
-                account ||
-                "新账号";
-
-            return {
-
-                name: issuer
-                    ? issuer +
-                      " - " +
-                      account
-                    : account,
-
-                secret:
-                    secret
-            };
-
-        } catch (error) {
-
-            console.error(error);
-
-            return null;
-        }
+      return code.slice(0, 3) + " " + code.slice(3);
     }
 
+    function updateSeconds(element) {
+      const now = Math.floor(Date.now() / 1000);
+      const remaining = 30 - (now % 30);
 
-    /* 扫码添加 */
-
-    function startScan() {
-
-        if (
-            !tg ||
-            typeof tg.showScanQrPopup !==
-                "function"
-        ) {
-
-            showToast(
-                "请在 Telegram 中使用扫码功能"
-            );
-
-            return;
-        }
-
-        tg.showScanQrPopup(
-            {
-                text:
-                    "扫描验证器二维码"
-            },
-
-            function (qrText) {
-
-                if (!qrText) {
-                    return true;
-                }
-
-                const result =
-                    parseOtpAuth(
-                        qrText
-                    );
-
-                if (!result) {
-
-                    showToast(
-                        "二维码格式不正确"
-                    );
-
-                    return true;
-                }
-
-                nameInput.value =
-                    result.name;
-
-                secretInput.value =
-                    result.secret;
-
-                showToast(
-                    "二维码读取成功"
-                );
-
-                setTimeout(
-                    () => {
-
-                        secretInput.focus();
-
-                    },
-                    100
-                );
-
-                return true;
-            }
-        );
+      element.textContent = remaining + " 秒后刷新";
     }
 
+    async function renderAccounts() {
+      accountsSection.innerHTML = "";
 
-    /* 添加账号 */
+      if (accounts.length === 0) {
+        const empty = document.createElement("div");
 
-    async function addAccount() {
+        empty.className = "empty-state";
 
-        const name =
-            nameInput.value.trim();
+        empty.innerHTML = `
+          <div class="empty-icon">🔐</div>
+          <div class="empty-title">暂无账号</div>
+          <div class="empty-text">
+            在下面输入账号信息，或直接扫描验证器二维码
+          </div>
+        `;
 
-        const secret =
-            secretInput.value
-                .trim()
-                .replace(
-                    /\s+/g,
-                    ""
-                )
-                .toUpperCase();
+        accountsSection.appendChild(empty);
 
-        if (!name) {
+        return;
+      }
 
-            showToast(
-                "请输入账号名称"
-            );
+      for (const account of accounts) {
+        const card = document.createElement("div");
+        card.className = "account-card";
 
-            nameInput.focus();
+        const accountName = document.createElement("div");
+        accountName.className = "account-name";
+        accountName.textContent = account.name;
 
+        const codeLabel = document.createElement("div");
+        codeLabel.className = "code-label";
+        codeLabel.textContent = "TOTP 验证码";
+
+        const codeRow = document.createElement("div");
+        codeRow.className = "code-row";
+
+        const code = document.createElement("div");
+        code.className = "code";
+        code.textContent = "------";
+
+        const copyButton = document.createElement("button");
+        copyButton.className = "copy-button";
+        copyButton.type = "button";
+        copyButton.textContent = "复制";
+
+        copyButton.addEventListener("click", async () => {
+          const currentCode = await generateTOTP(account.secret);
+
+          const cleanCode = currentCode.replace(/\s/g, "");
+
+          if (!/^\d{6}$/.test(cleanCode)) {
+            showToast("验证码生成失败");
             return;
-        }
+          }
 
-        if (!secret) {
+          try {
+            await navigator.clipboard.writeText(cleanCode);
+            showToast("验证码已复制");
+          } catch (error) {
+            const textarea = document.createElement("textarea");
 
-            showToast(
-                "请输入密钥"
-            );
+            textarea.value = cleanCode;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
 
-            secretInput.focus();
+            document.body.appendChild(textarea);
 
-            return;
-        }
+            textarea.select();
 
-        try {
+            try {
+              document.execCommand("copy");
+              showToast("验证码已复制");
+            } catch (e) {
+              showToast("复制失败");
+            }
 
-            await generateTOTP(
-                secret
-            );
-
-        } catch (error) {
-
-            showToast(
-                "密钥无效，请检查后重试"
-            );
-
-            secretInput.focus();
-
-            return;
-        }
-
-        const accounts =
-            loadAccounts();
-
-        accounts.push({
-
-            id:
-                Date.now()
-                    .toString() +
-                Math.random()
-                    .toString(36)
-                    .slice(2),
-
-            name:
-                name,
-
-            secret:
-                secret
+            textarea.remove();
+          }
         });
 
-        saveAccounts(
-            accounts
-        );
+        code.addEventListener("click", async () => {
+          const currentCode = await generateTOTP(account.secret);
 
-        nameInput.value =
-            "";
-
-        secretInput.value =
-            "";
-
-        renderAccounts();
-
-        showToast(
-            "账号添加成功"
-        );
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
+          if (/^\d{6}$/.test(currentCode)) {
+            try {
+              await navigator.clipboard.writeText(currentCode);
+              showToast("验证码已复制");
+            } catch (error) {
+              showToast("验证码：" + formatCode(currentCode));
+            }
+          }
         });
+
+        codeRow.appendChild(code);
+        codeRow.appendChild(copyButton);
+
+        const bottom = document.createElement("div");
+        bottom.className = "account-bottom";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-button";
+        deleteButton.type = "button";
+        deleteButton.textContent = "删除账号";
+
+        deleteButton.addEventListener("click", () => {
+          deleteAccount(account.id);
+        });
+
+        const seconds = document.createElement("div");
+        seconds.className = "seconds";
+
+        bottom.appendChild(deleteButton);
+        bottom.appendChild(seconds);
+
+        card.appendChild(accountName);
+        card.appendChild(codeLabel);
+        card.appendChild(codeRow);
+        card.appendChild(bottom);
+
+        accountsSection.appendChild(card);
+
+        updateSeconds(seconds);
+
+        refreshAccountCode(account, code);
+      }
     }
 
+    async function refreshAccountCode(account, element) {
+      const code = await generateTOTP(account.secret);
 
-    /* 删除账号 */
+      if (element) {
+        element.textContent = formatCode(code);
+      }
+    }
 
     function deleteAccount(id) {
+      const confirmed = window.confirm(
+        "确定要删除这个账号吗？"
+      );
 
-        const confirmed =
-            window.confirm(
-                "确定要删除这个账号吗？"
-            );
+      if (!confirmed) {
+        return;
+      }
 
-        if (!confirmed) {
-            return;
-        }
+      accounts = accounts.filter(
+        account => account.id !== id
+      );
 
-        const accounts =
-            loadAccounts()
-                .filter(
-                    account =>
-                        account.id !== id
-                );
+      saveAccounts();
+      renderAccounts();
 
-        saveAccounts(
-            accounts
-        );
-
-        renderAccounts();
-
-        showToast(
-            "账号已删除"
-        );
+      showToast("账号已删除");
     }
 
+    async function addAccount() {
+      const name = nameInput.value.trim();
+      const secret = normalizeBase32(secretInput.value);
 
-    /* 复制验证码 */
+      if (!name) {
+        showToast("请输入账号名称");
+        nameInput.focus();
+        return;
+      }
 
-    async function copyCode(code) {
+      if (!secret) {
+        showToast("请输入密钥");
+        secretInput.focus();
+        return;
+      }
 
-        const cleanCode =
-            String(code)
-                .replace(
-                    /\s/g,
-                    ""
-                );
+      const validChars = /^[A-Z2-7]+$/;
 
-        try {
+      if (!validChars.test(secret)) {
+        showToast("密钥格式不正确");
+        secretInput.focus();
+        return;
+      }
 
-            if (
-                navigator.clipboard &&
-                navigator.clipboard.writeText
-            ) {
+      const testCode = await generateTOTP(secret);
 
-                await navigator.clipboard.writeText(
-                    cleanCode
-                );
+      if (!/^\d{6}$/.test(testCode)) {
+        showToast("密钥无效，请检查后重试");
+        return;
+      }
 
-            } else {
+      const account = {
+        id:
+          Date.now().toString() +
+          Math.random().toString(36).slice(2),
+        name: name,
+        secret: secret
+      };
 
-                const textarea =
-                    document.createElement(
-                        "textarea"
-                    );
+      accounts.push(account);
 
-                textarea.value =
-                    cleanCode;
+      saveAccounts();
 
-                document.body.appendChild(
-                    textarea
-                );
+      nameInput.value = "";
+      secretInput.value = "";
 
-                textarea.select();
+      await renderAccounts();
 
-                document.execCommand(
-                    "copy"
-                );
-
-                textarea.remove();
-            }
-
-            showToast(
-                "验证码已复制"
-            );
-
-        } catch (error) {
-
-            console.error(error);
-
-            showToast(
-                "复制失败"
-            );
-        }
+      showToast("账号添加成功");
     }
 
-
-    /* 创建账号卡片 */
-
-    function createAccountCard(
-        account
-    ) {
-
-        const card =
-            document.createElement(
-                "div"
-            );
-
-        card.className =
-            "account-card";
-
-
-        const accountName =
-            document.createElement(
-                "div"
-            );
-
-        accountName.className =
-            "account-name";
-
-        accountName.textContent =
-            account.name;
-
-
-        const codeLabel =
-            document.createElement(
-                "div"
-            );
-
-        codeLabel.className =
-            "code-label";
-
-        codeLabel.textContent =
-            "TOTP 验证码";
-
-
-        const codeRow =
-            document.createElement(
-                "div"
-            );
-
-        codeRow.className =
-            "code-row";
-
-
-        const code =
-            document.createElement(
-                "div"
-            );
-
-        code.className =
-            "code";
-
-        code.textContent =
-            "------";
-
-        code.title =
-            "点击复制验证码";
-
-
-        code.addEventListener(
-            "click",
-            () => {
-
-                const raw =
-                    code.dataset.rawCode;
-
-                if (raw) {
-                    copyCode(raw);
-                }
-            }
-        );
-
-
-        const copyButton =
-            document.createElement(
-                "button"
-            );
-
-        copyButton.className =
-            "copy-button";
-
-        copyButton.type =
-            "button";
-
-        copyButton.textContent =
-            "复制";
-
-
-        copyButton.addEventListener(
-            "click",
-            () => {
-
-                const raw =
-                    code.dataset.rawCode;
-
-                if (raw) {
-                    copyCode(raw);
-                }
-            }
-        );
-
-
-        codeRow.appendChild(
-            code
-        );
-
-        codeRow.appendChild(
-            copyButton
-        );
-
-
-        const bottom =
-            document.createElement(
-                "div"
-            );
-
-        bottom.className =
-            "account-bottom";
-
-
-        /* 删除账号 */
-        const deleteButton =
-            document.createElement(
-                "button"
-            );
-
-        deleteButton.className =
-            "delete-button";
-
-        deleteButton.type =
-            "button";
-
-        deleteButton.textContent =
-            "删除账号";
-
-
-        deleteButton.addEventListener(
-            "click",
-            () => {
-
-                deleteAccount(
-                    account.id
-                );
-            }
-        );
-
-
-        /* 倒计时 */
-        const seconds =
-            document.createElement(
-                "div"
-            );
-
-        seconds.className =
-            "seconds";
-
-
-        /*
-         * 顺序：
-         * 左边 = 删除账号
-         * 右边 = 倒计时
-         */
-        bottom.appendChild(
-            deleteButton
-        );
-
-        bottom.appendChild(
-            seconds
-        );
-
-
-        card.appendChild(
-            accountName
-        );
-
-        card.appendChild(
-            codeLabel
-        );
-
-        card.appendChild(
-            codeRow
-        );
-
-        card.appendChild(
-            bottom
-        );
-
-
-        updateAccountCard(
-            account,
-            code,
-            seconds
-        );
-
-
-        return card;
-    }
-
-
-    /* 更新验证码 */
-
-    async function updateAccountCard(
-        account,
-        codeElement,
-        secondsElement
-    ) {
-
-        try {
-
-            const code =
-                await generateTOTP(
-                    account.secret
-                );
-
-            const formatted =
-                code.substring(0, 3) +
-                " " +
-                code.substring(3);
-
-            codeElement.textContent =
-                formatted;
-
-            codeElement.dataset.rawCode =
-                code;
-
-        } catch (error) {
-
-            console.error(error);
-
-            codeElement.textContent =
-                "------";
-
-            codeElement.dataset.rawCode =
-                "";
-        }
-
-        updateSeconds(
-            secondsElement
-        );
-    }
-
-
-    /* 倒计时 */
-
-    function updateSeconds(
-        element
-    ) {
-
-        const now =
-            Math.floor(
-                Date.now() / 1000
-            );
-
-        const remaining =
-            30 -
-            (now % 30);
-
-        element.textContent =
-            remaining +
-            " 秒后刷新";
-    }
-
-
-    /* 渲染账号 */
-
-    function renderAccounts() {
-
-        const accounts =
-            loadAccounts();
-
-        accountsContainer.innerHTML =
-            "";
-
-        if (
-            accounts.length === 0
-        ) {
-
-            emptyState.style.display =
-                "block";
-
-        } else {
-
-            emptyState.style.display =
-                "none";
-
-            accounts.forEach(
-                account => {
-
-                    const card =
-                        createAccountCard(
-                            account
-                        );
-
-                    accountsContainer.appendChild(
-                        card
-                    );
-                }
-            );
-        }
-    }
-
-
-    /* 刷新验证码 */
-
-    async function refreshCodes() {
-
-        const cards =
-            accountsContainer.querySelectorAll(
-                ".account-card"
-            );
-
-        const accounts =
-            loadAccounts();
-
-        for (
-            let i = 0;
-            i < cards.length;
-            i++
-        ) {
-
-            const card =
-                cards[i];
-
-            const account =
-                accounts[i];
-
-            if (!account) {
-                continue;
-            }
-
-            const codeElement =
-                card.querySelector(
-                    ".code"
-                );
-
-            const secondsElement =
-                card.querySelector(
-                    ".seconds"
-                );
-
-            if (
-                codeElement &&
-                secondsElement
-            ) {
-
-                await updateAccountCard(
-                    account,
-                    codeElement,
-                    secondsElement
-                );
-            }
-        }
-    }
-
-
-    /* 添加账号 + */
-
-    addInlineButton.addEventListener(
-        "click",
-        () => {
-
-            addSection.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-
-            setTimeout(
-                () => {
-
-                    nameInput.focus();
-
-                },
-                350
-            );
-        }
-    );
-
-
-    /* 按钮 */
-
+    /* ＋按钮 */
+    addInlineButton.addEventListener("click", () => {
+      addSection.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+      setTimeout(() => {
+        nameInput.focus();
+      }, 350);
+    });
+
+    /* 确认添加 */
     confirmButton.addEventListener(
-        "click",
-        addAccount
+      "click",
+      addAccount
     );
+
+    /* 扫码 */
+    function startScan() {
+      if (
+        tg &&
+        typeof tg.showScanQrPopup === "function"
+      ) {
+        tg.showScanQrPopup(
+          {
+            text: "扫描验证器二维码"
+          },
+          (result) => {
+            if (!result) {
+              return;
+            }
+
+            try {
+              const url = new URL(result);
+
+              const secret =
+                url.searchParams.get("secret");
+
+              const issuer =
+                url.searchParams.get("issuer");
+
+              const pathParts =
+                url.pathname.split("/");
+
+              const label =
+                decodeURIComponent(
+                  pathParts[pathParts.length - 1] || ""
+                );
+
+              if (secret) {
+                secretInput.value =
+                  secret.toUpperCase();
+
+                if (!nameInput.value) {
+                  nameInput.value =
+                    label || issuer || "验证器账号";
+                }
+
+                showToast("二维码识别成功");
+
+                setTimeout(() => {
+                  confirmButton.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                  });
+                }, 150);
+              } else {
+                showToast("二维码中没有找到密钥");
+              }
+
+            } catch (error) {
+              showToast("二维码格式无法识别");
+            }
+
+            return true;
+          }
+        );
+      } else {
+        showToast("请在 Telegram 中使用扫码功能");
+      }
+    }
 
     scanButton.addEventListener(
-        "click",
-        startScan
+      "click",
+      startScan
     );
 
-
-    /* 回车 */
+    /* 回车添加 */
+    secretInput.addEventListener(
+      "keydown",
+      event => {
+        if (event.key === "Enter") {
+          addAccount();
+        }
+      }
+    );
 
     nameInput.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                secretInput.focus();
-            }
+      "keydown",
+      event => {
+        if (event.key === "Enter") {
+          secretInput.focus();
         }
+      }
     );
 
+    /* 每秒更新验证码和倒计时 */
+    let lastPeriod = Math.floor(
+      Date.now() / 1000 / 30
+    );
 
-    secretInput.addEventListener(
-        "keydown",
-        event => {
+    setInterval(async () => {
+      const now = Math.floor(Date.now() / 1000);
 
-            if (
-                event.key ===
-                "Enter"
-            ) {
+      const currentPeriod =
+        Math.floor(now / 30);
 
-                addAccount();
-            }
+      const remaining =
+        30 - (now % 30);
+
+      const secondsElements =
+        document.querySelectorAll(".seconds");
+
+      secondsElements.forEach(element => {
+        element.textContent =
+          remaining + " 秒后刷新";
+      });
+
+      if (currentPeriod !== lastPeriod) {
+        lastPeriod = currentPeriod;
+
+        const codeElements =
+          document.querySelectorAll(".code");
+
+        for (
+          let i = 0;
+          i < accounts.length;
+          i++
+        ) {
+          if (codeElements[i]) {
+            const code =
+              await generateTOTP(
+                accounts[i].secret
+              );
+
+            codeElements[i].textContent =
+              formatCode(code);
+          }
         }
-    );
+      }
+    }, 1000);
 
-
-    /* 每秒刷新 */
-
-    setInterval(
-        () => {
-
-            refreshCodes();
-
-        },
-        1000
-    );
-
-
-    /* 初始化 */
-
+    /* 首次加载 */
     renderAccounts();
-
-    refreshCodes();
-
-</script>
+  </script>
 
 </body>
 </html>
-开云体育赞助/我们的招商永久用户名@oooky
+```
