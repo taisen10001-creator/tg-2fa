@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -79,27 +80,6 @@ body {
 .add-top-button:active {
   transform: scale(0.92);
   opacity: 0.85;
-}
-
-/* =========================
-   招商链接
-========================= */
-
-.promo-wrap {
-  margin-bottom: 12px;
-}
-
-.promo-button {
-  display: block;
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #1976d2;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #1976d2;
-  text-align: center;
-  text-decoration: none;
-  font-size: 14px;
 }
 
 /* =========================
@@ -307,6 +287,56 @@ body {
 }
 
 /* =========================
+   底部宣传图
+========================= */
+
+.bottom-promo {
+  width: 100%;
+  margin-top: 18px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.bottom-promo-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* =========================
+   图片上的立即咨询按钮
+========================= */
+
+.consult-button {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 130px;
+  height: 42px;
+  padding: 0 24px;
+  border-radius: 22px;
+  background: #1976d2;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.consult-button:active {
+  transform: translateX(-50%) scale(0.95);
+  opacity: 0.9;
+}
+
+/* =========================
    Toast
 ========================= */
 
@@ -333,6 +363,7 @@ body {
   display: none !important;
 }
 </style>
+
 </head>
 
 <body>
@@ -340,140 +371,156 @@ body {
 <div class="container">
 
   <!-- 顶部 -->
+
   <div class="header">
 
-    <div class="header-title">
-      验证器
-    </div>
+```
+<div class="header-title">
+  验证器
+</div>
 
-    <button
-      id="topAddButton"
-      class="add-top-button"
-      type="button"
-      aria-label="添加账号"
-    >
-      ＋
-    </button>
-
-  </div>
-
-
-  <!-- 官方招商 -->
-  <div class="promo-wrap">
-
-    <a
-      class="promo-button"
-      href="https://t.me/oooky"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      开云体育官方招商 @oooky
-    </a>
+<button
+  id="topAddButton"
+  class="add-top-button"
+  type="button"
+  aria-label="添加账号"
+>
+  ＋
+</button>
+```
 
   </div>
-
 
   <!-- 空状态 -->
+
   <div
     id="emptyState"
     class="empty-state"
   >
 
-    <div class="empty-icon">
-      🔐
-    </div>
+```
+<div class="empty-icon">
+  🔐
+</div>
 
-    <div class="empty-title">
-      暂无账号
-    </div>
+<div class="empty-title">
+  暂无账号
+</div>
 
-    <div class="empty-text">
-      在下面输入账号信息，<br>
-      或直接扫描验证器二维码
-    </div>
+<div class="empty-text">
+  在下面输入账号信息，<br>
+  或直接扫描验证器二维码
+</div>
+```
 
   </div>
 
-
   <!-- 账号 -->
+
   <div
     id="accounts"
     class="accounts"
   ></div>
 
-
   <!-- 添加账号 -->
+
   <div
     id="addSection"
     class="add-section"
   >
 
-    <div class="add-title">
-      添加账号
-    </div>
+```
+<div class="add-title">
+  添加账号
+</div>
 
 
-    <label
-      class="input-label"
-      for="accountName"
-    >
-      账号名称
-    </label>
+<label
+  class="input-label"
+  for="accountName"
+>
+  账号名称
+</label>
 
-    <input
-      id="accountName"
-      class="input"
-      type="text"
-      placeholder="例如：我的账号"
-      autocomplete="off"
-    >
-
-
-    <label
-      class="input-label"
-      for="secretKey"
-    >
-      Secret Key
-    </label>
-
-    <input
-      id="secretKey"
-      class="input"
-      type="text"
-      placeholder="输入 Secret Key"
-      autocomplete="off"
-      autocapitalize="characters"
-    >
+<input
+  id="accountName"
+  class="input"
+  type="text"
+  placeholder="例如：我的账号"
+  autocomplete="off"
+>
 
 
-    <button
-      id="confirmButton"
-      class="confirm-button"
-      type="button"
-    >
-      确认添加
-    </button>
+<label
+  class="input-label"
+  for="secretKey"
+>
+  Secret Key
+</label>
+
+<input
+  id="secretKey"
+  class="input"
+  type="text"
+  placeholder="输入 Secret Key"
+  autocomplete="off"
+  autocapitalize="characters"
+>
 
 
-    <button
-      id="scanButton"
-      class="scan-button"
-      type="button"
-    >
-      📷 扫码添加
-    </button>
+<button
+  id="confirmButton"
+  class="confirm-button"
+  type="button"
+>
+  确认添加
+</button>
+
+
+<button
+  id="scanButton"
+  class="scan-button"
+  type="button"
+>
+  📷 扫码添加
+</button>
+```
+
+  </div>
+
+  <!-- =========================
+       底部宣传图
+       ========================= -->
+
+  <div class="bottom-promo">
+
+```
+<img
+  class="bottom-promo-image"
+  src="./photo_2026-09-13_14-48-34.jpg"
+  alt="宣传图"
+>
+
+<a
+  class="consult-button"
+  href="https://t.me/oooky"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  立即咨询
+</a>
+```
 
   </div>
 
 </div>
 
-
 <!-- Toast -->
+
 <div
   id="toast"
   class="toast"
 ></div>
-
 
 <script>
 
@@ -886,19 +933,6 @@ async function updateCodes() {
       Date.now() / 1000
     );
 
-
-  /*
-    每 30 秒更新一次。
-
-    30
-    29
-    28
-    27
-    ...
-    2
-    1
-    30
-  */
 
   const seconds =
     30 - (now % 30);
@@ -1345,19 +1379,11 @@ function scrollToAdd() {
   }
 
 
-  /*
-    滚动到添加账号区域
-  */
-
   section.scrollIntoView({
     behavior: "smooth",
     block: "start"
   });
 
-
-  /*
-    自动聚焦账号名称
-  */
 
   setTimeout(
     () => {
@@ -1391,10 +1417,6 @@ if (topAddButton) {
     scrollToAdd
   );
 
-
-  /*
-    同时兼容手机触摸
-  */
 
   topAddButton.addEventListener(
     "touchend",
