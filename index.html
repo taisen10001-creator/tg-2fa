@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -14,10 +15,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
-
-        /* ================================
-           基础
-        ================================= */
 
         * {
             box-sizing: border-box;
@@ -228,18 +225,19 @@
                 tabular-nums;
         }
 
+
         /* ================================
-           底部操作区域
+           验证码 + 复制
         ================================= */
 
-        .card-bottom {
-            margin-top: 7px;
-
+        .code-row {
             display: flex;
 
             align-items: center;
 
-            justify-content: space-between;
+            gap: 10px;
+
+            margin-top: 2px;
         }
 
         .copy-button {
@@ -256,10 +254,29 @@
             font-size: 13px;
 
             cursor: pointer;
+
+            white-space: nowrap;
         }
 
         .copy-button:active {
             background: #e8eaed;
+        }
+
+
+        /* ================================
+           底部操作区域
+        ================================= */
+
+        .card-bottom {
+            margin-top: 7px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            gap: 14px;
         }
 
         .seconds {
@@ -272,13 +289,12 @@
             text-align: right;
         }
 
+
         /* ================================
            删除按钮
         ================================= */
 
         .delete-button {
-            margin-top: 8px;
-
             border: 0;
 
             background: transparent;
@@ -290,6 +306,8 @@
             padding: 0;
 
             cursor: pointer;
+
+            white-space: nowrap;
         }
 
         .delete-button:active {
@@ -565,6 +583,19 @@
                 padding: 16px;
             }
 
+            .code-row {
+                gap: 8px;
+            }
+
+            .copy-button {
+                padding:
+                    6px 10px;
+            }
+
+            .card-bottom {
+                gap: 10px;
+            }
+
         }
 
     </style>
@@ -576,16 +607,13 @@
 <div class="app">
 
 
-    <!-- =========================================
-         顶部
-    ========================================== -->
+    <!-- 顶部 -->
 
     <div class="header">
 
         <div class="header-title">
             验证器
         </div>
-
 
         <button
             class="header-plus"
@@ -599,10 +627,7 @@
     </div>
 
 
-
-    <!-- =========================================
-         官方招商按钮
-    ========================================== -->
+    <!-- 官方招商按钮 -->
 
     <a
         class="official-link"
@@ -614,23 +639,16 @@
     </a>
 
 
-
-    <!-- =========================================
-         主内容
-    ========================================== -->
+    <!-- 主内容 -->
 
     <div class="content">
-
 
         <!-- 账号列表 -->
 
         <div id="accounts"></div>
 
 
-
-        <!-- =====================================
-             暂无账号
-        ====================================== -->
+        <!-- 暂无账号 -->
 
         <div
             class="empty"
@@ -641,11 +659,9 @@
                 🔐
             </div>
 
-
             <div class="empty-title">
                 暂无账号
             </div>
-
 
             <div class="empty-text">
                 在下面输入账号信息，<br>
@@ -655,26 +671,20 @@
         </div>
 
 
-
-        <!-- =====================================
-             添加账号
-        ====================================== -->
+        <!-- 添加账号 -->
 
         <div
             class="add-form"
             id="addForm"
         >
 
-
             <div class="add-form-title">
                 添加账号
             </div>
 
-
             <div class="add-form-tip">
                 设置密钥仅保存在当前设备本地，不上传到服务器。
             </div>
-
 
 
             <!-- 账号名称 -->
@@ -686,7 +696,6 @@
                 账号名称
             </label>
 
-
             <input
                 class="form-input"
                 id="nameInput"
@@ -694,7 +703,6 @@
                 autocomplete="off"
                 placeholder="例如：Google"
             >
-
 
 
             <!-- Secret Key -->
@@ -706,7 +714,6 @@
                 Secret Key
             </label>
 
-
             <input
                 class="form-input"
                 id="secretInput"
@@ -716,7 +723,6 @@
                 spellcheck="false"
                 placeholder="输入设置密钥"
             >
-
 
 
             <!-- 确认添加 -->
@@ -730,7 +736,6 @@
             </button>
 
 
-
             <!-- 扫码添加 -->
 
             <button
@@ -741,15 +746,11 @@
                 📷 扫码添加
             </button>
 
-
         </div>
-
 
     </div>
 
-
 </div>
-
 
 
 <!-- Toast -->
@@ -760,9 +761,7 @@
 ></div>
 
 
-
 <script>
-
 
 /* =====================================================
    Telegram Mini App
@@ -782,7 +781,6 @@ if (tg) {
     tg.expand();
 
 }
-
 
 
 /* =====================================================
@@ -810,7 +808,6 @@ try {
     accounts = [];
 
 }
-
 
 
 /* =====================================================
@@ -871,7 +868,6 @@ const toast =
     );
 
 
-
 /* =====================================================
    Toast
 ===================================================== */
@@ -884,16 +880,13 @@ function showToast(message) {
     toast.textContent =
         message;
 
-
     toast.classList.add(
         "show"
     );
 
-
     clearTimeout(
         toastTimer
     );
-
 
     toastTimer =
         setTimeout(
@@ -908,7 +901,6 @@ function showToast(message) {
         );
 
 }
-
 
 
 /* =====================================================
@@ -1019,7 +1011,6 @@ function base32ToBytes(base32) {
 }
 
 
-
 /* =====================================================
    TOTP
 ===================================================== */
@@ -1128,7 +1119,6 @@ async function generateTOTP(
 }
 
 
-
 /* =====================================================
    保存
 ===================================================== */
@@ -1143,7 +1133,6 @@ function saveAccounts() {
     );
 
 }
-
 
 
 /* =====================================================
@@ -1179,7 +1168,6 @@ function escapeHtml(
 }
 
 
-
 /* =====================================================
    验证码格式
 ===================================================== */
@@ -1206,7 +1194,6 @@ function formatCode(
     );
 
 }
-
 
 
 /* =====================================================
@@ -1265,15 +1252,15 @@ function renderAccounts() {
                 </div>
 
 
-                <div
-                    class="code"
-                    id="code-${index}"
-                >
-                    ------ 
-                </div>
+                <div class="code-row">
 
+                    <div
+                        class="code"
+                        id="code-${index}"
+                    >
+                        ------
+                    </div>
 
-                <div class="card-bottom">
 
                     <button
                         class="copy-button"
@@ -1283,6 +1270,10 @@ function renderAccounts() {
                         复制
                     </button>
 
+                </div>
+
+
+                <div class="card-bottom">
 
                     <div
                         class="seconds"
@@ -1291,16 +1282,16 @@ function renderAccounts() {
                         30秒
                     </div>
 
+
+                    <button
+                        class="delete-button"
+                        data-delete-index="${index}"
+                        type="button"
+                    >
+                        删除账号
+                    </button>
+
                 </div>
-
-
-                <button
-                    class="delete-button"
-                    data-delete-index="${index}"
-                    type="button"
-                >
-                    删除账号
-                </button>
 
             `;
 
@@ -1311,7 +1302,6 @@ function renderAccounts() {
 
         }
     );
-
 
 
     /* =============================
@@ -1347,7 +1337,6 @@ function renderAccounts() {
         );
 
 
-
     /* =============================
        删除
     ============================== */
@@ -1381,7 +1370,6 @@ function renderAccounts() {
         );
 
 }
-
 
 
 /* =====================================================
@@ -1472,7 +1460,6 @@ async function updateCodes() {
 }
 
 
-
 /* =====================================================
    复制验证码
 ===================================================== */
@@ -1542,7 +1529,6 @@ async function copyCode(
 }
 
 
-
 /* =====================================================
    删除账号
 ===================================================== */
@@ -1584,7 +1570,6 @@ function deleteAccount(
 }
 
 
-
 /* =====================================================
    确认添加账号
 ===================================================== */
@@ -1605,9 +1590,6 @@ async function addAccount() {
             .toUpperCase();
 
 
-
-    /* 名称 */
-
     if (!name) {
 
         showToast(
@@ -1621,9 +1603,6 @@ async function addAccount() {
     }
 
 
-
-    /* Secret */
-
     if (!secret) {
 
         showToast(
@@ -1636,9 +1615,6 @@ async function addAccount() {
 
     }
 
-
-
-    /* 验证 Secret */
 
     try {
 
@@ -1660,9 +1636,6 @@ async function addAccount() {
     }
 
 
-
-    /* 检查重复 */
-
     const exists =
         accounts.some(
             account =>
@@ -1682,9 +1655,6 @@ async function addAccount() {
     }
 
 
-
-    /* 添加 */
-
     accounts.push({
 
         id:
@@ -1699,14 +1669,8 @@ async function addAccount() {
     });
 
 
-
-    /* 保存 */
-
     saveAccounts();
 
-
-
-    /* 清空 */
 
     nameInput.value =
         "";
@@ -1715,24 +1679,15 @@ async function addAccount() {
         "";
 
 
-
-    /* 刷新 */
-
     renderAccounts();
 
     updateCodes();
 
 
-
-    /* 提示 */
-
     showToast(
         "账号添加成功"
     );
 
-
-
-    /* 滚动 */
 
     setTimeout(
         () => {
@@ -1750,7 +1705,6 @@ async function addAccount() {
     );
 
 }
-
 
 
 /* =====================================================
@@ -1876,8 +1830,6 @@ function parseOtpAuthUri(
         }
 
 
-        /* Issuer:Account */
-
         if (
             label.includes(":")
         ) {
@@ -1922,7 +1874,6 @@ function parseOtpAuthUri(
     }
 
 }
-
 
 
 /* =====================================================
@@ -2036,7 +1987,6 @@ function startScan() {
 }
 
 
-
 /* =====================================================
    顶部 + 按钮
 ===================================================== */
@@ -2066,13 +2016,9 @@ function focusAddForm() {
 }
 
 
-
 /* =====================================================
    事件
 ===================================================== */
-
-
-/* 顶部 + */
 
 addTop.addEventListener(
     "click",
@@ -2080,26 +2026,17 @@ addTop.addEventListener(
 );
 
 
-
-/* 确认添加 */
-
 confirmButton.addEventListener(
     "click",
     addAccount
 );
 
 
-
-/* 扫码 */
-
 scanButton.addEventListener(
     "click",
     startScan
 );
 
-
-
-/* Secret Key 自动大写 */
 
 secretInput.addEventListener(
     "input",
@@ -2112,9 +2049,6 @@ secretInput.addEventListener(
     }
 );
 
-
-
-/* Enter 快速确认 */
 
 secretInput.addEventListener(
     "keydown",
@@ -2133,7 +2067,6 @@ secretInput.addEventListener(
 );
 
 
-
 /* =====================================================
    初始化
 ===================================================== */
@@ -2142,9 +2075,6 @@ renderAccounts();
 
 updateCodes();
 
-
-
-/* 每秒更新 */
 
 setInterval(
     updateCodes,
@@ -2155,3 +2085,4 @@ setInterval(
 
 </body>
 </html>
+```
