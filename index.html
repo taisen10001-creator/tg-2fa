@@ -1,10 +1,10 @@
-开云体育赞助/我们的招商永久用户名@oooky
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>谷歌验证器</title>
+  <title>验证器</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
@@ -43,22 +43,6 @@
       max-width: 560px;
       margin: 0 auto;
       padding: 10px 12px 18px;
-    }
-
-    /* 顶部 */
-    .header {
-      height: 42px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      margin-bottom: 7px;
-    }
-
-    .header-title {
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1;
     }
 
     /* 账号区域 */
@@ -363,11 +347,6 @@
 
   <div class="app">
 
-    <!-- 顶部 -->
-    <header class="header">
-      <div class="header-title">验证器</div>
-    </header>
-
     <!-- 账号列表 -->
     <section class="accounts-section" id="accountsSection"></section>
 
@@ -393,7 +372,7 @@
           id="nameInput"
           type="text"
           autocomplete="off"
-          placeholder="输入账号名称"
+          placeholder="例如：我的验证1"
         >
       </div>
 
@@ -409,7 +388,7 @@
             autocomplete="off"
             autocapitalize="characters"
             spellcheck="false"
-            placeholder="输入设置密钥"
+            placeholder="例如：JBSWY3DPEHPK3PXP"
           >
 
           <button
@@ -470,20 +449,36 @@
 
     const STORAGE_KEY = "tg_authenticator_accounts";
 
-    const accountsSection = document.getElementById("accountsSection");
-    const addSection = document.getElementById("addSection");
-    const addInlineButton = document.getElementById("addInlineButton");
-    const nameInput = document.getElementById("nameInput");
-    const secretInput = document.getElementById("secretInput");
-    const confirmButton = document.getElementById("confirmButton");
-    const scanButton = document.getElementById("scanButton");
-    const toast = document.getElementById("toast");
+    const accountsSection =
+      document.getElementById("accountsSection");
+
+    const addSection =
+      document.getElementById("addSection");
+
+    const addInlineButton =
+      document.getElementById("addInlineButton");
+
+    const nameInput =
+      document.getElementById("nameInput");
+
+    const secretInput =
+      document.getElementById("secretInput");
+
+    const confirmButton =
+      document.getElementById("confirmButton");
+
+    const scanButton =
+      document.getElementById("scanButton");
+
+    const toast =
+      document.getElementById("toast");
 
     let accounts = loadAccounts();
 
     function loadAccounts() {
       try {
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved =
+          localStorage.getItem(STORAGE_KEY);
 
         if (!saved) {
           return [];
@@ -491,7 +486,10 @@
 
         const data = JSON.parse(saved);
 
-        return Array.isArray(data) ? data : [];
+        return Array.isArray(data)
+          ? data
+          : [];
+
       } catch (error) {
         return [];
       }
@@ -506,6 +504,7 @@
 
     function showToast(message) {
       toast.textContent = message;
+
       toast.classList.add("show");
 
       clearTimeout(showToast.timer);
@@ -524,23 +523,36 @@
     }
 
     function base32ToBytes(base32) {
-      const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+      const alphabet =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
       let bits = "";
       let output = [];
 
       for (const char of base32) {
-        const value = alphabet.indexOf(char);
+
+        const value =
+          alphabet.indexOf(char);
 
         if (value === -1) {
           continue;
         }
 
-        bits += value.toString(2).padStart(5, "0");
+        bits +=
+          value.toString(2).padStart(5, "0");
       }
 
-      for (let i = 0; i + 8 <= bits.length; i += 8) {
-        output.push(parseInt(bits.slice(i, i + 8), 2));
+      for (
+        let i = 0;
+        i + 8 <= bits.length;
+        i += 8
+      ) {
+        output.push(
+          parseInt(
+            bits.slice(i, i + 8),
+            2
+          )
+        );
       }
 
       return new Uint8Array(output);
@@ -548,44 +560,64 @@
 
     async function generateTOTP(secret) {
       try {
-        const cleanSecret = normalizeBase32(secret);
-        const keyBytes = base32ToBytes(cleanSecret);
+
+        const cleanSecret =
+          normalizeBase32(secret);
+
+        const keyBytes =
+          base32ToBytes(cleanSecret);
 
         if (!keyBytes.length) {
           return "------";
         }
 
-        const counter = Math.floor(Date.now() / 1000 / 30);
+        const counter =
+          Math.floor(
+            Date.now() / 1000 / 30
+          );
 
-        const counterBytes = new Uint8Array(8);
+        const counterBytes =
+          new Uint8Array(8);
 
         let value = counter;
 
-        for (let i = 7; i >= 0; i--) {
-          counterBytes[i] = value & 0xff;
-          value = Math.floor(value / 256);
+        for (
+          let i = 7;
+          i >= 0;
+          i--
+        ) {
+          counterBytes[i] =
+            value & 0xff;
+
+          value =
+            Math.floor(value / 256);
         }
 
-        const cryptoKey = await crypto.subtle.importKey(
-          "raw",
-          keyBytes,
-          {
-            name: "HMAC",
-            hash: "SHA-1"
-          },
-          false,
-          ["sign"]
-        );
+        const cryptoKey =
+          await crypto.subtle.importKey(
+            "raw",
+            keyBytes,
+            {
+              name: "HMAC",
+              hash: "SHA-1"
+            },
+            false,
+            ["sign"]
+          );
 
-        const signature = new Uint8Array(
-          await crypto.subtle.sign(
-            "HMAC",
-            cryptoKey,
-            counterBytes
-          )
-        );
+        const signature =
+          new Uint8Array(
+            await crypto.subtle.sign(
+              "HMAC",
+              cryptoKey,
+              counterBytes
+            )
+          );
 
-        const offset = signature[signature.length - 1] & 0x0f;
+        const offset =
+          signature[
+            signature.length - 1
+          ] & 0x0f;
 
         const binary =
           ((signature[offset] & 0x7f) << 24) |
@@ -593,9 +625,12 @@
           ((signature[offset + 2] & 0xff) << 8) |
           (signature[offset + 3] & 0xff);
 
-        const code = String(binary % 1000000).padStart(6, "0");
+        const code =
+          String(binary % 1000000)
+            .padStart(6, "0");
 
         return code;
+
       } catch (error) {
         console.error(error);
         return "------";
@@ -603,27 +638,42 @@
     }
 
     function formatCode(code) {
-      if (!code || code.length !== 6) {
+      if (
+        !code ||
+        code.length !== 6
+      ) {
         return code;
       }
 
-      return code.slice(0, 3) + " " + code.slice(3);
+      return (
+        code.slice(0, 3) +
+        " " +
+        code.slice(3)
+      );
     }
 
     function updateSeconds(element) {
-      const now = Math.floor(Date.now() / 1000);
-      const remaining = 30 - (now % 30);
+      const now =
+        Math.floor(Date.now() / 1000);
 
-      element.textContent = remaining + " 秒后刷新";
+      const remaining =
+        30 - (now % 30);
+
+      element.textContent =
+        remaining + " 秒后刷新";
     }
 
     async function renderAccounts() {
+
       accountsSection.innerHTML = "";
 
       if (accounts.length === 0) {
-        const empty = document.createElement("div");
 
-        empty.className = "empty-state";
+        const empty =
+          document.createElement("div");
+
+        empty.className =
+          "empty-state";
 
         empty.innerHTML = `
           <div class="empty-icon">🔐</div>
@@ -639,174 +689,370 @@
       }
 
       for (const account of accounts) {
-        const card = document.createElement("div");
-        card.className = "account-card";
 
-        const accountName = document.createElement("div");
-        accountName.className = "account-name";
-        accountName.textContent = account.name;
+        const card =
+          document.createElement("div");
 
-        const codeLabel = document.createElement("div");
-        codeLabel.className = "code-label";
-        codeLabel.textContent = "TOTP 验证码";
+        card.className =
+          "account-card";
 
-        const codeRow = document.createElement("div");
-        codeRow.className = "code-row";
+        const accountName =
+          document.createElement("div");
 
-        const code = document.createElement("div");
+        accountName.className =
+          "account-name";
+
+        accountName.textContent =
+          account.name;
+
+        const codeLabel =
+          document.createElement("div");
+
+        codeLabel.className =
+          "code-label";
+
+        codeLabel.textContent =
+          "TOTP 验证码";
+
+        const codeRow =
+          document.createElement("div");
+
+        codeRow.className =
+          "code-row";
+
+        const code =
+          document.createElement("div");
+
         code.className = "code";
         code.textContent = "------";
 
-        const copyButton = document.createElement("button");
-        copyButton.className = "copy-button";
+        const copyButton =
+          document.createElement("button");
+
+        copyButton.className =
+          "copy-button";
+
         copyButton.type = "button";
         copyButton.textContent = "复制";
 
-        copyButton.addEventListener("click", async () => {
-          const currentCode = await generateTOTP(account.secret);
+        copyButton.addEventListener(
+          "click",
+          async () => {
 
-          const cleanCode = currentCode.replace(/\s/g, "");
+            const currentCode =
+              await generateTOTP(
+                account.secret
+              );
 
-          if (!/^\d{6}$/.test(cleanCode)) {
-            showToast("验证码生成失败");
-            return;
-          }
+            const cleanCode =
+              currentCode.replace(
+                /\s/g,
+                ""
+              );
 
-          try {
-            await navigator.clipboard.writeText(cleanCode);
-            showToast("验证码已复制");
-          } catch (error) {
-            const textarea = document.createElement("textarea");
+            if (
+              !/^\d{6}$/.test(
+                cleanCode
+              )
+            ) {
+              showToast(
+                "验证码生成失败"
+              );
 
-            textarea.value = cleanCode;
-            textarea.style.position = "fixed";
-            textarea.style.opacity = "0";
-
-            document.body.appendChild(textarea);
-
-            textarea.select();
-
-            try {
-              document.execCommand("copy");
-              showToast("验证码已复制");
-            } catch (e) {
-              showToast("复制失败");
+              return;
             }
 
-            textarea.remove();
-          }
-        });
-
-        code.addEventListener("click", async () => {
-          const currentCode = await generateTOTP(account.secret);
-
-          if (/^\d{6}$/.test(currentCode)) {
             try {
-              await navigator.clipboard.writeText(currentCode);
-              showToast("验证码已复制");
+
+              await navigator.clipboard
+                .writeText(
+                  cleanCode
+                );
+
+              showToast(
+                "验证码已复制"
+              );
+
             } catch (error) {
-              showToast("验证码：" + formatCode(currentCode));
+
+              const textarea =
+                document.createElement(
+                  "textarea"
+                );
+
+              textarea.value =
+                cleanCode;
+
+              textarea.style.position =
+                "fixed";
+
+              textarea.style.opacity =
+                "0";
+
+              document.body.appendChild(
+                textarea
+              );
+
+              textarea.select();
+
+              try {
+
+                document.execCommand(
+                  "copy"
+                );
+
+                showToast(
+                  "验证码已复制"
+                );
+
+              } catch (e) {
+
+                showToast(
+                  "复制失败"
+                );
+              }
+
+              textarea.remove();
             }
           }
-        });
+        );
+
+        code.addEventListener(
+          "click",
+          async () => {
+
+            const currentCode =
+              await generateTOTP(
+                account.secret
+              );
+
+            if (
+              /^\d{6}$/.test(
+                currentCode
+              )
+            ) {
+
+              try {
+
+                await navigator.clipboard
+                  .writeText(
+                    currentCode
+                  );
+
+                showToast(
+                  "验证码已复制"
+                );
+
+              } catch (error) {
+
+                showToast(
+                  "验证码：" +
+                  formatCode(
+                    currentCode
+                  )
+                );
+              }
+            }
+          }
+        );
 
         codeRow.appendChild(code);
-        codeRow.appendChild(copyButton);
+        codeRow.appendChild(
+          copyButton
+        );
 
-        const bottom = document.createElement("div");
-        bottom.className = "account-bottom";
+        const bottom =
+          document.createElement("div");
 
-        const deleteButton = document.createElement("button");
-        deleteButton.className = "delete-button";
-        deleteButton.type = "button";
-        deleteButton.textContent = "删除账号";
+        bottom.className =
+          "account-bottom";
 
-        deleteButton.addEventListener("click", () => {
-          deleteAccount(account.id);
-        });
+        const deleteButton =
+          document.createElement(
+            "button"
+          );
 
-        const seconds = document.createElement("div");
-        seconds.className = "seconds";
+        deleteButton.className =
+          "delete-button";
 
-        bottom.appendChild(deleteButton);
-        bottom.appendChild(seconds);
+        deleteButton.type =
+          "button";
 
-        card.appendChild(accountName);
-        card.appendChild(codeLabel);
-        card.appendChild(codeRow);
-        card.appendChild(bottom);
+        deleteButton.textContent =
+          "删除账号";
 
-        accountsSection.appendChild(card);
+        deleteButton.addEventListener(
+          "click",
+          () => {
+            deleteAccount(
+              account.id
+            );
+          }
+        );
 
-        updateSeconds(seconds);
+        const seconds =
+          document.createElement("div");
 
-        refreshAccountCode(account, code);
+        seconds.className =
+          "seconds";
+
+        bottom.appendChild(
+          deleteButton
+        );
+
+        bottom.appendChild(
+          seconds
+        );
+
+        card.appendChild(
+          accountName
+        );
+
+        card.appendChild(
+          codeLabel
+        );
+
+        card.appendChild(
+          codeRow
+        );
+
+        card.appendChild(
+          bottom
+        );
+
+        accountsSection.appendChild(
+          card
+        );
+
+        updateSeconds(
+          seconds
+        );
+
+        refreshAccountCode(
+          account,
+          code
+        );
       }
     }
 
-    async function refreshAccountCode(account, element) {
-      const code = await generateTOTP(account.secret);
+    async function refreshAccountCode(
+      account,
+      element
+    ) {
+
+      const code =
+        await generateTOTP(
+          account.secret
+        );
 
       if (element) {
-        element.textContent = formatCode(code);
+        element.textContent =
+          formatCode(code);
       }
     }
 
     function deleteAccount(id) {
-      const confirmed = window.confirm(
-        "确定要删除这个账号吗？"
-      );
+
+      const confirmed =
+        window.confirm(
+          "确定要删除这个账号吗？"
+        );
 
       if (!confirmed) {
         return;
       }
 
-      accounts = accounts.filter(
-        account => account.id !== id
-      );
+      accounts =
+        accounts.filter(
+          account =>
+            account.id !== id
+        );
 
       saveAccounts();
+
       renderAccounts();
 
-      showToast("账号已删除");
+      showToast(
+        "账号已删除"
+      );
     }
 
     async function addAccount() {
-      const name = nameInput.value.trim();
-      const secret = normalizeBase32(secretInput.value);
+
+      const name =
+        nameInput.value.trim();
+
+      const secret =
+        normalizeBase32(
+          secretInput.value
+        );
 
       if (!name) {
-        showToast("请输入账号名称");
+
+        showToast(
+          "请输入账号名称"
+        );
+
         nameInput.focus();
+
         return;
       }
 
       if (!secret) {
-        showToast("请输入密钥");
+
+        showToast(
+          "请输入密钥"
+        );
+
         secretInput.focus();
+
         return;
       }
 
-      const validChars = /^[A-Z2-7]+$/;
+      const validChars =
+        /^[A-Z2-7]+$/;
 
-      if (!validChars.test(secret)) {
-        showToast("密钥格式不正确");
+      if (
+        !validChars.test(secret)
+      ) {
+
+        showToast(
+          "密钥格式不正确"
+        );
+
         secretInput.focus();
+
         return;
       }
 
-      const testCode = await generateTOTP(secret);
+      const testCode =
+        await generateTOTP(
+          secret
+        );
 
-      if (!/^\d{6}$/.test(testCode)) {
-        showToast("密钥无效，请检查后重试");
+      if (
+        !/^\d{6}$/.test(
+          testCode
+        )
+      ) {
+
+        showToast(
+          "密钥无效，请检查后重试"
+        );
+
         return;
       }
 
       const account = {
+
         id:
           Date.now().toString() +
-          Math.random().toString(36).slice(2),
+          Math.random()
+            .toString(36)
+            .slice(2),
+
         name: name,
+
         secret: secret
       };
 
@@ -819,20 +1065,26 @@
 
       await renderAccounts();
 
-      showToast("账号添加成功");
+      showToast(
+        "账号添加成功"
+      );
     }
 
     /* ＋按钮 */
-    addInlineButton.addEventListener("click", () => {
-      addSection.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
+    addInlineButton.addEventListener(
+      "click",
+      () => {
 
-      setTimeout(() => {
-        nameInput.focus();
-      }, 350);
-    });
+        addSection.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        setTimeout(() => {
+          nameInput.focus();
+        }, 350);
+      }
+    );
 
     /* 确认添加 */
     confirmButton.addEventListener(
@@ -842,66 +1094,99 @@
 
     /* 扫码 */
     function startScan() {
+
       if (
         tg &&
-        typeof tg.showScanQrPopup === "function"
+        typeof tg.showScanQrPopup ===
+          "function"
       ) {
+
         tg.showScanQrPopup(
           {
-            text: "扫描验证器二维码"
+            text:
+              "扫描验证器二维码"
           },
           (result) => {
+
             if (!result) {
               return;
             }
 
             try {
-              const url = new URL(result);
+
+              const url =
+                new URL(result);
 
               const secret =
-                url.searchParams.get("secret");
+                url.searchParams.get(
+                  "secret"
+                );
 
               const issuer =
-                url.searchParams.get("issuer");
+                url.searchParams.get(
+                  "issuer"
+                );
 
               const pathParts =
                 url.pathname.split("/");
 
               const label =
                 decodeURIComponent(
-                  pathParts[pathParts.length - 1] || ""
+                  pathParts[
+                    pathParts.length - 1
+                  ] || ""
                 );
 
               if (secret) {
+
                 secretInput.value =
                   secret.toUpperCase();
 
                 if (!nameInput.value) {
+
                   nameInput.value =
-                    label || issuer || "验证器账号";
+                    label ||
+                    issuer ||
+                    "验证器账号";
                 }
 
-                showToast("二维码识别成功");
+                showToast(
+                  "二维码识别成功"
+                );
 
                 setTimeout(() => {
-                  confirmButton.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                  });
+
+                  confirmButton
+                    .scrollIntoView({
+                      behavior: "smooth",
+                      block: "center"
+                    });
+
                 }, 150);
+
               } else {
-                showToast("二维码中没有找到密钥");
+
+                showToast(
+                  "二维码中没有找到密钥"
+                );
               }
 
             } catch (error) {
-              showToast("二维码格式无法识别");
+
+              showToast(
+                "二维码格式无法识别"
+              );
             }
 
             return true;
           }
         );
+
       } else {
-        showToast("请在 Telegram 中使用扫码功能");
+
+        showToast(
+          "请在 Telegram 中使用扫码功能"
+        );
       }
     }
 
@@ -914,6 +1199,7 @@
     secretInput.addEventListener(
       "keydown",
       event => {
+
         if (event.key === "Enter") {
           addAccount();
         }
@@ -923,6 +1209,7 @@
     nameInput.addEventListener(
       "keydown",
       event => {
+
         if (event.key === "Enter") {
           secretInput.focus();
         }
@@ -930,53 +1217,84 @@
     );
 
     /* 每秒更新验证码和倒计时 */
-    let lastPeriod = Math.floor(
-      Date.now() / 1000 / 30
-    );
+    let lastPeriod =
+      Math.floor(
+        Date.now() / 1000 / 30
+      );
 
-    setInterval(async () => {
-      const now = Math.floor(Date.now() / 1000);
+    setInterval(
+      async () => {
 
-      const currentPeriod =
-        Math.floor(now / 30);
+        const now =
+          Math.floor(
+            Date.now() / 1000
+          );
 
-      const remaining =
-        30 - (now % 30);
+        const currentPeriod =
+          Math.floor(
+            now / 30
+          );
 
-      const secondsElements =
-        document.querySelectorAll(".seconds");
+        const remaining =
+          30 - (now % 30);
 
-      secondsElements.forEach(element => {
-        element.textContent =
-          remaining + " 秒后刷新";
-      });
+        const secondsElements =
+          document.querySelectorAll(
+            ".seconds"
+          );
 
-      if (currentPeriod !== lastPeriod) {
-        lastPeriod = currentPeriod;
+        secondsElements.forEach(
+          element => {
 
-        const codeElements =
-          document.querySelectorAll(".code");
+            element.textContent =
+              remaining +
+              " 秒后刷新";
+          }
+        );
 
-        for (
-          let i = 0;
-          i < accounts.length;
-          i++
+        if (
+          currentPeriod !==
+          lastPeriod
         ) {
-          if (codeElements[i]) {
-            const code =
-              await generateTOTP(
-                accounts[i].secret
-              );
 
-            codeElements[i].textContent =
-              formatCode(code);
+          lastPeriod =
+            currentPeriod;
+
+          const codeElements =
+            document.querySelectorAll(
+              ".code"
+            );
+
+          for (
+            let i = 0;
+            i < accounts.length;
+            i++
+          ) {
+
+            if (
+              codeElements[i]
+            ) {
+
+              const code =
+                await generateTOTP(
+                  accounts[i].secret
+                );
+
+              codeElements[
+                i
+              ].textContent =
+                formatCode(code);
+            }
           }
         }
-      }
-    }, 1000);
+
+      },
+      1000
+    );
 
     /* 首次加载 */
     renderAccounts();
+
   </script>
 
 </body>
