@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -52,46 +52,50 @@
             min-height: 100vh;
         }
 
-        /* 顶部 */
-        .header {
-            height: 62px;
+        /* 添加账号标题 */
+        .add-title-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 18px;
-            background: #ffffff;
-            border-bottom: 1px solid #eeeeee;
-            position: sticky;
-            top: 0;
-            z-index: 20;
+            margin-bottom: 18px;
         }
 
-        .header-title {
-            font-size: 21px;
+        .section-title {
+            font-size: 18px;
             font-weight: 600;
+            margin: 0;
         }
 
-        .add-top-button {
-            width: 42px;
-            height: 42px;
+        .add-inline-button {
+            width: 38px;
+            height: 38px;
             border: 0;
+            border-radius: 50%;
             background: transparent;
-            font-size: 30px;
-            line-height: 42px;
             color: #1a73e8;
-            cursor: pointer;
+            font-size: 29px;
+            line-height: 38px;
             padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-inline-button:active {
+            background: #f1f3f4;
+            transform: scale(0.95);
         }
 
         /* 内容 */
         .content {
-            padding: 18px 16px 30px;
+            padding: 22px 16px 30px;
         }
 
         /* 空状态 */
         .empty-state {
             text-align: center;
-            padding: 52px 20px 34px;
+            padding: 32px 20px 30px;
         }
 
         .empty-icon {
@@ -119,12 +123,6 @@
             padding: 20px 16px 18px;
             margin-top: 6px;
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 18px;
         }
 
         .form-group {
@@ -166,7 +164,7 @@
             padding-right: 92px;
         }
 
-        /* 密钥框里的扫码按钮 */
+        /* 密钥输入框内的扫码按钮 */
         .scan-inside-button {
             position: absolute;
             right: 5px;
@@ -366,20 +364,6 @@
 
 <div class="app">
 
-    <!-- 顶部 -->
-    <header class="header">
-        <div class="header-title">验证器</div>
-
-        <button
-            class="add-top-button"
-            id="topAddButton"
-            type="button"
-            aria-label="添加账号"
-        >
-            ＋
-        </button>
-    </header>
-
     <main class="content">
 
         <!-- 空状态 -->
@@ -403,12 +387,28 @@
             class="add-section"
             id="addSection"
         >
-            <div class="section-title">
-                添加账号
+
+            <!-- 添加账号 + 按钮 -->
+            <div class="add-title-row">
+
+                <div class="section-title">
+                    添加账号
+                </div>
+
+                <button
+                    class="add-inline-button"
+                    id="addInlineButton"
+                    type="button"
+                    aria-label="添加账号"
+                >
+                    ＋
+                </button>
+
             </div>
 
             <!-- 账号名称 -->
             <div class="form-group">
+
                 <label
                     class="form-label"
                     for="nameInput"
@@ -423,10 +423,12 @@
                     autocomplete="off"
                     placeholder="输入账号名称"
                 >
+
             </div>
 
             <!-- 密钥 -->
             <div class="form-group">
+
                 <label
                     class="form-label"
                     for="secretInput"
@@ -446,7 +448,7 @@
                         placeholder="输入设置密钥"
                     >
 
-                    <!-- 扫码按钮放在密钥输入框内部 -->
+                    <!-- 扫码按钮在密钥输入框里面 -->
                     <button
                         class="scan-inside-button"
                         id="scanButton"
@@ -456,9 +458,10 @@
                     </button>
 
                 </div>
+
             </div>
 
-            <!-- 确认 -->
+            <!-- 确认添加 -->
             <button
                 class="confirm-button"
                 id="confirmButton"
@@ -466,6 +469,7 @@
             >
                 确认添加
             </button>
+
         </section>
 
         <!-- 账号列表 -->
@@ -474,7 +478,7 @@
             id="accounts"
         ></section>
 
-        <!-- 底部宣传 -->
+        <!-- 宣传 -->
         <div class="promo">
 
             <!-- 点击图片跳转 @kytttt -->
@@ -491,7 +495,7 @@
                 >
             </a>
 
-            <!-- 点击立即咨询继续跳转 @oooky -->
+            <!-- 点击立即咨询跳转 @oooky -->
             <a
                 class="promo-button"
                 href="https://t.me/oooky"
@@ -513,29 +517,46 @@
 
 
 <script>
-    const tg = window.Telegram && window.Telegram.WebApp
-        ? window.Telegram.WebApp
-        : null;
+    const tg =
+        window.Telegram &&
+        window.Telegram.WebApp
+            ? window.Telegram.WebApp
+            : null;
 
     if (tg) {
         tg.ready();
         tg.expand();
     }
 
-    const STORAGE_KEY = "tg_authenticator_accounts";
+    const STORAGE_KEY =
+        "tg_authenticator_accounts";
 
-    const emptyState = document.getElementById("emptyState");
-    const addSection = document.getElementById("addSection");
-    const accountsContainer = document.getElementById("accounts");
+    const emptyState =
+        document.getElementById("emptyState");
 
-    const nameInput = document.getElementById("nameInput");
-    const secretInput = document.getElementById("secretInput");
+    const addSection =
+        document.getElementById("addSection");
 
-    const confirmButton = document.getElementById("confirmButton");
-    const scanButton = document.getElementById("scanButton");
-    const topAddButton = document.getElementById("topAddButton");
+    const accountsContainer =
+        document.getElementById("accounts");
 
-    const toast = document.getElementById("toast");
+    const nameInput =
+        document.getElementById("nameInput");
+
+    const secretInput =
+        document.getElementById("secretInput");
+
+    const confirmButton =
+        document.getElementById("confirmButton");
+
+    const scanButton =
+        document.getElementById("scanButton");
+
+    const addInlineButton =
+        document.getElementById("addInlineButton");
+
+    const toast =
+        document.getElementById("toast");
 
     let toastTimer = null;
 
@@ -545,13 +566,17 @@
     ========================= */
 
     function showToast(message) {
+
         clearTimeout(toastTimer);
 
         toast.textContent = message;
+
         toast.classList.add("show");
 
         toastTimer = setTimeout(() => {
+
             toast.classList.remove("show");
+
         }, 1800);
     }
 
@@ -561,25 +586,36 @@
     ========================= */
 
     function loadAccounts() {
+
         try {
-            const data = localStorage.getItem(STORAGE_KEY);
+
+            const data =
+                localStorage.getItem(
+                    STORAGE_KEY
+                );
 
             if (!data) {
                 return [];
             }
 
-            const accounts = JSON.parse(data);
+            const accounts =
+                JSON.parse(data);
 
-            return Array.isArray(accounts) ? accounts : [];
+            return Array.isArray(accounts)
+                ? accounts
+                : [];
 
         } catch (error) {
+
             console.error(error);
+
             return [];
         }
     }
 
 
     function saveAccounts(accounts) {
+
         localStorage.setItem(
             STORAGE_KEY,
             JSON.stringify(accounts)
@@ -592,17 +628,23 @@
     ========================= */
 
     function base32ToBytes(base32) {
-        const clean = String(base32)
-            .toUpperCase()
-            .replace(/[\s=-]/g, "");
 
-        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        const clean =
+            String(base32)
+                .toUpperCase()
+                .replace(/[\s=-]/g, "");
+
+        const alphabet =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
         let bits = "";
+
         let output = [];
 
         for (const char of clean) {
-            const value = alphabet.indexOf(char);
+
+            const value =
+                alphabet.indexOf(char);
 
             if (value === -1) {
                 continue;
@@ -613,9 +655,17 @@
                 .padStart(5, "0");
         }
 
-        for (let i = 0; i + 8 <= bits.length; i += 8) {
+        for (
+            let i = 0;
+            i + 8 <= bits.length;
+            i += 8
+        ) {
+
             output.push(
-                parseInt(bits.substring(i, i + 8), 2)
+                parseInt(
+                    bits.substring(i, i + 8),
+                    2
+                )
             );
         }
 
@@ -628,27 +678,42 @@
     ========================= */
 
     async function generateTOTP(secret) {
-        const keyBytes = base32ToBytes(secret);
+
+        const keyBytes =
+            base32ToBytes(secret);
 
         if (!keyBytes.length) {
             throw new Error("密钥无效");
         }
 
-        const counter = Math.floor(
-            Date.now() / 1000 / 30
+        const counter =
+            Math.floor(
+                Date.now() / 1000 / 30
+            );
+
+        const counterBytes =
+            new ArrayBuffer(8);
+
+        const counterView =
+            new DataView(counterBytes);
+
+        const high =
+            Math.floor(
+                counter / 0x100000000
+            );
+
+        const low =
+            counter >>> 0;
+
+        counterView.setUint32(
+            0,
+            high
         );
 
-        const counterBytes = new ArrayBuffer(8);
-        const counterView = new DataView(counterBytes);
-
-        const high = Math.floor(
-            counter / 0x100000000
+        counterView.setUint32(
+            4,
+            low
         );
-
-        const low = counter >>> 0;
-
-        counterView.setUint32(0, high);
-        counterView.setUint32(4, low);
 
         const cryptoKey =
             await crypto.subtle.importKey(
@@ -681,28 +746,31 @@
             ((bytes[offset + 2] & 255) << 8) |
             (bytes[offset + 3] & 255);
 
-        const otp =
-            String(binary % 1000000)
-                .padStart(6, "0");
-
-        return otp;
+        return String(
+            binary % 1000000
+        ).padStart(6, "0");
     }
 
 
     /* =========================
-       otpauth:// QR 解析
+       QR 解析
     ========================= */
 
     function parseOtpAuth(uri) {
+
         try {
+
             if (
                 typeof uri !== "string" ||
-                !uri.toLowerCase().startsWith("otpauth://")
+                !uri
+                    .toLowerCase()
+                    .startsWith("otpauth://")
             ) {
                 return null;
             }
 
-            const url = new URL(uri);
+            const url =
+                new URL(uri);
 
             const type =
                 url.hostname.toLowerCase();
@@ -712,36 +780,51 @@
             }
 
             const secret =
-                url.searchParams.get("secret") || "";
+                url.searchParams.get(
+                    "secret"
+                ) || "";
 
             if (!secret) {
                 return null;
             }
 
             const issuer =
-                url.searchParams.get("issuer") || "";
+                url.searchParams.get(
+                    "issuer"
+                ) || "";
 
             let account =
                 decodeURIComponent(
-                    url.pathname.replace(/^\/+/, "")
+                    url.pathname.replace(
+                        /^\/+/,
+                        ""
+                    )
                 );
 
             if (account.includes(":")) {
+
                 account =
-                    account.split(":").slice(1).join(":");
+                    account
+                        .split(":")
+                        .slice(1)
+                        .join(":");
             }
 
-            account = account || "新账号";
+            account =
+                account || "新账号";
 
             return {
                 name: issuer
                     ? issuer + " - " + account
                     : account,
+
                 secret: secret
             };
 
         } catch (error) {
+
             console.error(error);
+
             return null;
         }
     }
@@ -755,16 +838,23 @@
 
         if (
             !tg ||
-            typeof tg.showScanQrPopup !== "function"
+            typeof tg.showScanQrPopup !==
+                "function"
         ) {
-            showToast("请在 Telegram 中使用扫码功能");
+
+            showToast(
+                "请在 Telegram 中使用扫码功能"
+            );
+
             return;
         }
 
         tg.showScanQrPopup(
             {
-                text: "扫描验证器二维码"
+                text:
+                    "扫描验证器二维码"
             },
+
             function (qrText) {
 
                 if (!qrText) {
@@ -775,17 +865,28 @@
                     parseOtpAuth(qrText);
 
                 if (!result) {
-                    showToast("二维码格式不正确");
+
+                    showToast(
+                        "二维码格式不正确"
+                    );
+
                     return true;
                 }
 
-                nameInput.value = result.name;
-                secretInput.value = result.secret;
+                nameInput.value =
+                    result.name;
 
-                showToast("二维码读取成功");
+                secretInput.value =
+                    result.secret;
+
+                showToast(
+                    "二维码读取成功"
+                );
 
                 setTimeout(() => {
+
                     secretInput.focus();
+
                 }, 100);
 
                 return true;
@@ -810,23 +911,39 @@
                 .toUpperCase();
 
         if (!name) {
-            showToast("请输入账号名称");
+
+            showToast(
+                "请输入账号名称"
+            );
+
             nameInput.focus();
+
             return;
         }
 
         if (!secret) {
-            showToast("请输入密钥");
+
+            showToast(
+                "请输入密钥"
+            );
+
             secretInput.focus();
+
             return;
         }
 
         try {
+
             await generateTOTP(secret);
 
         } catch (error) {
-            showToast("密钥无效，请检查后重试");
+
+            showToast(
+                "密钥无效，请检查后重试"
+            );
+
             secretInput.focus();
+
             return;
         }
 
@@ -834,9 +951,12 @@
             loadAccounts();
 
         accounts.push({
+
             id:
                 Date.now().toString() +
-                Math.random().toString(36).slice(2),
+                Math.random()
+                    .toString(36)
+                    .slice(2),
 
             name: name,
 
@@ -846,11 +966,14 @@
         saveAccounts(accounts);
 
         nameInput.value = "";
+
         secretInput.value = "";
 
         renderAccounts();
 
-        showToast("账号添加成功");
+        showToast(
+            "账号添加成功"
+        );
 
         window.scrollTo({
             top: 0,
@@ -875,14 +998,18 @@
         }
 
         const accounts =
-            loadAccounts()
-                .filter(account => account.id !== id);
+            loadAccounts().filter(
+                account =>
+                    account.id !== id
+            );
 
         saveAccounts(accounts);
 
         renderAccounts();
 
-        showToast("账号已删除");
+        showToast(
+            "账号已删除"
+        );
     }
 
 
@@ -893,7 +1020,8 @@
     async function copyCode(code) {
 
         const cleanCode =
-            String(code).replace(/\s/g, "");
+            String(code)
+                .replace(/\s/g, "");
 
         try {
 
@@ -901,32 +1029,45 @@
                 navigator.clipboard &&
                 navigator.clipboard.writeText
             ) {
+
                 await navigator.clipboard.writeText(
                     cleanCode
                 );
+
             } else {
 
                 const textarea =
-                    document.createElement("textarea");
+                    document.createElement(
+                        "textarea"
+                    );
 
-                textarea.value = cleanCode;
+                textarea.value =
+                    cleanCode;
 
-                document.body.appendChild(textarea);
+                document.body.appendChild(
+                    textarea
+                );
 
                 textarea.select();
 
-                document.execCommand("copy");
+                document.execCommand(
+                    "copy"
+                );
 
                 textarea.remove();
             }
 
-            showToast("验证码已复制");
+            showToast(
+                "验证码已复制"
+            );
 
         } catch (error) {
 
             console.error(error);
 
-            showToast("复制失败");
+            showToast(
+                "复制失败"
+            );
         }
     }
 
@@ -940,7 +1081,8 @@
         const card =
             document.createElement("div");
 
-        card.className = "account-card";
+        card.className =
+            "account-card";
 
         const accountName =
             document.createElement("div");
@@ -969,11 +1111,14 @@
         const code =
             document.createElement("div");
 
-        code.className = "code";
+        code.className =
+            "code";
 
-        code.textContent = "------";
+        code.textContent =
+            "------";
 
-        code.title = "点击复制验证码";
+        code.title =
+            "点击复制验证码";
 
         code.addEventListener(
             "click",
@@ -994,7 +1139,8 @@
         copyButton.className =
             "copy-button";
 
-        copyButton.type = "button";
+        copyButton.type =
+            "button";
 
         copyButton.textContent =
             "复制";
@@ -1013,7 +1159,10 @@
         );
 
         codeRow.appendChild(code);
-        codeRow.appendChild(copyButton);
+
+        codeRow.appendChild(
+            copyButton
+        );
 
         const bottom =
             document.createElement("div");
@@ -1033,7 +1182,8 @@
         deleteButton.className =
             "delete-button";
 
-        deleteButton.type = "button";
+        deleteButton.type =
+            "button";
 
         deleteButton.textContent =
             "删除账号";
@@ -1041,17 +1191,36 @@
         deleteButton.addEventListener(
             "click",
             () => {
-                deleteAccount(account.id);
+
+                deleteAccount(
+                    account.id
+                );
             }
         );
 
-        bottom.appendChild(seconds);
-        bottom.appendChild(deleteButton);
+        bottom.appendChild(
+            seconds
+        );
 
-        card.appendChild(accountName);
-        card.appendChild(codeLabel);
-        card.appendChild(codeRow);
-        card.appendChild(bottom);
+        bottom.appendChild(
+            deleteButton
+        );
+
+        card.appendChild(
+            accountName
+        );
+
+        card.appendChild(
+            codeLabel
+        );
+
+        card.appendChild(
+            codeRow
+        );
+
+        card.appendChild(
+            bottom
+        );
 
         updateAccountCard(
             account,
@@ -1102,20 +1271,25 @@
                 "";
         }
 
-        updateSeconds(secondsElement);
+        updateSeconds(
+            secondsElement
+        );
     }
 
 
     function updateSeconds(element) {
 
         const now =
-            Math.floor(Date.now() / 1000);
+            Math.floor(
+                Date.now() / 1000
+            );
 
         const remaining =
             30 - (now % 30);
 
         element.textContent =
-            remaining + " 秒后刷新";
+            remaining +
+            " 秒后刷新";
     }
 
 
@@ -1128,7 +1302,8 @@
         const accounts =
             loadAccounts();
 
-        accountsContainer.innerHTML = "";
+        accountsContainer.innerHTML =
+            "";
 
         if (accounts.length === 0) {
 
@@ -1140,20 +1315,25 @@
             emptyState.style.display =
                 "none";
 
-            accounts.forEach(account => {
+            accounts.forEach(
+                account => {
 
-                const card =
-                    createAccountCard(account);
+                    const card =
+                        createAccountCard(
+                            account
+                        );
 
-                accountsContainer.appendChild(card);
-
-            });
+                    accountsContainer.appendChild(
+                        card
+                    );
+                }
+            );
         }
     }
 
 
     /* =========================
-       刷新所有验证码
+       刷新验证码
     ========================= */
 
     async function refreshCodes() {
@@ -1166,26 +1346,37 @@
         const accounts =
             loadAccounts();
 
-        for (let i = 0; i < cards.length; i++) {
+        for (
+            let i = 0;
+            i < cards.length;
+            i++
+        ) {
 
-            const card = cards[i];
+            const card =
+                cards[i];
 
-            const account = accounts[i];
+            const account =
+                accounts[i];
 
             if (!account) {
                 continue;
             }
 
             const codeElement =
-                card.querySelector(".code");
+                card.querySelector(
+                    ".code"
+                );
 
             const secondsElement =
-                card.querySelector(".seconds");
+                card.querySelector(
+                    ".seconds"
+                );
 
             if (
                 codeElement &&
                 secondsElement
             ) {
+
                 await updateAccountCard(
                     account,
                     codeElement,
@@ -1197,10 +1388,10 @@
 
 
     /* =========================
-       顶部 + 添加
+       添加账号旁边的 +
     ========================= */
 
-    topAddButton.addEventListener(
+    addInlineButton.addEventListener(
         "click",
         () => {
 
@@ -1210,7 +1401,9 @@
             });
 
             setTimeout(() => {
+
                 nameInput.focus();
+
             }, 350);
         }
     );
@@ -1232,7 +1425,7 @@
 
 
     /* =========================
-       回车添加
+       回车
     ========================= */
 
     nameInput.addEventListener(
@@ -1240,20 +1433,21 @@
         event => {
 
             if (event.key === "Enter") {
+
                 secretInput.focus();
             }
-
         }
     );
+
 
     secretInput.addEventListener(
         "keydown",
         event => {
 
             if (event.key === "Enter") {
+
                 addAccount();
             }
-
         }
     );
 
@@ -1264,7 +1458,9 @@
 
     setInterval(
         () => {
+
             refreshCodes();
+
         },
         1000
     );
@@ -1275,10 +1471,10 @@
     ========================= */
 
     renderAccounts();
+
     refreshCodes();
 
 </script>
 
 </body>
 </html>
-
