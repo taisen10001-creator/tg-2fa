@@ -49,15 +49,16 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* =========================
+
+    /* =========================================================
        顶部
-    ========================= */
+    ========================================================= */
 
     .topbar {
       position: relative;
 
       width: 100%;
-      height: 54px;
+      height: 52px;
 
       display: flex;
       align-items: center;
@@ -68,24 +69,19 @@
     }
 
     .header-title {
-      margin: 0;
-      padding: 0;
-
       color: #222;
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 600;
       line-height: 1.4;
 
       white-space: nowrap;
-      overflow: visible;
-      text-overflow: clip;
     }
 
     .add-top-button {
       position: absolute;
 
-      right: 12px;
-      top: 8px;
+      right: 11px;
+      top: 7px;
 
       width: 38px;
       height: 38px;
@@ -95,6 +91,7 @@
       justify-content: center;
 
       padding: 0;
+
       border: 0;
       border-radius: 50%;
 
@@ -106,64 +103,71 @@
       line-height: 1;
 
       cursor: pointer;
-
       touch-action: manipulation;
-      box-shadow: 0 2px 6px rgba(25, 118, 210, 0.22);
+
+      box-shadow:
+        0 2px 7px rgba(25, 118, 210, 0.22);
     }
 
     .add-top-button:active {
-      transform: scale(0.93);
+      transform: scale(0.92);
     }
 
-    /* =========================
+
+    /* =========================================================
        主体
-    ========================= */
+    ========================================================= */
 
     .container {
       width: 100%;
       max-width: 520px;
 
       margin: 0 auto;
-      padding: 12px 14px 24px;
+
+      padding: 10px 13px 22px;
     }
 
-    /* =========================
+
+    /* =========================================================
        空状态
-    ========================= */
+    ========================================================= */
 
     .empty-state {
-      padding: 26px 8px 22px;
+      padding: 24px 8px 20px;
 
       text-align: center;
     }
 
     .empty-icon {
-      margin-bottom: 8px;
+      margin-bottom: 7px;
 
-      font-size: 42px;
+      font-size: 40px;
       line-height: 1;
     }
 
     .empty-title {
-      margin: 0 0 5px;
+      margin: 0 0 4px;
 
       color: #222;
-      font-size: 18px;
+
+      font-size: 17px;
       font-weight: 600;
-      line-height: 1.45;
+      line-height: 1.4;
     }
 
     .empty-text {
       margin: 0;
 
       color: #8a9097;
-      font-size: 13px;
-      line-height: 1.65;
+
+      font-size: 12px;
+      line-height: 1.6;
     }
 
-    /* =========================
+
+    /* =========================================================
        账号列表
-    ========================= */
+    ========================================================= */
 
     .accounts {
       width: 100%;
@@ -172,36 +176,38 @@
     .account-card {
       width: 100%;
 
-      margin-bottom: 9px;
-      padding: 13px 14px 11px;
+      margin-bottom: 8px;
+      padding: 12px 13px 10px;
 
       background: #fff;
 
       border: 1px solid #e9edf2;
       border-radius: 10px;
 
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.035);
+      box-shadow:
+        0 1px 5px rgba(0, 0, 0, 0.035);
     }
 
     .account-name {
-      margin: 0 0 8px;
+      margin: 0 0 7px;
 
       color: #222;
+
       font-size: 15px;
       font-weight: 600;
       line-height: 1.4;
 
       white-space: normal;
       overflow: visible;
-      text-overflow: clip;
       word-break: break-word;
     }
 
     .code-label {
-      margin: 0 0 2px;
+      margin: 0 0 1px;
 
       color: #8b9096;
-      font-size: 12px;
+
+      font-size: 11px;
       line-height: 1.4;
     }
 
@@ -210,8 +216,9 @@
 
       color: #1976d2;
 
-      font-size: 29px;
+      font-size: 28px;
       font-weight: 700;
+
       letter-spacing: 3px;
       line-height: 1.2;
 
@@ -225,7 +232,7 @@
       align-items: center;
       justify-content: space-between;
 
-      margin-top: 6px;
+      margin-top: 5px;
     }
 
     .copy-button {
@@ -241,10 +248,12 @@
       font-weight: 500;
 
       cursor: pointer;
+      touch-action: manipulation;
     }
 
     .seconds {
       color: #8b9096;
+
       font-size: 12px;
       line-height: 1.4;
     }
@@ -252,8 +261,8 @@
     .delete-button {
       width: 100%;
 
-      margin-top: 7px;
-      padding: 7px 0;
+      margin-top: 6px;
+      padding: 6px 0;
 
       border: 0;
       border-radius: 7px;
@@ -264,11 +273,14 @@
       font-size: 12px;
 
       cursor: pointer;
+      touch-action: manipulation;
     }
 
-    /* =========================
-       添加弹窗
-    ========================= */
+
+    /* =========================================================
+       添加账号弹窗
+       主页不会显示，只在点击右上角 + 后出现
+    ========================================================= */
 
     .modal-mask {
       position: fixed;
@@ -276,14 +288,18 @@
       inset: 0;
 
       display: none;
-      align-items: flex-end;
+
+      align-items: center;
       justify-content: center;
 
-      padding: 0;
+      padding: 18px;
 
-      background: rgba(0, 0, 0, 0.38);
+      background: rgba(0, 0, 0, 0.42);
 
       z-index: 9998;
+
+      -webkit-backdrop-filter: blur(2px);
+      backdrop-filter: blur(2px);
     }
 
     .modal-mask.show {
@@ -292,26 +308,29 @@
 
     .add-modal {
       width: 100%;
-      max-width: 520px;
+      max-width: 390px;
 
-      padding: 16px 16px 20px;
+      padding: 17px 16px 16px;
 
       background: #fff;
 
-      border-radius: 18px 18px 0 0;
+      border-radius: 15px;
 
-      box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.12);
+      box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.18);
 
-      animation: modalUp 0.2s ease-out;
+      animation: modalShow 0.18s ease-out;
     }
 
-    @keyframes modalUp {
+    @keyframes modalShow {
       from {
-        transform: translateY(100%);
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
       }
 
       to {
-        transform: translateY(0);
+        opacity: 1;
+        transform: scale(1) translateY(0);
       }
     }
 
@@ -322,14 +341,12 @@
       align-items: center;
       justify-content: center;
 
-      height: 32px;
+      height: 30px;
 
       margin-bottom: 13px;
     }
 
     .add-title {
-      margin: 0;
-
       color: #222;
 
       font-size: 17px;
@@ -337,8 +354,6 @@
       line-height: 1.4;
 
       white-space: nowrap;
-      overflow: visible;
-      text-overflow: clip;
     }
 
     .close-button {
@@ -366,11 +381,17 @@
       line-height: 1;
 
       cursor: pointer;
+      touch-action: manipulation;
     }
 
-    /* =========================
+    .close-button:active {
+      transform: scale(0.9);
+    }
+
+
+    /* =========================================================
        输入框
-    ========================= */
+    ========================================================= */
 
     .input-label {
       display: block;
@@ -382,10 +403,6 @@
       font-size: 13px;
       font-weight: 500;
       line-height: 1.4;
-
-      white-space: normal;
-      overflow: visible;
-      text-overflow: clip;
     }
 
     .input-row {
@@ -393,9 +410,9 @@
       align-items: center;
 
       width: 100%;
-      height: 44px;
+      height: 43px;
 
-      margin-bottom: 12px;
+      margin-bottom: 11px;
 
       background: #fff;
 
@@ -407,17 +424,21 @@
 
     .input-row:focus-within {
       border-color: #1976d2;
-      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.07);
+
+      box-shadow:
+        0 0 0 2px rgba(25, 118, 210, 0.07);
     }
 
     .input {
       flex: 1;
 
+      min-width: 0;
+
       width: 0;
-      height: 42px;
+      height: 41px;
 
       margin: 0;
-      padding: 0 12px;
+      padding: 0 11px;
 
       border: 0;
       outline: none;
@@ -426,7 +447,7 @@
       color: #222;
 
       font-size: 14px;
-      line-height: 42px;
+      line-height: 41px;
 
       -webkit-appearance: none;
       appearance: none;
@@ -436,15 +457,16 @@
       color: #a2a7ad;
     }
 
-    /* =========================
-       简约二维码按钮
-    ========================= */
+
+    /* =========================================================
+       二维码按钮
+    ========================================================= */
 
     .qr-button {
-      flex: 0 0 42px;
+      flex: 0 0 45px;
 
-      width: 42px;
-      height: 42px;
+      width: 45px;
+      height: 41px;
 
       display: flex;
       align-items: center;
@@ -459,19 +481,18 @@
       color: #555;
 
       cursor: pointer;
-
       touch-action: manipulation;
     }
 
     .qr-button:active {
-      background: #f5f7f9;
+      background: #f2f5f7;
     }
 
     .qr-icon {
       position: relative;
 
-      width: 20px;
-      height: 20px;
+      width: 21px;
+      height: 21px;
 
       border: 2px solid currentColor;
 
@@ -484,8 +505,8 @@
 
       position: absolute;
 
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
 
       border: 2px solid currentColor;
 
@@ -514,9 +535,10 @@
       background: currentColor;
     }
 
-    /* =========================
-       按钮
-    ========================= */
+
+    /* =========================================================
+       确认按钮
+    ========================================================= */
 
     .confirm-button {
       display: flex;
@@ -524,9 +546,9 @@
       justify-content: center;
 
       width: 100%;
-      height: 44px;
+      height: 43px;
 
-      margin: 3px 0 0;
+      margin: 2px 0 0;
 
       padding: 0;
 
@@ -540,7 +562,6 @@
       font-weight: 600;
 
       cursor: pointer;
-
       touch-action: manipulation;
     }
 
@@ -549,16 +570,17 @@
       opacity: 0.92;
     }
 
-    /* =========================
+
+    /* =========================================================
        底部宣传图
-    ========================= */
+    ========================================================= */
 
     .bottom-promo {
       position: relative;
 
       width: 100%;
 
-      margin-top: 12px;
+      margin-top: 11px;
 
       overflow: hidden;
 
@@ -578,7 +600,7 @@
       position: absolute;
 
       left: 50%;
-      bottom: 14px;
+      bottom: 13px;
 
       transform: translateX(-50%);
 
@@ -587,9 +609,9 @@
       justify-content: center;
 
       min-width: 120px;
-      height: 38px;
+      height: 37px;
 
-      padding: 0 21px;
+      padding: 0 20px;
 
       border-radius: 20px;
 
@@ -600,14 +622,14 @@
 
       font-size: 14px;
       font-weight: 600;
-      line-height: 38px;
+      line-height: 37px;
 
       white-space: nowrap;
 
-      box-shadow: 0 3px 9px rgba(0, 0, 0, 0.22);
+      box-shadow:
+        0 3px 9px rgba(0, 0, 0, 0.22);
 
       touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .consult-button:active {
@@ -615,9 +637,10 @@
       opacity: 0.9;
     }
 
-    /* =========================
+
+    /* =========================================================
        Toast
-    ========================= */
+    ========================================================= */
 
     .toast {
       position: fixed;
@@ -659,7 +682,11 @@
 
 <div class="app">
 
-  <!-- 顶部 -->
+  <!-- =======================================================
+       顶部
+       主页这里只保留标题和 + 按钮
+  ======================================================== -->
+
   <div class="topbar">
 
     <div class="header-title">
@@ -678,10 +705,14 @@
   </div>
 
 
-  <!-- 主体 -->
+  <!-- =======================================================
+       主体
+  ======================================================== -->
+
   <main class="container">
 
     <!-- 空状态 -->
+
     <div
       id="emptyState"
       class="empty-state"
@@ -703,14 +734,16 @@
     </div>
 
 
-    <!-- 账号 -->
+    <!-- 账号列表 -->
+
     <div
       id="accounts"
       class="accounts"
     ></div>
 
 
-    <!-- 底部宣传图 -->
+    <!-- 宣传图 -->
+
     <div class="bottom-promo">
 
       <img
@@ -735,10 +768,15 @@
 </div>
 
 
-<!-- 添加账号弹窗 -->
+<!-- =========================================================
+     添加账号弹窗
+     默认隐藏
+========================================================= -->
+
 <div
   id="modalMask"
   class="modal-mask"
+  aria-hidden="true"
 >
 
   <div
@@ -765,6 +803,7 @@
 
 
     <!-- 账号名称 -->
+
     <label
       class="input-label"
       for="accountName"
@@ -786,7 +825,7 @@
         id="qrButton"
         class="qr-button"
         type="button"
-        aria-label="扫码添加"
+        aria-label="扫描二维码"
       >
         <span class="qr-icon">
           <span class="qr-dot"></span>
@@ -797,6 +836,7 @@
 
 
     <!-- 秘钥 -->
+
     <label
       class="input-label"
       for="secretKey"
@@ -813,6 +853,7 @@
         placeholder="输入秘钥"
         autocomplete="off"
         autocapitalize="characters"
+        spellcheck="false"
       >
 
     </div>
@@ -832,6 +873,7 @@
 
 
 <!-- Toast -->
+
 <div
   id="toast"
   class="toast"
@@ -848,13 +890,25 @@
     window.Telegram?.WebApp || null;
 
 
+  /*
+    Telegram 初始化
+  */
+
   if (tg) {
 
     try {
+
       tg.ready();
+
       tg.expand();
-    } catch (e) {
-      console.log(e);
+
+    } catch (error) {
+
+      console.log(
+        "Telegram 初始化失败:",
+        error
+      );
+
     }
 
   }
@@ -879,13 +933,17 @@
           STORAGE_KEY
         );
 
+
       if (data) {
 
         const parsed =
           JSON.parse(data);
 
+
         if (Array.isArray(parsed)) {
+
           accounts = parsed;
+
         }
 
       }
@@ -898,6 +956,7 @@
       );
 
       accounts = [];
+
     }
 
   }
@@ -919,6 +978,10 @@
         error
       );
 
+      showToast(
+        "账号保存失败"
+      );
+
     }
 
   }
@@ -935,11 +998,15 @@
         .toUpperCase()
         .replace(/[\s=-]/g, "");
 
+
     const alphabet =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
+
     let bits = "";
-    let output = [];
+
+    const output = [];
+
 
     for (
       let i = 0;
@@ -952,9 +1019,11 @@
           clean[i]
         );
 
+
       if (value === -1) {
         continue;
       }
+
 
       bits +=
         value
@@ -980,7 +1049,10 @@
     }
 
 
-    return new Uint8Array(output);
+    return new Uint8Array(
+      output
+    );
+
   }
 
 
@@ -993,8 +1065,13 @@
     const keyBytes =
       base32ToBytes(secret);
 
+
     if (!keyBytes.length) {
-      throw new Error("秘钥无效");
+
+      throw new Error(
+        "秘钥无效"
+      );
+
     }
 
 
@@ -1006,6 +1083,7 @@
 
     const counterBytes =
       new ArrayBuffer(8);
+
 
     const counterView =
       new DataView(
@@ -1075,6 +1153,7 @@
 
     return String(code)
       .padStart(6, "0");
+
   }
 
 
@@ -1085,8 +1164,11 @@
   function formatCode(code) {
 
     if (!code) {
+
       return "------";
+
     }
+
 
     return (
       code.slice(0, 3) +
@@ -1139,7 +1221,7 @@
 
 
   /* ============================================================
-     添加弹窗
+     添加账号弹窗
   ============================================================ */
 
   const modalMask =
@@ -1166,12 +1248,24 @@
       "show"
     );
 
+    modalMask.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+
+    /*
+      打开弹窗后不强制自动弹出键盘。
+
+      这样在手机 Telegram 中点击 +
+      后页面更稳定。
+    */
 
     setTimeout(() => {
 
       accountName.focus();
 
-    }, 150);
+    }, 220);
 
   }
 
@@ -1181,6 +1275,20 @@
     modalMask.classList.remove(
       "show"
     );
+
+    modalMask.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+
+    /*
+      关闭时收起输入焦点
+    */
+
+    accountName.blur();
+
+    secretKey.blur();
 
   }
 
@@ -1205,7 +1313,9 @@
     );
 
 
-  /* 点击遮罩关闭 */
+  /*
+    点击黑色区域关闭
+  */
 
   modalMask.addEventListener(
     "click",
@@ -1214,6 +1324,27 @@
       if (
         event.target ===
         modalMask
+      ) {
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+
+  /*
+    ESC 关闭
+  */
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (
+        event.key === "Escape" &&
+        modalMask.classList.contains("show")
       ) {
 
         closeModal();
@@ -1245,7 +1376,9 @@
     container.innerHTML = "";
 
 
-    if (accounts.length === 0) {
+    if (
+      accounts.length === 0
+    ) {
 
       emptyState.style.display =
         "block";
@@ -1271,6 +1404,10 @@
           "account-card";
 
 
+        /*
+          账号名称
+        */
+
         const name =
           document.createElement(
             "div"
@@ -1284,6 +1421,10 @@
           "未命名账号";
 
 
+        /*
+          标签
+        */
+
         const label =
           document.createElement(
             "div"
@@ -1295,6 +1436,10 @@
         label.textContent =
           "TOTP 验证码";
 
+
+        /*
+          验证码
+        */
 
         const code =
           document.createElement(
@@ -1311,6 +1456,10 @@
           "------";
 
 
+        /*
+          底部
+        */
+
         const bottom =
           document.createElement(
             "div"
@@ -1319,6 +1468,10 @@
         bottom.className =
           "card-bottom";
 
+
+        /*
+          复制
+        */
 
         const copyButton =
           document.createElement(
@@ -1356,7 +1509,9 @@
               currentCode ===
                 "------"
             ) {
+
               return;
+
             }
 
 
@@ -1367,6 +1522,7 @@
                 .writeText(
                   currentCode
                 );
+
 
               showToast(
                 "验证码已复制"
@@ -1379,20 +1535,26 @@
                   "textarea"
                 );
 
+
               textarea.value =
                 currentCode;
+
 
               document.body.appendChild(
                 textarea
               );
 
+
               textarea.select();
+
 
               document.execCommand(
                 "copy"
               );
 
+
               textarea.remove();
+
 
               showToast(
                 "验证码已复制"
@@ -1403,6 +1565,10 @@
           }
         );
 
+
+        /*
+          倒计时
+        */
 
         const seconds =
           document.createElement(
@@ -1427,6 +1593,10 @@
           seconds
         );
 
+
+        /*
+          删除
+        */
 
         const deleteButton =
           document.createElement(
@@ -1454,7 +1624,9 @@
 
 
             if (!confirmed) {
+
               return;
+
             }
 
 
@@ -1468,6 +1640,7 @@
 
             renderAccounts();
 
+
             showToast(
               "账号已删除"
             );
@@ -1475,6 +1648,10 @@
           }
         );
 
+
+        /*
+          组装
+        */
 
         card.appendChild(
           name
@@ -1549,7 +1726,9 @@
 
 
         if (!codeElement) {
+
           return;
+
         }
 
 
@@ -1571,6 +1750,7 @@
             error
           );
 
+
           codeElement.textContent =
             "------";
 
@@ -1583,7 +1763,7 @@
 
 
   /* ============================================================
-     确认添加
+     确认添加账号
   ============================================================ */
 
   async function addAccount() {
@@ -1608,6 +1788,7 @@
       accountName.focus();
 
       return;
+
     }
 
 
@@ -1620,6 +1801,7 @@
       secretKey.focus();
 
       return;
+
     }
 
 
@@ -1638,6 +1820,7 @@
       secretKey.focus();
 
       return;
+
     }
 
 
@@ -1649,13 +1832,16 @@
 
     saveAccounts();
 
+
     accountName.value = "";
+
     secretKey.value = "";
 
 
     closeModal();
 
     renderAccounts();
+
 
     showToast(
       "账号添加成功"
@@ -1674,7 +1860,9 @@
     );
 
 
-  /* Secret Key 回车 */
+  /*
+    秘钥输入框回车
+  */
 
   secretKey.addEventListener(
     "keydown",
@@ -1695,41 +1883,77 @@
 
 
   /* ============================================================
-     扫码
+     Telegram 扫码
   ============================================================ */
 
-  document
-    .getElementById(
+  const qrButton =
+    document.getElementById(
       "qrButton"
-    )
-    .addEventListener(
-      "click",
-      openScanner
     );
 
 
-  function openScanner() {
+  qrButton.addEventListener(
+    "click",
+    openScanner
+  );
+
+
+  async function openScanner() {
 
     /*
-      Telegram Mini App 原生扫码
+      防止按钮重复点击
     */
 
-    if (
-      !tg ||
-      typeof tg.showScanQrPopup !==
-        "function"
-    ) {
-
-      showToast(
-        "请在 Telegram 机器人中打开此页面后扫码"
-      );
-
-      return;
-
-    }
+    qrButton.disabled = true;
 
 
     try {
+
+      /*
+        必须从 Telegram Mini App 中打开
+      */
+
+      if (!tg) {
+
+        showToast(
+          "请从 Telegram 机器人中打开验证器"
+        );
+
+        return;
+
+      }
+
+
+      /*
+        检查 Telegram 是否支持原生扫码
+      */
+
+      if (
+        typeof tg.showScanQrPopup !==
+        "function"
+      ) {
+
+        showToast(
+          "当前 Telegram 不支持扫码，请更新 Telegram"
+        );
+
+        return;
+
+      }
+
+
+      /*
+        先关闭软键盘
+      */
+
+      accountName.blur();
+
+      secretKey.blur();
+
+
+      /*
+        打开 Telegram 原生扫码窗口
+      */
 
       tg.showScanQrPopup(
         {
@@ -1739,37 +1963,62 @@
 
         (result) => {
 
+          /*
+            Telegram 返回二维码内容
+          */
+
           if (!result) {
+
             return false;
+
           }
 
 
-          handleQRCode(
+          console.log(
+            "扫描到二维码:",
             result
           );
 
 
+          const success =
+            handleQRCode(
+              result
+            );
+
+
           /*
-            返回 true：
-            告诉 Telegram 扫描成功，
-            关闭扫码界面
+            只有识别成功才关闭扫码窗口
           */
 
-          return true;
+          return success;
 
         }
       );
 
+
     } catch (error) {
 
       console.error(
-        "扫码失败:",
+        "Telegram 扫码打开失败:",
         error
       );
 
+
       showToast(
-        "无法打开扫码"
+        "扫码无法打开，请更新 Telegram"
       );
+
+    } finally {
+
+      /*
+        稍微延迟恢复按钮
+      */
+
+      setTimeout(() => {
+
+        qrButton.disabled = false;
+
+      }, 800);
 
     }
 
@@ -1784,9 +2033,28 @@
 
     try {
 
+      if (!text) {
+
+        showToast(
+          "没有读取到二维码"
+        );
+
+        return false;
+
+      }
+
+
+      const rawText =
+        String(text).trim();
+
+
+      /*
+        必须是 Google Authenticator
+        常见的 otpauth:// 二维码
+      */
+
       if (
-        !text ||
-        !text
+        !rawText
           .toLowerCase()
           .startsWith(
             "otpauth://"
@@ -1797,14 +2065,35 @@
           "不是有效的验证器二维码"
         );
 
-        return;
+        return false;
 
       }
 
 
-      const url =
-        new URL(text);
+      let url;
 
+
+      try {
+
+        url =
+          new URL(
+            rawText
+          );
+
+      } catch (error) {
+
+        showToast(
+          "二维码格式错误"
+        );
+
+        return false;
+
+      }
+
+
+      /*
+        读取秘钥
+      */
 
       const secret =
         url.searchParams.get(
@@ -1818,23 +2107,89 @@
           "二维码中没有找到秘钥"
         );
 
-        return;
+        return false;
 
       }
 
 
+      /*
+        清理秘钥
+      */
+
+      const cleanSecret =
+        secret
+          .replace(
+            /\s/g,
+            ""
+          )
+          .toUpperCase();
+
+
+      /*
+        验证秘钥是否可以生成验证码
+      */
+
+      try {
+
+        base32ToBytes(
+          cleanSecret
+        );
+
+      } catch (error) {
+
+        showToast(
+          "二维码中的秘钥无效"
+        );
+
+        return false;
+
+      }
+
+
+      /*
+        读取账号名称
+      */
+
       let name = "";
 
 
-      const path =
-        decodeURIComponent(
-          url.pathname
-            .replace(
-              /^\/+/,
-              ""
-            )
+      let path =
+        url.pathname
+          .replace(
+            /^\/+/,
+            ""
+          );
+
+
+      try {
+
+        path =
+          decodeURIComponent(
+            path
+          );
+
+      } catch (error) {
+
+        console.log(
+          "账号名称解码失败:",
+          error
         );
 
+      }
+
+
+      /*
+        otpauth://totp/发行商:账号
+        取冒号后面的账号名称
+
+        例如：
+
+        otpauth://totp/Google:user@example.com
+
+        最终显示：
+
+        user@example.com
+      */
 
       if (
         path.includes(":")
@@ -1848,32 +2203,68 @@
 
       } else {
 
-        name = path;
+        name =
+          path;
 
       }
 
 
+      /*
+        有些二维码格式可能把 issuer
+        放在参数里
+      */
+
       if (!name) {
 
+        const issuer =
+          url.searchParams.get(
+            "issuer"
+          );
+
+
         name =
+          issuer ||
           "扫描添加的账号";
 
       }
 
+
+      /*
+        填入添加账号弹窗
+      */
 
       accountName.value =
         name;
 
 
       secretKey.value =
-        secret
-          .replace(/\s/g, "")
-          .toUpperCase();
+        cleanSecret;
+
+
+      /*
+        确保弹窗仍然显示
+      */
+
+      modalMask.classList.add(
+        "show"
+      );
+
+      modalMask.setAttribute(
+        "aria-hidden",
+        "false"
+      );
 
 
       showToast(
         "二维码识别成功"
       );
+
+
+      /*
+        扫码成功
+      */
+
+      return true;
 
     } catch (error) {
 
@@ -1882,9 +2273,13 @@
         error
       );
 
+
       showToast(
         "二维码解析失败"
       );
+
+
+      return false;
 
     }
 
