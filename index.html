@@ -1,4 +1,4 @@
-开云体育九台55％招收代理-官方频道 @kytttt
+```html
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -124,45 +124,6 @@
 
         .header-plus:active {
             opacity: 0.6;
-        }
-
-
-        /* ================================
-           官方招商按钮
-        ================================= */
-
-        .official-link {
-            display: block;
-
-            width: calc(100% - 32px);
-
-            margin: 12px auto 0;
-
-            padding: 10px 14px;
-
-            background: #ffffff;
-
-            color: #1a73e8;
-
-            text-decoration: none;
-
-            text-align: center;
-
-            font-size: 15px;
-
-            border: 1px solid #1a73e8;
-
-            border-radius: 9px;
-
-            transition:
-                background 0.15s ease,
-                transform 0.15s ease;
-        }
-
-        .official-link:active {
-            background: #f0f6ff;
-
-            transform: scale(0.99);
         }
 
 
@@ -505,6 +466,72 @@
 
 
         /* ================================
+           底部宣传区域
+        ================================= */
+
+        .promo {
+            margin-top: 20px;
+
+            width: 100%;
+
+            text-align: center;
+        }
+
+        .promo-image {
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+
+            border-radius: 12px;
+
+            object-fit: cover;
+
+            box-shadow:
+                0 1px 5px rgba(0, 0, 0, 0.08);
+        }
+
+        .promo-button {
+            display: block;
+
+            width: 100%;
+
+            height: 46px;
+
+            margin-top: 10px;
+
+            border: 0;
+
+            border-radius: 9px;
+
+            background: #1a73e8;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-size: 16px;
+
+            line-height: 46px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition:
+                background 0.15s ease,
+                transform 0.1s ease;
+        }
+
+        .promo-button:active {
+            background: #1557b0;
+
+            transform: scale(0.99);
+        }
+
+
+        /* ================================
            Toast
         ================================= */
 
@@ -572,13 +599,6 @@
                 font-size: 20px;
             }
 
-            .official-link {
-                width:
-                    calc(100% - 24px);
-
-                margin-top: 10px;
-            }
-
             .add-form {
                 padding: 16px;
             }
@@ -596,6 +616,10 @@
                 gap: 10px;
             }
 
+            .promo {
+                margin-top: 16px;
+            }
+
         }
 
     </style>
@@ -607,13 +631,16 @@
 <div class="app">
 
 
-    <!-- 顶部 -->
+    <!-- =========================================
+         顶部
+    ========================================== -->
 
     <div class="header">
 
         <div class="header-title">
             验证器
         </div>
+
 
         <button
             class="header-plus"
@@ -627,28 +654,23 @@
     </div>
 
 
-    <!-- 官方招商按钮 -->
 
-    <a
-        class="official-link"
-        href="https://t.me/oooky"
-        target="_blank"
-        rel="noopener noreferrer"
-    >
-        开云体育官方招商 @oooky
-    </a>
-
-
-    <!-- 主内容 -->
+    <!-- =========================================
+         主内容
+    ========================================== -->
 
     <div class="content">
+
 
         <!-- 账号列表 -->
 
         <div id="accounts"></div>
 
 
-        <!-- 暂无账号 -->
+
+        <!-- =====================================
+             暂无账号
+        ====================================== -->
 
         <div
             class="empty"
@@ -659,9 +681,11 @@
                 🔐
             </div>
 
+
             <div class="empty-title">
                 暂无账号
             </div>
+
 
             <div class="empty-text">
                 在下面输入账号信息，<br>
@@ -671,20 +695,26 @@
         </div>
 
 
-        <!-- 添加账号 -->
+
+        <!-- =====================================
+             添加账号
+        ====================================== -->
 
         <div
             class="add-form"
             id="addForm"
         >
 
+
             <div class="add-form-title">
                 添加账号
             </div>
 
+
             <div class="add-form-tip">
                 设置密钥仅保存在当前设备本地，不上传到服务器。
             </div>
+
 
 
             <!-- 账号名称 -->
@@ -696,6 +726,7 @@
                 账号名称
             </label>
 
+
             <input
                 class="form-input"
                 id="nameInput"
@@ -703,6 +734,7 @@
                 autocomplete="off"
                 placeholder="例如：Google"
             >
+
 
 
             <!-- Secret Key -->
@@ -714,6 +746,7 @@
                 Secret Key
             </label>
 
+
             <input
                 class="form-input"
                 id="secretInput"
@@ -723,6 +756,7 @@
                 spellcheck="false"
                 placeholder="输入设置密钥"
             >
+
 
 
             <!-- 确认添加 -->
@@ -736,6 +770,7 @@
             </button>
 
 
+
             <!-- 扫码添加 -->
 
             <button
@@ -746,11 +781,41 @@
                 📷 扫码添加
             </button>
 
+
         </div>
+
+
+
+        <!-- =====================================
+             底部宣传图 + 按钮
+        ====================================== -->
+
+        <div class="promo">
+
+            <img
+                class="promo-image"
+                src="./photo_2026-09-13_14-48-34.jpg"
+                alt="宣传图"
+            >
+
+
+            <a
+                class="promo-button"
+                href="https://t.me/oooky"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                立即咨询
+            </a>
+
+        </div>
+
 
     </div>
 
+
 </div>
+
 
 
 <!-- Toast -->
@@ -761,7 +826,9 @@
 ></div>
 
 
+
 <script>
+
 
 /* =====================================================
    Telegram Mini App
@@ -781,6 +848,7 @@ if (tg) {
     tg.expand();
 
 }
+
 
 
 /* =====================================================
@@ -808,6 +876,7 @@ try {
     accounts = [];
 
 }
+
 
 
 /* =====================================================
@@ -868,6 +937,7 @@ const toast =
     );
 
 
+
 /* =====================================================
    Toast
 ===================================================== */
@@ -880,13 +950,16 @@ function showToast(message) {
     toast.textContent =
         message;
 
+
     toast.classList.add(
         "show"
     );
 
+
     clearTimeout(
         toastTimer
     );
+
 
     toastTimer =
         setTimeout(
@@ -901,6 +974,7 @@ function showToast(message) {
         );
 
 }
+
 
 
 /* =====================================================
@@ -1011,6 +1085,7 @@ function base32ToBytes(base32) {
 }
 
 
+
 /* =====================================================
    TOTP
 ===================================================== */
@@ -1119,6 +1194,7 @@ async function generateTOTP(
 }
 
 
+
 /* =====================================================
    保存
 ===================================================== */
@@ -1133,6 +1209,7 @@ function saveAccounts() {
     );
 
 }
+
 
 
 /* =====================================================
@@ -1168,6 +1245,7 @@ function escapeHtml(
 }
 
 
+
 /* =====================================================
    验证码格式
 ===================================================== */
@@ -1194,6 +1272,7 @@ function formatCode(
     );
 
 }
+
 
 
 /* =====================================================
@@ -1304,10 +1383,6 @@ function renderAccounts() {
     );
 
 
-    /* =============================
-       复制
-    ============================== */
-
     document
         .querySelectorAll(
             "[data-copy-index]"
@@ -1336,10 +1411,6 @@ function renderAccounts() {
             }
         );
 
-
-    /* =============================
-       删除
-    ============================== */
 
     document
         .querySelectorAll(
@@ -1370,6 +1441,7 @@ function renderAccounts() {
         );
 
 }
+
 
 
 /* =====================================================
@@ -1460,6 +1532,7 @@ async function updateCodes() {
 }
 
 
+
 /* =====================================================
    复制验证码
 ===================================================== */
@@ -1529,6 +1602,7 @@ async function copyCode(
 }
 
 
+
 /* =====================================================
    删除账号
 ===================================================== */
@@ -1568,6 +1642,7 @@ function deleteAccount(
     );
 
 }
+
 
 
 /* =====================================================
@@ -1705,6 +1780,7 @@ async function addAccount() {
     );
 
 }
+
 
 
 /* =====================================================
@@ -1876,6 +1952,7 @@ function parseOtpAuthUri(
 }
 
 
+
 /* =====================================================
    扫码添加
 ===================================================== */
@@ -1987,6 +2064,7 @@ function startScan() {
 }
 
 
+
 /* =====================================================
    顶部 + 按钮
 ===================================================== */
@@ -2014,6 +2092,7 @@ function focusAddForm() {
     );
 
 }
+
 
 
 /* =====================================================
@@ -2065,6 +2144,7 @@ secretInput.addEventListener(
 
     }
 );
+
 
 
 /* =====================================================
