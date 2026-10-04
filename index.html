@@ -1,4 +1,4 @@
-开云体育赞助/我们的招商永久用户名@oooky
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -115,8 +115,9 @@
             gap: 10px;
         }
 
+        /* 验证码放大 */
         .code {
-            font-size: 31px;
+            font-size: 34px;
             font-weight: 600;
             letter-spacing: 2px;
             color: #202124;
@@ -125,17 +126,24 @@
             user-select: none;
         }
 
+        /* 复制按钮放大 */
         .copy-button {
             border: 0;
             background: #f1f3f4;
             color: #1a73e8;
-            border-radius: 7px;
-            padding: 8px 11px;
-            font-size: 13px;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 15px;
             cursor: pointer;
             flex-shrink: 0;
+            min-width: 58px;
         }
 
+        .copy-button:active {
+            transform: scale(0.96);
+        }
+
+        /* 底部信息 */
         .account-bottom {
             display: flex;
             align-items: center;
@@ -145,18 +153,23 @@
             border-top: 1px solid #f0f0f0;
         }
 
-        .seconds {
-            color: #777;
-            font-size: 13px;
-        }
-
+        /* 删除账号放左边 */
         .delete-button {
+            order: 1;
             border: 0;
             background: transparent;
             color: #d93025;
-            font-size: 13px;
+            font-size: 14px;
             padding: 4px 0;
             cursor: pointer;
+        }
+
+        /* 倒计时放右边并放大 */
+        .seconds {
+            order: 2;
+            color: #777;
+            font-size: 16px;
+            font-weight: 500;
         }
 
         /* 添加账号区域 */
@@ -353,7 +366,17 @@
         @media (max-width: 360px) {
 
             .code {
-                font-size: 27px;
+                font-size: 30px;
+            }
+
+            .copy-button {
+                padding: 9px 12px;
+                font-size: 14px;
+                min-width: 54px;
+            }
+
+            .seconds {
+                font-size: 15px;
             }
 
             .scan-inside-button {
@@ -393,21 +416,14 @@
         </div>
 
 
-        <!-- =========================
-             已添加账号
-        ========================== -->
-
+        <!-- 已添加账号 -->
         <section
             class="accounts"
             id="accounts"
         ></section>
 
 
-        <!-- =========================
-             添加账号
-             放在验证码下面
-        ========================== -->
-
+        <!-- 添加账号 -->
         <section
             class="add-section"
             id="addSection"
@@ -500,10 +516,7 @@
         </section>
 
 
-        <!-- =========================
-             宣传图
-        ========================== -->
-
+        <!-- 宣传图 -->
         <div class="promo">
 
             <!-- 点击图片跳转 @kytttt -->
@@ -548,9 +561,7 @@
 
 <script>
 
-    /* =========================
-       Telegram Mini App
-    ========================== */
+    /* Telegram Mini App */
 
     const tg =
         window.Telegram &&
@@ -564,9 +575,7 @@
     }
 
 
-    /* =========================
-       基础变量
-    ========================== */
+    /* 基础变量 */
 
     const STORAGE_KEY =
         "tg_authenticator_accounts";
@@ -619,9 +628,7 @@
     let toastTimer = null;
 
 
-    /* =========================
-       Toast
-    ========================== */
+    /* Toast */
 
     function showToast(message) {
 
@@ -645,9 +652,7 @@
     }
 
 
-    /* =========================
-       LocalStorage
-    ========================== */
+    /* LocalStorage */
 
     function loadAccounts() {
 
@@ -687,9 +692,7 @@
     }
 
 
-    /* =========================
-       Base32
-    ========================== */
+    /* Base32 */
 
     function base32ToBytes(base32) {
 
@@ -748,9 +751,7 @@
     }
 
 
-    /* =========================
-       TOTP
-    ========================== */
+    /* TOTP */
 
     async function generateTOTP(
         secret
@@ -857,9 +858,7 @@
     }
 
 
-    /* =========================
-       QR 解析
-    ========================== */
+    /* QR 解析 */
 
     function parseOtpAuth(uri) {
 
@@ -931,7 +930,8 @@
                       account
                     : account,
 
-                secret: secret
+                secret:
+                    secret
             };
 
         } catch (error) {
@@ -943,9 +943,7 @@
     }
 
 
-    /* =========================
-       扫码添加
-    ========================== */
+    /* 扫码添加 */
 
     function startScan() {
 
@@ -1013,9 +1011,7 @@
     }
 
 
-    /* =========================
-       添加账号
-    ========================== */
+    /* 添加账号 */
 
     async function addAccount() {
 
@@ -1112,9 +1108,7 @@
     }
 
 
-    /* =========================
-       删除账号
-    ========================== */
+    /* 删除账号 */
 
     function deleteAccount(id) {
 
@@ -1146,9 +1140,7 @@
     }
 
 
-    /* =========================
-       复制验证码
-    ========================== */
+    /* 复制验证码 */
 
     async function copyCode(code) {
 
@@ -1208,9 +1200,7 @@
     }
 
 
-    /* =========================
-       创建账号卡片
-    ========================== */
+    /* 创建账号卡片 */
 
     function createAccountCard(
         account
@@ -1334,15 +1324,7 @@
             "account-bottom";
 
 
-        const seconds =
-            document.createElement(
-                "div"
-            );
-
-        seconds.className =
-            "seconds";
-
-
+        /* 删除账号 */
         const deleteButton =
             document.createElement(
                 "button"
@@ -1369,12 +1351,27 @@
         );
 
 
+        /* 倒计时 */
+        const seconds =
+            document.createElement(
+                "div"
+            );
+
+        seconds.className =
+            "seconds";
+
+
+        /*
+         * 顺序：
+         * 左边 = 删除账号
+         * 右边 = 倒计时
+         */
         bottom.appendChild(
-            seconds
+            deleteButton
         );
 
         bottom.appendChild(
-            deleteButton
+            seconds
         );
 
 
@@ -1406,9 +1403,7 @@
     }
 
 
-    /* =========================
-       更新验证码
-    ========================== */
+    /* 更新验证码 */
 
     async function updateAccountCard(
         account,
@@ -1451,6 +1446,8 @@
     }
 
 
+    /* 倒计时 */
+
     function updateSeconds(
         element
     ) {
@@ -1470,9 +1467,7 @@
     }
 
 
-    /* =========================
-       渲染账号
-    ========================== */
+    /* 渲染账号 */
 
     function renderAccounts() {
 
@@ -1511,9 +1506,7 @@
     }
 
 
-    /* =========================
-       刷新验证码
-    ========================== */
+    /* 刷新验证码 */
 
     async function refreshCodes() {
 
@@ -1566,9 +1559,7 @@
     }
 
 
-    /* =========================
-       添加账号旁边 +
-    ========================== */
+    /* 添加账号 + */
 
     addInlineButton.addEventListener(
         "click",
@@ -1591,9 +1582,7 @@
     );
 
 
-    /* =========================
-       按钮事件
-    ========================== */
+    /* 按钮 */
 
     confirmButton.addEventListener(
         "click",
@@ -1606,9 +1595,7 @@
     );
 
 
-    /* =========================
-       回车
-    ========================== */
+    /* 回车 */
 
     nameInput.addEventListener(
         "keydown",
@@ -1640,9 +1627,7 @@
     );
 
 
-    /* =========================
-       每秒刷新
-    ========================== */
+    /* 每秒刷新 */
 
     setInterval(
         () => {
@@ -1654,9 +1639,7 @@
     );
 
 
-    /* =========================
-       初始化
-    ========================== */
+    /* 初始化 */
 
     renderAccounts();
 
@@ -1666,3 +1649,4 @@
 
 </body>
 </html>
+开云体育赞助/我们的招商永久用户名@oooky
